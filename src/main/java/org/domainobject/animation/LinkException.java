@@ -10,7 +10,7 @@ public class LinkException extends AnimationException {
 
 	private static String getMessage(Program program)
 	{
-		String error = glGetProgramInfoLog(program.getId(), glGetProgrami(program.getId(), GL_INFO_LOG_LENGTH));
+		String error = glGetProgramInfoLog(program.getId());
 		return String.format(MESSAGE_PATTERN, program.getId(), error);
 	}
 

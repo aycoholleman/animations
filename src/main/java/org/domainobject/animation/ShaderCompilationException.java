@@ -10,7 +10,7 @@ public class ShaderCompilationException extends AnimationException {
 
 	private static String getMessage(Shader shader)
 	{
-		String error = glGetShaderInfoLog(shader.getId(), glGetShaderi(shader.getId(), GL_INFO_LOG_LENGTH));
+		String error = glGetShaderInfoLog(shader.getId());
 		return String.format(MESSAGE_PATTERN, shader.getType(), shader.getId(), error);
 	}
 
