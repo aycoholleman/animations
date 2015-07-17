@@ -30,7 +30,7 @@ public enum ShaderType
 	@Override
 	public String toString()
 	{
-		return "GL_" + name() + "_SHADER";
+		return name();
 	}
 
 }

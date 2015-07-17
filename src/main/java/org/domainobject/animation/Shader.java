@@ -42,6 +42,15 @@ public abstract class Shader {
 		glAttachShader(program.getId(), id);
 		program.addShader(this);
 	}
+	
+	public void test() {
+		id = glCreateShader(type.getOpenGLId());
+		glShaderSource(id, src);
+		glCompileShader(id);
+		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
+			throw new ShaderCompilationException(this);
+		}		
+	}
 
 
 	public int getId()

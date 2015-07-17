@@ -4,9 +4,9 @@ import java.io.InputStream;
 
 public class VertexShader extends Shader {
 
-	public VertexShader(String source, ShaderType type)
+	public VertexShader(String source)
 	{
-		super(source, type);
+		super(source, ShaderType.VERTEX);
 	}
 
 

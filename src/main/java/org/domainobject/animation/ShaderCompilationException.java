@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL20.*;
 @SuppressWarnings("serial")
 public class ShaderCompilationException extends AnimationException {
 
-	private static final String MESSAGE_PATTERN = "Error compiling shader (type=%s; id=%s): %s";
+	private static final String MESSAGE_PATTERN = "\n\nError compiling shader (type=%s; id=%s):\n%s";
 
 
 	private static String getMessage(Shader shader)
