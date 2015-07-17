@@ -1,6 +1,7 @@
 package org.domainobject.animation.simple;
 
 import org.domainobject.animation.Animation;
+import org.domainobject.animation.shaders.PassThruFragmentShader;
 import org.domainobject.animation.shaders.PassThruVertexShader;
 
 /**
@@ -28,6 +29,7 @@ public class QuadColored extends Animation {
 	protected void init()
 	{
 		new PassThruVertexShader().test();
+		new PassThruFragmentShader().test();
 	}
 	
 	
