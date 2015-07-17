@@ -40,7 +40,6 @@ public abstract class Shader {
 			}
 		}
 		glAttachShader(program.getId(), id);
-		program.addShader(this);
 	}
 	
 	public void test() {
