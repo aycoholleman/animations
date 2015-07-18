@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL45.*;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -123,18 +124,18 @@ public class QuadColored extends Animation {
 		indicesBuffer.flip();
 
 		// Create a new Vertex Array Object in memory and select it (bind)
-		vaoId = glGenVertexArrays();
+		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 
 		// Create a new Vertex Buffer Object in memory and select it (bind) - VERTICES
-		vboId = glGenBuffers();
+		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Create a new VBO for the indices and select it (bind) - COLORS
-		vbocId = glGenBuffers();
+		vbocId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vbocId);
 		glBufferData(GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
@@ -144,7 +145,7 @@ public class QuadColored extends Animation {
 		glBindVertexArray(0);
 
 		// Create a new VBO for the indices and select it (bind) - INDICES
-		vboiId = glGenBuffers();
+		vboiId = glCreateBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
