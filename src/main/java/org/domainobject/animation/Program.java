@@ -21,6 +21,11 @@ import java.util.ArrayList;
 
 public class Program {
 
+	public static void deactivate()
+	{
+		glUseProgram(0);
+	}
+
 	private int id;
 	private ArrayList<Shader> shaders;
 
@@ -66,6 +71,17 @@ public class Program {
 	public int getId()
 	{
 		return id;
+	}
+
+
+	public void destroy()
+	{
+		for (Shader shader : shaders) {
+			glDetachShader(id, shader.getId());
+			glDeleteShader(shader.getId());
+		}
+		glDeleteProgram(id);
+		shaders = null;
 	}
 
 

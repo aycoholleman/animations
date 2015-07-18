@@ -34,10 +34,6 @@ public class QuadColored extends Animation {
 	private int vbocId = 0;
 	private int vboiId = 0;
 	private int indicesCount = 0;
-	// Shader variables
-	private int vsId = 0;
-	private int fsId = 0;
-	private int pId = 0;
 
 	private Program program;
 
@@ -51,8 +47,44 @@ public class QuadColored extends Animation {
 	@Override
 	protected void init()
 	{
-		new PassThruVertexShader();
-		new PassThruFragmentShader();
+		setupShaders();
+		setupQuad();
+	}
+
+
+	@Override
+	protected void update(double time)
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		program.activate();
+
+		// Bind to the VAO that has all the information about the vertices
+		glBindVertexArray(vaoId);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
+		// Bind to the index VBO that has all the information about the order of the vertices
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
+
+		// Draw the vertices
+		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_BYTE, 0);
+
+		// Put everything back to default (deselect)
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindVertexArray(0);
+		
+		Program.deactivate();
+
+	}
+	
+	@Override
+	protected void dispose()
+	{
+		program.destroy();
+		Program.deactivate();
 	}
 
 
@@ -124,6 +156,7 @@ public class QuadColored extends Animation {
 		program = new Program();
 		program.attach(new PassThruVertexShader());
 		program.attach(new PassThruFragmentShader());
+		program.arm();
 	}
 
 }
