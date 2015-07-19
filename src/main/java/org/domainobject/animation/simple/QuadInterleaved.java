@@ -27,8 +27,43 @@ public class QuadInterleaved extends Animation {
 		new QuadInterleaved().start();
 	}
 
+	// Quad variables
+	private int vaoId = 0;
+	private int vboId = 0;
+	private int vbocId = 0;
+	private int vboiId = 0;
+	private int indicesCount = 0;
+	
 	private Program program;
 
+	@Override
+	protected void update(double time)
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		program.activate();
+
+		// Bind to the VAO that has all the information about the vertices
+		glBindVertexArray(vaoId);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
+		// Bind to the index VBO that has all the information about the order of the vertices
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
+
+		// Draw the vertices
+		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_BYTE, 0);
+
+		// Put everything back to default (deselect)
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindVertexArray(0);
+		
+		Program.deactivate();
+
+	}
+	
 	@Override
 	protected void dispose()
 	{
