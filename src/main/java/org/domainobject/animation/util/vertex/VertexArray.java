@@ -23,9 +23,9 @@ public class VertexArray {
 	}
 
 
-	public XYZVertex newXYZVertex()
+	public Vec3 newXYZVertex()
 	{
-		XYZVertex vertex = new XYZVertex();
+		Vec3 vertex = new Vec3();
 		size += vertex.getComponentCount();
 		vertex.components = raw;
 		vertex.offset = offsets[numVertices++];
