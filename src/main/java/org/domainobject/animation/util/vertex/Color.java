@@ -3,16 +3,18 @@ package org.domainobject.animation.util.vertex;
 import static org.domainobject.animation.util.C2J.*;
 
 /**
- * A 3-component vector, useful for specifying 3D positions, normals and RGB
- * colors.
+ * A {@code Vertex} class that lets you specify either a position or a color.
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
  *
  */
-public class Vec3 extends Vertex {
+public class Color extends FixedVertex {
 
-	Vec3()
+	public static final int COMPONENT_COUNT = 3;
+
+
+	Color()
 	{
 
 	}
@@ -21,7 +23,7 @@ public class Vec3 extends Vertex {
 	@Override
 	int getComponentCount()
 	{
-		return 3;
+		return COMPONENT_COUNT;
 	}
 
 
@@ -30,7 +32,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 xyz(float x, float y, float z)
+	public Color xyz(float x, float y, float z)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -44,7 +46,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 xy(float x, float y)
+	public Color xy(float x, float y)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -57,7 +59,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 xz(float x, float z)
+	public Color xz(float x, float z)
 	{
 		components[offset + 0] = x;
 		components[offset + 2] = z;
@@ -70,7 +72,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 yz(float y, float z)
+	public Color yz(float y, float z)
 	{
 		components[offset + 1] = y;
 		components[offset + 2] = z;
@@ -83,7 +85,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 x(float x)
+	public Color x(float x)
 	{
 		components[offset + 0] = x;
 		return this;
@@ -95,7 +97,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 y(float y)
+	public Color y(float y)
 	{
 		components[offset + 1] = y;
 		return this;
@@ -107,7 +109,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 z(float z)
+	public Color z(float z)
 	{
 		components[offset + 2] = z;
 		return this;
@@ -182,7 +184,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 rgb(float red, float green, float blue)
+	public Color rgb(float red, float green, float blue)
 	{
 		components[offset + 0] = red;
 		components[offset + 1] = green;
@@ -197,7 +199,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 red(float r)
+	public Color red(float r)
 	{
 		components[offset + 0] = r;
 		return this;
@@ -209,7 +211,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 green(float g)
+	public Color green(float g)
 	{
 		components[offset + 1] = g;
 		return this;
@@ -221,7 +223,7 @@ public class Vec3 extends Vertex {
 	 * 
 	 * @return This {@code Vec3} instance
 	 */
-	public Vec3 blue(float b)
+	public Color blue(float b)
 	{
 		components[offset + 2] = b;
 		return this;

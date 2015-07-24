@@ -1,6 +1,6 @@
 package org.domainobject.animation.util.vertex;
 
-public abstract class Vertex {
+public abstract class FixedVertex {
 
 	/**
 	 * Settable static variable used as the default value for the w coordinate
@@ -17,7 +17,7 @@ public abstract class Vertex {
 	int offset;
 
 
-	Vertex()
+	FixedVertex()
 	{
 
 	}

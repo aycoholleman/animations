@@ -2,10 +2,10 @@ package org.domainobject.animation.util.vertex;
 
 public enum VertexAttribute
 {
-	X_POS,
-	Y_POS,
-	Z_POS,
-	W_POS,
+	X,
+	Y,
+	Z,
+	W,
 	RED,
 	GREEN,
 	BLUE,
