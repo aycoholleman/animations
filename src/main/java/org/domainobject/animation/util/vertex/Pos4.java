@@ -3,33 +3,32 @@ package org.domainobject.animation.util.vertex;
 import static org.domainobject.animation.util.C2J.*;
 
 /**
- * A 3-component vertex class whose name and method names suggest you are
- * dealing with the 4D position of a vertex.
+ * A 4-component vertex class suitable for specifying 4D coordinates.
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
  *
  */
-public class Pos4D extends FixedVertex {
+public class Pos4 extends TypedVertex {
 
 	public static final int COMPONENT_COUNT = 4;
 
 
-	Pos4D()
+	Pos4()
 	{
 
 	}
 
 
 	@Override
-	int getComponentCount()
+	protected int size()
 	{
 		return COMPONENT_COUNT;
 	}
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4D}.
+	 * Set the x, y, z and w coordinates of this {@code Pos4}.
 	 * 
 	 * @param x
 	 * @param y
@@ -46,7 +45,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4D}.
+	 * Set the x, y, z and w coordinates of this {@code Pos4}.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 4 elements
@@ -61,22 +60,22 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos4D} to this instance.
+	 * Copy the coordinates of the specified {@code Pos4} to this instance.
 	 * 
 	 * @param other
 	 */
-	public void set(Pos4D other)
+	public void set(Pos4 other)
 	{
 		memcpy4(components, offset, other.components, other.offset);
 	}
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4D} and return it.
+	 * Set the x, y, z and w coordinates of this {@code Pos4} and return it.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D xyzw(float x, float y, float z, float w)
+	public Pos4 xyzw(float x, float y, float z, float w)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -87,17 +86,17 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4D} and return it.
+	 * Set the x, y, z and w coordinates of this {@code Pos4} and return it.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 4 elements
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 4 elements
 	 */
-	public Pos4D xyzw(float[] coordinates)
+	public Pos4 xyzw(float[] coordinates)
 	{
 		memcpy4(components, offset, coordinates, 0);
 		return this;
@@ -105,11 +104,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos4D} to this instance.
+	 * Copy the coordinates of the specified {@code Pos4} to this instance.
 	 * 
 	 * @param other
 	 */
-	public Pos4D xyzw(Pos4D other)
+	public Pos4 xyzw(Pos4 other)
 	{
 		memcpy4(components, offset, other.components, other.offset);
 		return this;
@@ -117,11 +116,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos4D}.
+	 * Set the x, y, and z coordinates of this {@code Pos4}.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D xyz(float x, float y, float z)
+	public Pos4 xyz(float x, float y, float z)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -131,7 +130,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos4D}.
+	 * Set the x, y, and z coordinates of this {@code Pos4}.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 3 elements
@@ -139,7 +138,7 @@ public class Pos4D extends FixedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos4D xyz(float[] coordinates)
+	public Pos4 xyz(float[] coordinates)
 	{
 		memcpy3(components, offset, coordinates, 0);
 		return this;
@@ -147,11 +146,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the x coordinate of this {@code Pos4D}.
+	 * Set the x coordinate of this {@code Pos4}.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D x(float x)
+	public Pos4 x(float x)
 	{
 		components[offset + 0] = x;
 		return this;
@@ -159,11 +158,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the y coordinate of this {@code Pos4D}.
+	 * Set the y coordinate of this {@code Pos4}.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D y(float y)
+	public Pos4 y(float y)
 	{
 		components[offset + 1] = y;
 		return this;
@@ -171,11 +170,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the z coordinate of this {@code Pos4D}.
+	 * Set the z coordinate of this {@code Pos4}.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D z(float z)
+	public Pos4 z(float z)
 	{
 		components[offset + 2] = z;
 		return this;
@@ -183,11 +182,11 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Set the w coordinate of this {@code Pos4D}.
+	 * Set the w coordinate of this {@code Pos4}.
 	 * 
-	 * @return This {@code Pos4D}
+	 * @return This {@code Pos4}
 	 */
-	public Pos4D w(float w)
+	public Pos4 w(float w)
 	{
 		components[offset + 3] = w;
 		return this;
@@ -195,7 +194,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos4D}.
+	 * Get the x, y, z and w coordinates of this {@code Pos4}.
 	 */
 	public float[] xyzw()
 	{
@@ -206,7 +205,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the x, y and z coordinates of this {@code Pos4D}.
+	 * Get the x, y and z coordinates of this {@code Pos4}.
 	 */
 	public float[] xyz()
 	{
@@ -217,7 +216,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the x coordinate of this {@code Pos4D}.
+	 * Get the x coordinate of this {@code Pos4}.
 	 */
 	public float x()
 	{
@@ -226,7 +225,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the y coordinate of this {@code Pos4D}.
+	 * Get the y coordinate of this {@code Pos4}.
 	 */
 	public float y()
 	{
@@ -235,7 +234,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the z coordinate of this {@code Pos4D}.
+	 * Get the z coordinate of this {@code Pos4}.
 	 */
 	public float z()
 	{
@@ -244,7 +243,7 @@ public class Pos4D extends FixedVertex {
 
 
 	/**
-	 * Get the w coordinate of this {@code Pos4D}.
+	 * Get the w coordinate of this {@code Pos4}.
 	 */
 	public float w()
 	{

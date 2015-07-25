@@ -1,6 +1,6 @@
 package org.domainobject.animation.util.vertex;
 
-public abstract class FixedVertex {
+public abstract class TypedVertex extends Vertex {
 
 	/**
 	 * Settable static variable used as the default value for the w coordinate
@@ -12,17 +12,5 @@ public abstract class FixedVertex {
 	 * if the a concrete subclass has no slot for the alpha channel.
 	 */
 	public static float DEFAULT_A = 1.0f;
-
-	float[] components;
-	int offset;
-
-
-	FixedVertex()
-	{
-
-	}
-
-
-	abstract int getComponentCount();
 
 }

@@ -9,7 +9,7 @@ import static org.domainobject.animation.util.C2J.*;
  * @created Jul 20, 2015
  *
  */
-public class Color extends FixedVertex {
+public class Color extends TypedVertex {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -21,7 +21,7 @@ public class Color extends FixedVertex {
 
 
 	@Override
-	int getComponentCount()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

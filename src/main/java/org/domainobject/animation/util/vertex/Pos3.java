@@ -3,33 +3,32 @@ package org.domainobject.animation.util.vertex;
 import static org.domainobject.animation.util.C2J.*;
 
 /**
- * A 3-component vertex class whose name and method names suggest you are
- * dealing with the 3D position of a vertex.
+ * A 3-component vertex class suitable for specifying 3D coordinates.
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
  *
  */
-public class Pos3D extends FixedVertex {
+public class Pos3 extends TypedVertex {
 
 	public static final int COMPONENT_COUNT = 3;
 
 
-	Pos3D()
+	Pos3()
 	{
 
 	}
 
 
 	@Override
-	int getComponentCount()
+	protected int size()
 	{
 		return COMPONENT_COUNT;
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos3D}.
+	 * Set the x, y, and z coordinates of this {@code Pos3}.
 	 * 
 	 * @param x
 	 * @param y
@@ -44,7 +43,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos3D}.
+	 * Set the x, y, and z coordinates of this {@code Pos3}.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 3 elements
@@ -59,22 +58,22 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos3D} to this instance.
+	 * Copy the coordinates of the specified {@code Pos3} to this instance.
 	 * 
 	 * @param other
 	 */
-	public void set(Pos3D other)
+	public void set(Pos3 other)
 	{
 		memcpy3(components, offset, other.components, other.offset);
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos3D} and return it.
+	 * Set the x, y, and z coordinates of this {@code Pos3} and return it.
 	 * 
-	 * @return This {@code Pos3D}
+	 * @return This {@code Pos3}
 	 */
-	public Pos3D xyz(float x, float y, float z)
+	public Pos3 xyz(float x, float y, float z)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -84,7 +83,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos3D} and return it.
+	 * Set the x, y, and z coordinates of this {@code Pos3} and return it.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 3 elements
@@ -92,7 +91,7 @@ public class Pos3D extends FixedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos3D xyz(float[] coordinates)
+	public Pos3 xyz(float[] coordinates)
 	{
 		memcpy3(components, offset, coordinates, 0);
 		return this;
@@ -100,12 +99,12 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos3D} to this instance and
+	 * Copy the coordinates of the specified {@code Pos3} to this instance and
 	 * return it.
 	 * 
 	 * @param other
 	 */
-	public Pos3D xyz(Pos3D other)
+	public Pos3 xyz(Pos3 other)
 	{
 		memcpy3(components, offset, other.components, other.offset);
 		return this;
@@ -113,11 +112,11 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the x and y coordinates of this {@code Pos3D}.
+	 * Set the x and y coordinates of this {@code Pos3}.
 	 * 
-	 * @return This {@code Pos3D}
+	 * @return This {@code Pos3}
 	 */
-	public Pos3D xy(float x, float y)
+	public Pos3 xy(float x, float y)
 	{
 		components[offset + 0] = x;
 		components[offset + 1] = y;
@@ -126,11 +125,11 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the x coordinate of this {@code Pos3D}.
+	 * Set the x coordinate of this {@code Pos3}.
 	 * 
-	 * @return This {@code Pos3D}
+	 * @return This {@code Pos3}
 	 */
-	public Pos3D x(float x)
+	public Pos3 x(float x)
 	{
 		components[offset + 0] = x;
 		return this;
@@ -138,11 +137,11 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the y coordinate of this {@code Pos3D}.
+	 * Set the y coordinate of this {@code Pos3}.
 	 * 
-	 * @return This {@code Pos3D}
+	 * @return This {@code Pos3}
 	 */
-	public Pos3D y(float y)
+	public Pos3 y(float y)
 	{
 		components[offset + 1] = y;
 		return this;
@@ -150,11 +149,11 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Set the z coordinate of this {@code Pos3D}.
+	 * Set the z coordinate of this {@code Pos3}.
 	 * 
-	 * @return This {@code Pos3D}
+	 * @return This {@code Pos3}
 	 */
-	public Pos3D z(float z)
+	public Pos3 z(float z)
 	{
 		components[offset + 2] = z;
 		return this;
@@ -162,10 +161,10 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos3D}, using the value
+	 * Get the x, y, z and w coordinates of this {@code Pos3}, using the value
 	 * of {@link #DEFAULT_W} as the w coordinate.
 	 * 
-	 * @return The x, y, z and w coordinates of this {@code Pos3D}
+	 * @return The x, y, z and w coordinates of this {@code Pos3}
 	 */
 	public float[] xyzw()
 	{
@@ -177,13 +176,13 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos3D}, using the
+	 * Get the x, y, z and w coordinates of this {@code Pos3}, using the
 	 * specified value as the w coordinate.
 	 * 
 	 * @param w
 	 *            The value to use for the w coordinate.
 	 * 
-	 * @return The x, y, z and w coordinates of this {@code Pos3D}
+	 * @return The x, y, z and w coordinates of this {@code Pos3}
 	 * 
 	 */
 	public float[] xyzw(float w)
@@ -196,7 +195,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the x, y and z coordinates of this {@code Pos3D}.
+	 * Get the x, y and z coordinates of this {@code Pos3}.
 	 */
 	public float[] xyz()
 	{
@@ -207,7 +206,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the x coordinate of this {@code Pos3D}.
+	 * Get the x coordinate of this {@code Pos3}.
 	 */
 	public float x()
 	{
@@ -216,7 +215,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the y coordinate of this {@code Pos3D}.
+	 * Get the y coordinate of this {@code Pos3}.
 	 */
 	public float y()
 	{
@@ -225,7 +224,7 @@ public class Pos3D extends FixedVertex {
 
 
 	/**
-	 * Get the z coordinate of this {@code Pos3D}.
+	 * Get the z coordinate of this {@code Pos3}.
 	 */
 	public float z()
 	{

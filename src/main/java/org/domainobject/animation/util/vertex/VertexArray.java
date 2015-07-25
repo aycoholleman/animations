@@ -2,35 +2,41 @@ package org.domainobject.animation.util.vertex;
 
 public class VertexArray {
 
-	private int[] offsets;
 	private float[] raw;
+	private int offset;
 	private int numVertices;
 	private int size;
 
 
-	/**
-	 * Creates a {@code VertexArray} that can hold up to {@code maxNumVertices}
-	 * vertices and up to {@code maxSize} single {@code float} elements. Thus,
-	 * if you plan to add no more than 100 vertices, and each vertex you add has
-	 * 3 components (e.g. x, y and z), then you should specify 100 for
-	 * {@code maxNumVertices} and 300 for {@code maxSize}.
-	 * 
-	 */
-	public VertexArray(int maxNumVertices, int maxSize)
+	public VertexArray(int maxSize)
 	{
-		offsets = new int[maxNumVertices];
 		raw = new float[maxSize];
 	}
 
 
-	public Pos3D newXYZVertex()
+	public Pos3 newPos3()
 	{
-		Pos3D vertex = new Pos3D();
-		size += vertex.getComponentCount();
-		vertex.components = raw;
-		vertex.offset = offsets[numVertices++];
-		offsets[numVertices] = vertex.offset + vertex.getComponentCount();
-		return vertex;
+		return newVertex(new Pos3());
+	}
+
+
+	public Pos4 newPos4()
+	{
+		return newVertex(new Pos4());
+	}
+
+
+	public VertexArray position(float x, float y, float z)
+	{
+		newVertex(new Pos3()).set(x, y, z);
+		return this;
+	}
+
+
+	public VertexArray position(float x, float y, float z, float w)
+	{
+		newVertex(new Pos4()).set(x, y, z, w);
+		return this;
 	}
 
 
@@ -53,6 +59,17 @@ public class VertexArray {
 	public int getSize()
 	{
 		return size;
+	}
+
+
+	private <T extends Vertex> T newVertex(T vertex)
+	{
+		size += vertex.size();
+		vertex.components = raw;
+		vertex.offset = offset;
+		offset += vertex.size();
+		++numVertices;
+		return vertex;
 	}
 
 }
