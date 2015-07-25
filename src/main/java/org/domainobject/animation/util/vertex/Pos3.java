@@ -161,8 +161,8 @@ public class Pos3 extends TypedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos3}, using the value
-	 * of {@link #DEFAULT_W} as the w coordinate.
+	 * Get x, y, z and w coordinates, using the value of {@link #DEFAULT_W} for
+	 * the w coordinate.
 	 * 
 	 * @return The x, y, z and w coordinates of this {@code Pos3}
 	 */
@@ -176,8 +176,8 @@ public class Pos3 extends TypedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos3}, using the
-	 * specified value as the w coordinate.
+	 * Get x, y, z and w coordinates, using the specified value for the w
+	 * coordinate.
 	 * 
 	 * @param w
 	 *            The value to use for the w coordinate.
