@@ -2,6 +2,8 @@ package org.domainobject.animation.util.vertex;
 
 import static org.domainobject.animation.util.C2J.*;
 
+import org.domainobject.animation.util.Array;
+
 /**
  * A 3-component vertex class suitable for specifying colors without an alpha
  * component.
@@ -15,14 +17,14 @@ public class Color3 extends TypedVertex {
 	public static final int COMPONENT_COUNT = 3;
 
 
-	Color3()
+	Color3(float[] components, int offset)
 	{
-
+		super(components, offset);
 	}
 
 
 	@Override
-	protected int size()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}
@@ -37,9 +39,7 @@ public class Color3 extends TypedVertex {
 	 */
 	public void set(float red, float green, float blue)
 	{
-		components[offset + 0] = red;
-		components[offset + 1] = green;
-		components[offset + 2] = blue;
+		Array.set(components, offset, red, green, blue);
 	}
 
 
@@ -76,9 +76,7 @@ public class Color3 extends TypedVertex {
 	 */
 	public Color3 rgb(float red, float green, float blue)
 	{
-		components[offset + 0] = red;
-		components[offset + 1] = green;
-		components[offset + 2] = blue;
+		Array.set(components, offset, red, green, blue);
 		return this;
 	}
 
@@ -97,6 +95,20 @@ public class Color3 extends TypedVertex {
 	public Color3 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
+		return this;
+	}
+
+
+	/**
+	 * Copy the channels of the specified instance to this instance.
+	 * 
+	 * @param other
+	 * 
+	 * @return This instance
+	 */
+	public Color3 rgb(Color3 other)
+	{
+		memcpy3(components, offset, other.components, other.offset);
 		return this;
 	}
 
@@ -150,20 +162,22 @@ public class Color3 extends TypedVertex {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #DEFAULT_A} for the alpha channel.
+	 * {@link #DEFAULT_ALPHA} for the alpha channel. Useful for converting a
+	 * 3-component color to a 4-component color.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = DEFAULT_A;
+		result[3] = DEFAULT_ALPHA;
 		return result;
 	}
 
 
 	/**
 	 * Get red, green, blue and alpha channel, using the specified value for the
-	 * alpha channel.
+	 * alpha channel. Useful for converting a 3-component color to a 4-component
+	 * color.
 	 */
 	public float[] rgba(float alpha)
 	{

@@ -3,17 +3,12 @@ package org.domainobject.animation.util.vertex;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.domainobject.animation.util.Initializers;
-
-import static org.domainobject.animation.util.vertex.VertexAttribute.*;
+import org.domainobject.animation.util.Array;
 
 public class VertexDefinition {
 
-	public static final VertexDefinition XYZ = new VertexDefinition(X, Y, Z);
-	public static final VertexDefinition XYZW = new VertexDefinition(X, Y, Z, W);
-
-	private int[] slots = Initializers.initialize17(Integer.MAX_VALUE);
-	private int componentCount;
+	private int[] slots = Array.fill17(Integer.MAX_VALUE);
+	private int numComponents;
 
 
 	public VertexDefinition(VertexAttribute... attributes)
@@ -21,16 +16,16 @@ public class VertexDefinition {
 		if (attributes.length != new HashSet<>(Arrays.asList(attributes)).size()) {
 			//TODO: Error (non-unique attributes)
 		}
-		componentCount = attributes.length;
+		numComponents = attributes.length;
 		for (int i = 0; i < attributes.length; ++i) {
 			slots[attributes[i].ordinal()] = i;
 		}
 	}
 
 
-	int getComponentCount()
+	int getNumComponents()
 	{
-		return componentCount;
+		return numComponents;
 	}
 
 

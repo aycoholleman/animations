@@ -3,7 +3,7 @@ package org.domainobject.animation.util.vertex;
 public class VertexArray {
 
 	private float[] raw;
-	private int offset;
+	private int size;
 	private int numVertices;
 
 
@@ -15,37 +15,52 @@ public class VertexArray {
 
 	public Pos3 newPos3()
 	{
-		return newVertex(new Pos3());
+		return newVertex(new Pos3(raw, size));
 	}
 
 
 	public Pos4 newPos4()
 	{
-		return newVertex(new Pos4());
+		return newVertex(new Pos4(raw, size));
 	}
 
 
 	public Color3 newColor3()
 	{
-		return newVertex(new Color3());
+		return newVertex(new Color3(raw, size));
 	}
+
 
 	public Color4 newColor4()
 	{
-		return newVertex(new Color4());
+		return newVertex(new Color4(raw, size));
 	}
 
 
 	public VertexArray position(float x, float y, float z)
 	{
-		newVertex(new Pos3()).set(x, y, z);
+		set(x, y, z);
 		return this;
 	}
 
 
 	public VertexArray position(float x, float y, float z, float w)
 	{
-		newVertex(new Pos4()).set(x, y, z, w);
+		set(x, y, z, w);
+		return this;
+	}
+
+
+	public VertexArray color(float red, float green, float blue)
+	{
+		set(red, green, blue);
+		return this;
+	}
+
+
+	public VertexArray color(float red, float green, float blue, float alpha)
+	{
+		set(red, green, blue, alpha);
 		return this;
 	}
 
@@ -70,7 +85,7 @@ public class VertexArray {
 	 */
 	public int getSize()
 	{
-		return offset;
+		return size;
 	}
 
 
@@ -82,17 +97,32 @@ public class VertexArray {
 	 */
 	public int available()
 	{
-		return raw.length - offset;
+		return raw.length - size;
 	}
 
 
 	private <T extends Vertex> T newVertex(T vertex)
 	{
 		++numVertices;
-		vertex.components = raw;
-		vertex.offset = offset;
-		offset += vertex.size();
+		size += vertex.size();
 		return vertex;
+	}
+
+
+	private void set(float c0, float c1, float c2)
+	{
+		raw[size++] = c0;
+		raw[size++] = c1;
+		raw[size++] = c2;
+	}
+
+
+	private void set(float c0, float c1, float c2, float c3)
+	{
+		raw[size++] = c0;
+		raw[size++] = c1;
+		raw[size++] = c2;
+		raw[size++] = c3;
 	}
 
 }

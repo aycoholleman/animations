@@ -2,6 +2,8 @@ package org.domainobject.animation.util.vertex;
 
 import static org.domainobject.animation.util.C2J.*;
 
+import org.domainobject.animation.util.Array;
+
 /**
  * A 4-component vertex class suitable for specifying 4D coordinates.
  * 
@@ -14,21 +16,22 @@ public class Pos4 extends TypedVertex {
 	public static final int COMPONENT_COUNT = 4;
 
 
-	Pos4()
+	Pos4(float[] components, int offset)
 	{
-
+		super(components, offset);
+		components[offset + 3] = DEFAULT_W;
 	}
 
 
 	@Override
-	protected int size()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4}.
+	 * Set the x, y, z and w coordinates.
 	 * 
 	 * @param x
 	 * @param y
@@ -37,15 +40,12 @@ public class Pos4 extends TypedVertex {
 	 */
 	public void set(float x, float y, float z, float w)
 	{
-		components[offset + 0] = x;
-		components[offset + 1] = y;
-		components[offset + 2] = z;
-		components[offset + 3] = w;
+		Array.set(components, offset, x, y, z, w);
 	}
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4}.
+	 * Set the x, y, z and w coordinates.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 4 elements
@@ -60,7 +60,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos4} to this instance.
+	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param other
 	 */
@@ -71,27 +71,24 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4} and return it.
+	 * Set the x, y, z and w coordinates and return it.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 xyzw(float x, float y, float z, float w)
 	{
-		components[offset + 0] = x;
-		components[offset + 1] = y;
-		components[offset + 2] = z;
-		components[offset + 3] = w;
+		Array.set(components, offset, x, y, z, w);
 		return this;
 	}
 
 
 	/**
-	 * Set the x, y, z and w coordinates of this {@code Pos4} and return it.
+	 * Set the x, y, z and w coordinates and return it.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 4 elements
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 4 elements
@@ -104,7 +101,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@code Pos4} to this instance.
+	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param other
 	 */
@@ -116,21 +113,19 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos4}.
+	 * Set the x, y, and z coordinates.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 xyz(float x, float y, float z)
 	{
-		components[offset + 0] = x;
-		components[offset + 1] = y;
-		components[offset + 2] = z;
+		Array.set(components, offset, x, y, z);
 		return this;
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates of this {@code Pos4}.
+	 * Set the x, y, and z coordinates.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 3 elements
@@ -146,9 +141,9 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the x coordinate of this {@code Pos4}.
+	 * Set the x coordinate.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 x(float x)
 	{
@@ -158,9 +153,9 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the y coordinate of this {@code Pos4}.
+	 * Set the y coordinate.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 y(float y)
 	{
@@ -170,9 +165,9 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the z coordinate of this {@code Pos4}.
+	 * Set the z coordinate.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 z(float z)
 	{
@@ -182,9 +177,9 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Set the w coordinate of this {@code Pos4}.
+	 * Set the w coordinate.
 	 * 
-	 * @return This {@code Pos4}
+	 * @return This instance
 	 */
 	public Pos4 w(float w)
 	{
@@ -194,7 +189,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the x, y, z and w coordinates of this {@code Pos4}.
+	 * Get the x, y, z and w coordinates.
 	 */
 	public float[] xyzw()
 	{
@@ -205,7 +200,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the x, y and z coordinates of this {@code Pos4}.
+	 * Get the x, y and z coordinates.
 	 */
 	public float[] xyz()
 	{
@@ -216,7 +211,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the x coordinate of this {@code Pos4}.
+	 * Get the x coordinate.
 	 */
 	public float x()
 	{
@@ -225,7 +220,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the y coordinate of this {@code Pos4}.
+	 * Get the y coordinate.
 	 */
 	public float y()
 	{
@@ -234,7 +229,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the z coordinate of this {@code Pos4}.
+	 * Get the z coordinate.
 	 */
 	public float z()
 	{
@@ -243,7 +238,7 @@ public class Pos4 extends TypedVertex {
 
 
 	/**
-	 * Get the w coordinate of this {@code Pos4}.
+	 * Get the w coordinate.
 	 */
 	public float w()
 	{

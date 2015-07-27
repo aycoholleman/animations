@@ -2,13 +2,14 @@ package org.domainobject.animation.util.vertex;
 
 import static org.domainobject.animation.util.vertex.VertexAttribute.*;
 
-public class DynamicVertex extends Vertex {
+public final class DynamicVertex extends Vertex {
 
 	private VertexDefinition def;
 
 
-	public DynamicVertex(VertexDefinition def)
+	public DynamicVertex(float[] components, int offset, VertexDefinition def)
 	{
+		super(components, offset);
 		this.def = def;
 	}
 
@@ -22,9 +23,9 @@ public class DynamicVertex extends Vertex {
 
 
 	@Override
-	protected int size()
+	int size()
 	{
-		return def.getComponentCount();
+		return def.getNumComponents();
 	}
 
 }

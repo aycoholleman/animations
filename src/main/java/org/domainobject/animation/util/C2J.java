@@ -377,8 +377,7 @@ public class C2J {
 	{
 		memcpy16(dst, 0, src, 0);
 	}
-
-
+	
 	public static void buffer(IntBuffer buffer, int[] elements)
 	{
 		buffer.clear();

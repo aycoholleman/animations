@@ -2,9 +2,10 @@ package org.domainobject.animation.util.vertex;
 
 import static org.domainobject.animation.util.C2J.*;
 
+import org.domainobject.animation.util.Array;
+
 /**
- * A 3-component vertex class suitable for specifying colors without an alpha
- * component.
+ * A 4-component vertex class suitable for specifying colors.
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
@@ -15,14 +16,15 @@ public class Color4 extends TypedVertex {
 	public static final int COMPONENT_COUNT = 4;
 
 
-	Color4()
+	Color4(float[] components, int offset)
 	{
-
+		super(components, offset);
+		components[offset + 3] = DEFAULT_ALPHA;
 	}
 
 
 	@Override
-	protected int size()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}
@@ -38,10 +40,7 @@ public class Color4 extends TypedVertex {
 	 */
 	public void set(float red, float green, float blue, float alpha)
 	{
-		components[offset + 0] = red;
-		components[offset + 1] = green;
-		components[offset + 2] = blue;
-		components[offset + 3] = blue;
+		Array.set(components, offset, red, green, blue, alpha);
 	}
 
 
@@ -78,12 +77,10 @@ public class Color4 extends TypedVertex {
 	 */
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
-		components[offset + 0] = red;
-		components[offset + 1] = green;
-		components[offset + 2] = blue;
-		components[offset + 3] = blue;
+		Array.set(components, offset, red, green, blue, alpha);
 		return this;
 	}
+
 
 	/**
 	 * Set the red, green and blue channel.
@@ -92,9 +89,7 @@ public class Color4 extends TypedVertex {
 	 */
 	public Color4 rgb(float red, float green, float blue)
 	{
-		components[offset + 0] = red;
-		components[offset + 1] = green;
-		components[offset + 2] = blue;
+		Array.set(components, offset, red, green, blue);
 		return this;
 	}
 
@@ -166,13 +161,13 @@ public class Color4 extends TypedVertex {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #DEFAULT_A} for the alpha channel.
+	 * {@link #DEFAULT_ALPHA} for the alpha channel.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = DEFAULT_A;
+		result[3] = DEFAULT_ALPHA;
 		return result;
 	}
 

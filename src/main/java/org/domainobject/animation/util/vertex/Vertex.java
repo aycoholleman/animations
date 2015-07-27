@@ -1,9 +1,16 @@
 package org.domainobject.animation.util.vertex;
 
-public abstract class Vertex {
+abstract class Vertex {
 
-	float[] components;
-	int offset;
+	final float[] components;
+	final int offset;
+
+
+	Vertex(float[] components, int offset)
+	{
+		this.components = components;
+		this.offset = offset;
+	}
 
 
 	/**
@@ -11,6 +18,6 @@ public abstract class Vertex {
 	 * 
 	 * @return The number of components of this {@code Vertex}
 	 */
-	protected abstract int size();
+	abstract int size();
 
 }
