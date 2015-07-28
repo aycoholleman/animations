@@ -5,19 +5,19 @@ import static org.domainobject.animation.util.C2JSinglePrecision.*;
 import org.domainobject.animation.util.Array;
 
 /**
- * A 6-component vertex class suitable for specifying a position (first 3 slots)
- * and a color (last three slots).
+ * An 8-component vertex class suitable for specifying a position (first four
+ * slots) and a color (last four slots).
  * 
  * @author Ayco Holleman
  * @created Jul 26, 2015
  *
  */
-public class Pos3Color3 extends TypedVertex {
+public class Pos4Color4 extends TypedVertex {
 
-	public static final int COMPONENT_COUNT = 6;
+	public static final int COMPONENT_COUNT = 8;
 
 
-	Pos3Color3(float[] components, int offset)
+	Pos4Color4(float[] components, int offset)
 	{
 		super(components, offset);
 	}
@@ -44,9 +44,10 @@ public class Pos3Color3 extends TypedVertex {
 	 * @param g
 	 * @param b
 	 */
-	public void set(float x, float y, float z, float r, float g, float b)
+	public void set(float x, float y, float z, float w, float r, float g, float b, float a)
 	{
-		Array.set(components, offset, x, y, z, r, g, b);
+		Array.set(components, offset, x, y, z, w);
+		Array.set(components, offset + 4, r, g, b, a);
 	}
 
 
@@ -55,9 +56,9 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @param xyzrgb
 	 */
-	public void set(float[] xyzrgb)
+	public void set(float[] xyzwrgba)
 	{
-		memcpy6(components, offset, xyzrgb, 0);
+		memcpy8(components, offset, xyzwrgba, 0);
 	}
 
 
@@ -66,14 +67,63 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @param other
 	 */
-	public void set(Pos3Color3 other)
+	public void set(Pos4Color4 other)
 	{
-		memcpy6(components, offset, other.components, other.offset);
+		memcpy8(components, offset, other.components, other.offset);
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates of this instance.
+	 * Set the x, y, z and w coordinate.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4 xyzw(float x, float y, float z, float w)
+	{
+		Array.set(components, offset, x, y, z, w);
+		return this;
+	}
+
+
+	/**
+	 * Set the x, y, z and w coordinate.
+	 * 
+	 * @param xyzw
+	 *            A {@code float} array containing at least 3 elements
+	 * 
+	 * @return This instance
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 *             If the specified array contains less than 3 elements
+	 */
+	public Pos4Color4 xyzw(float[] xyzw)
+	{
+		memcpy4(components, offset, xyzw, 0);
+		return this;
+	}
+
+
+	/**
+	 * Copy the coordinates of the specified instance to this instance.
+	 * 
+	 * @param pos4
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4 xyzw(Pos4 pos4)
+	{
+		memcpy4(components, offset, pos4.components, pos4.offset);
+		return this;
+	}
+
+
+	/**
+	 * Set the x, y and z coordinate.
 	 * 
 	 * @param x
 	 * @param y
@@ -81,7 +131,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 xyz(float x, float y, float z)
+	public Pos4Color4 xyz(float x, float y, float z)
 	{
 		Array.set(components, offset, x, y, z);
 		return this;
@@ -89,7 +139,7 @@ public class Pos3Color3 extends TypedVertex {
 
 
 	/**
-	 * Set the x, y, and z coordinates of this instance.
+	 * Set the x, y, and z coordinate.
 	 * 
 	 * @param xyz
 	 *            A {@code float} array containing at least 3 elements
@@ -99,7 +149,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos3Color3 xyz(float[] xyz)
+	public Pos4Color4 xyz(float[] xyz)
 	{
 		memcpy3(components, offset, xyz, 0);
 		return this;
@@ -107,14 +157,13 @@ public class Pos3Color3 extends TypedVertex {
 
 
 	/**
-	 * Copy the coordinates of the specified {@link Pos3} instance to this
-	 * instance.
+	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param pos3
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 xyz(Pos3 pos3)
+	public Pos4Color4 xyz(Pos3 pos3)
 	{
 		memcpy3(components, offset, pos3.components, pos3.offset);
 		return this;
@@ -126,7 +175,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 rgb(float red, float green, float blue)
+	public Pos4Color4 rgb(float red, float green, float blue)
 	{
 		Array.set(components, offset + 3, red, green, blue);
 		return this;
@@ -144,7 +193,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos3Color3 rgb(float[] rgb)
+	public Pos4Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset + 3, rgb, 0);
 		return this;
@@ -159,7 +208,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 rgb(Color3 color3)
+	public Pos4Color4 rgb(Color3 color3)
 	{
 		memcpy3(components, offset, color3.components, color3.offset);
 		return this;
@@ -171,7 +220,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 x(float x)
+	public Pos4Color4 x(float x)
 	{
 		components[offset + 0] = x;
 		return this;
@@ -183,7 +232,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 y(float y)
+	public Pos4Color4 y(float y)
 	{
 		components[offset + 1] = y;
 		return this;
@@ -195,7 +244,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 z(float z)
+	public Pos4Color4 z(float z)
 	{
 		components[offset + 2] = z;
 		return this;
@@ -207,7 +256,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 red(float r)
+	public Pos4Color4 red(float r)
 	{
 		components[offset + 3] = r;
 		return this;
@@ -219,7 +268,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 green(float g)
+	public Pos4Color4 green(float g)
 	{
 		components[offset + 4] = g;
 		return this;
@@ -231,7 +280,7 @@ public class Pos3Color3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3Color3 blue(float b)
+	public Pos4Color4 blue(float b)
 	{
 		components[offset + 5] = b;
 		return this;
