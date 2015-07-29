@@ -35,6 +35,27 @@ public class Pos4Color4 extends TypedVertex {
 	///////////////////////////////////
 
 	/**
+	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
+	 * the red, green and blue channels. The w coordinate is set to
+	 * {@link TypedVertex#DEFAULT_W} and the alpha channel is set to
+	 * {@link TypedVertex#DEFAULT_ALPHA}. Note that until you call this method
+	 * or one of the other setters, the internal state of a new instance is
+	 * undefined, both in theory and in practice!
+	 */
+	public void init()
+	{
+		components[offset + 0] = 0;
+		components[offset + 1] = 0;
+		components[offset + 2] = 0;
+		components[offset + 3] = DEFAULT_W;
+		components[offset + 4] = 0;
+		components[offset + 5] = 0;
+		components[offset + 6] = 0;
+		components[offset + 7] = DEFAULT_ALPHA;
+	}
+
+
+	/**
 	 * Set all components of this {@code Vertex}.
 	 * 
 	 * @param x
@@ -171,6 +192,41 @@ public class Pos4Color4 extends TypedVertex {
 
 
 	/**
+	 * Set the red, green, blue and alpha channel.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @param alpha
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4 rgba(float red, float green, float blue, float alpha)
+	{
+		Array.set(components, offset + 4, red, green, blue, alpha);
+		return this;
+	}
+
+
+	/**
+	 * Set the red, green, blue and alpha channel.
+	 * 
+	 * @param rgba
+	 *            A {@code float} array containing at least 4 elements
+	 * 
+	 * @return This instance
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 *             If the specified array contains less than 4 elements
+	 */
+	public Pos4Color4 rgba(float[] rgba)
+	{
+		memcpy4(components, offset + 4, rgba, 0);
+		return this;
+	}
+
+
+	/**
 	 * Set the red, green and blue channel.
 	 * 
 	 * @return This instance
@@ -252,13 +308,25 @@ public class Pos4Color4 extends TypedVertex {
 
 
 	/**
+	 * Set the z coordinate.
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4 w(float w)
+	{
+		components[offset + 3] = w;
+		return this;
+	}
+
+
+	/**
 	 * Set the red channel.
 	 * 
 	 * @return This instance
 	 */
 	public Pos4Color4 red(float r)
 	{
-		components[offset + 3] = r;
+		components[offset + 4] = r;
 		return this;
 	}
 
@@ -270,7 +338,7 @@ public class Pos4Color4 extends TypedVertex {
 	 */
 	public Pos4Color4 green(float g)
 	{
-		components[offset + 4] = g;
+		components[offset + 5] = g;
 		return this;
 	}
 
@@ -282,7 +350,19 @@ public class Pos4Color4 extends TypedVertex {
 	 */
 	public Pos4Color4 blue(float b)
 	{
-		components[offset + 5] = b;
+		components[offset + 6] = b;
+		return this;
+	}
+
+
+	/**
+	 * Set the alpha channel.
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4 alpha(float a)
+	{
+		components[offset + 7] = a;
 		return this;
 	}
 
@@ -292,7 +372,42 @@ public class Pos4Color4 extends TypedVertex {
 	///////////////////////////////////
 
 	/**
-	 * Get the x, y and z coordinates.
+	 * Get a copy of this instance's components.
+	 * 
+	 * @return xyzwrgba
+	 */
+	public float[] copy()
+	{
+		float[] result = new float[8];
+		memcpy8(result, 0, components, offset);
+		return result;
+	}
+
+
+	/**
+	 * Get the x, y, z and w coordinate.
+	 */
+	public float[] xyzw()
+	{
+		float[] result = new float[4];
+		memcpy4(result, 0, components, offset);
+		return result;
+	}
+
+
+	/**
+	 * Get the red, green, blue and alpha channel.
+	 */
+	public float[] rgba()
+	{
+		float[] result = new float[4];
+		memcpy4(result, 0, components, offset + 4);
+		return result;
+	}
+
+
+	/**
+	 * Get the x, y and z coordinate.
 	 */
 	public float[] xyz()
 	{
@@ -308,7 +423,7 @@ public class Pos4Color4 extends TypedVertex {
 	public float[] rgb()
 	{
 		float[] result = new float[3];
-		memcpy3(result, 0, components, offset + 3);
+		memcpy3(result, 0, components, offset + 4);
 		return result;
 	}
 
@@ -341,11 +456,20 @@ public class Pos4Color4 extends TypedVertex {
 
 
 	/**
+	 * Get the w coordinate.
+	 */
+	public float w()
+	{
+		return components[offset + 3];
+	}
+
+
+	/**
 	 * Get the red channel.
 	 */
 	public float red()
 	{
-		return components[offset + 3];
+		return components[offset + 4];
 	}
 
 
@@ -354,7 +478,7 @@ public class Pos4Color4 extends TypedVertex {
 	 */
 	public float green()
 	{
-		return components[offset + 4];
+		return components[offset + 5];
 	}
 
 
@@ -363,7 +487,16 @@ public class Pos4Color4 extends TypedVertex {
 	 */
 	public float blue()
 	{
-		return components[offset + 5];
+		return components[offset + 6];
+	}
+
+
+	/**
+	 * Get the alpha channel.
+	 */
+	public float alpha()
+	{
+		return components[offset + 7];
 	}
 
 
@@ -372,24 +505,24 @@ public class Pos4Color4 extends TypedVertex {
 	///////////////////////////////////
 
 	/**
-	 * Narrow this instance to a {@link Pos3} instance.
+	 * Narrow this instance to a {@link Pos4} instance.
 	 * 
 	 * @return
 	 */
-	public Pos3 position()
+	public Pos4 pos4()
 	{
-		return new Pos3(components, offset);
+		return new Pos4(components, offset);
 	}
 
 
 	/**
-	 * Narrow this instance to a {@link Color3} instance.
+	 * Narrow this instance to a {@link Color4} instance.
 	 * 
 	 * @return
 	 */
-	public Color3 color()
+	public Color4 color4()
 	{
-		return new Color3(components, offset + 3);
+		return new Color4(components, offset + 4);
 	}
 
 }

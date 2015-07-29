@@ -1,7 +1,12 @@
 package org.domainobject.animation.util.vertex;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class VertexArray {
 
+	private FloatBuffer buf;
 	private float[] raw;
 	private int size;
 	private int numVertices;
@@ -10,6 +15,49 @@ public class VertexArray {
 	public VertexArray(int maxSize)
 	{
 		raw = new float[maxSize];
+		buf = BufferUtils.createFloatBuffer(maxSize);
+	}
+
+
+	/**
+	 * Erases all vertex data from this {@code VertexArray} and puts it in a
+	 * state as though it was just instantiated.
+	 */
+	public void clear()
+	{
+		size = 0;
+		numVertices = 0;
+	}
+
+
+	/**
+	 * Burns the vertex data to a {@code FloatBuffer} and then clears the
+	 * {@code VertexArray}. The {@code FloatBuffer} is flipped before being
+	 * returned to the caller. You cannot burn an empty {@code VertexArray}
+	 * (i.e. when {@link #getSize()} returns 0). Doing so triggers a
+	 * {@link VertexArrayException}. Since burning implicitly clears the
+	 * {@code VertexArray}, this means you cannot burn a {@code VertexArray}
+	 * twice without adding some vertex data in between.
+	 * 
+	 * @return A {@code FloatBuffer} containing all vertices added to this
+	 *         {@code VertexArray}
+	 * 
+	 * @throws VertexArrayException
+	 *             If the {@code VertexArray} is empty.
+	 * 
+	 * @see #clear()
+	 */
+	public FloatBuffer burn()
+	{
+		if (size == 0) {
+			VertexArrayException.cannotBurnWhenEmpty();
+		}
+		buf.clear();
+		buf.put(raw, 0, size);
+		buf.flip();
+		size = 0;
+		numVertices = 0;
+		return buf;
 	}
 
 
@@ -37,31 +85,27 @@ public class VertexArray {
 	}
 
 
-	public VertexArray position(float x, float y, float z)
+	public void add(float c0, float c1)
 	{
-		set(x, y, z);
-		return this;
+		raw[size++] = c0;
+		raw[size++] = c1;
 	}
 
 
-	public VertexArray position(float x, float y, float z, float w)
+	public void add(float c0, float c1, float c2)
 	{
-		set(x, y, z, w);
-		return this;
+		raw[size++] = c0;
+		raw[size++] = c1;
+		raw[size++] = c2;
 	}
 
 
-	public VertexArray color(float red, float green, float blue)
+	public void add(float c0, float c1, float c2, float c3)
 	{
-		set(red, green, blue);
-		return this;
-	}
-
-
-	public VertexArray color(float red, float green, float blue, float alpha)
-	{
-		set(red, green, blue, alpha);
-		return this;
+		raw[size++] = c0;
+		raw[size++] = c1;
+		raw[size++] = c2;
+		raw[size++] = c3;
 	}
 
 
@@ -106,23 +150,6 @@ public class VertexArray {
 		++numVertices;
 		size += vertex.size();
 		return vertex;
-	}
-
-
-	private void set(float c0, float c1, float c2)
-	{
-		raw[size++] = c0;
-		raw[size++] = c1;
-		raw[size++] = c2;
-	}
-
-
-	private void set(float c0, float c1, float c2, float c3)
-	{
-		raw[size++] = c0;
-		raw[size++] = c1;
-		raw[size++] = c2;
-		raw[size++] = c3;
 	}
 
 }
