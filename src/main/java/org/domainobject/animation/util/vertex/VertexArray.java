@@ -85,6 +85,107 @@ public class VertexArray {
 	}
 
 
+	/**
+	 * Adds the specified coordinates to this {@code VertexArray}.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * 
+	 * @return This instance
+	 */
+	public VertexArray xyz(float x, float y, float z)
+	{
+		add(x, y, z);
+		return this;
+	}
+
+
+	/**
+	 * Adds the specified coordinates to this {@code VertexArray} <i>plus</i>
+	 * the value of {@link TypedVertex#DEFAULT_W}. In other words, this method
+	 * adds <i>four</i> components to this {@code VertexArray}.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * 
+	 * @return This instance
+	 */
+	public VertexArray xyzw(float x, float y, float z)
+	{
+		add(x, y, z, TypedVertex.DEFAULT_W);
+		return this;
+	}
+
+
+	/**
+	 * Adds the specified coordinates to this {@code VertexArray}.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * 
+	 * @return This instance
+	 */
+	public VertexArray xyzw(float x, float y, float z, float w)
+	{
+		add(x, y, z, w);
+		return this;
+	}
+
+
+	/**
+	 * Adds the specified color to this {@code VertexArray}.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * 
+	 * @return This instance
+	 */
+	public VertexArray rgb(float red, float green, float blue)
+	{
+		add(red, green, blue);
+		return this;
+	}
+
+
+	/**
+	 * Adds the specified color to this {@code VertexArray} <i>plus</i> the
+	 * value of {@link TypedVertex#DEFAULT_ALPHA}. In other words, this method
+	 * adds <i>four</i> components to this {@code VertexArray}.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * 
+	 * @return This instance
+	 */
+	public VertexArray rgba(float red, float green, float blue)
+	{
+		add(red, green, blue, TypedVertex.DEFAULT_ALPHA);
+		return this;
+	}
+
+
+	/**
+	 * Adds the specified coordinates to this {@code VertexArray}.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @param alpha
+	 * @return This instance
+	 */
+	public VertexArray rgba(float red, float green, float blue, float alpha)
+	{
+		add(red, green, blue, alpha);
+		return this;
+	}
+
+
 	public void add(float c0, float c1)
 	{
 		raw[size++] = c0;

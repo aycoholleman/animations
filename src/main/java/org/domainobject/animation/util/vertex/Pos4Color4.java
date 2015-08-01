@@ -15,6 +15,8 @@ import org.domainobject.animation.util.Array;
 public class Pos4Color4 extends TypedVertex {
 
 	public static final int COMPONENT_COUNT = 8;
+	public static final int BYTE_SIZE = COMPONENT_COUNT * SIZE_OF_FLOAT;
+	public static final int[] strides = new int[] { 0, sizeof(4) };
 
 
 	Pos4Color4(float[] components, int offset)

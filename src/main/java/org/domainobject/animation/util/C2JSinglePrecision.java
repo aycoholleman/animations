@@ -27,6 +27,18 @@ public class C2JSinglePrecision {
 
 
 	/**
+	 * Get size in bytes of the specified number of float elements.
+	 * 
+	 * @param numElements
+	 * @return
+	 */
+	public static int sizeof(int numElements)
+	{
+		return numElements << 2;
+	}
+
+
+	/**
 	 * Get size in bytes of the specified array
 	 * 
 	 * @param array
@@ -40,8 +52,8 @@ public class C2JSinglePrecision {
 
 
 	/**
-	 * Get size in bytes of the specified two-dimensional array. Assumes rows
-	 * all have the same length.
+	 * Get size in bytes of the specified two-dimensional array. Assumes all rows
+	 * have the same length.
 	 * 
 	 * @param array
 	 *            The array whose size in bytes to measure
