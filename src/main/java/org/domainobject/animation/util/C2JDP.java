@@ -10,7 +10,7 @@ import java.nio.DoubleBuffer;
  * @author ayco
  *
  */
-public class C2JDoublePrecision {
+public class C2JDP {
 
 	/**
 	 * Size in bytes of a double (8 bytes).
@@ -18,7 +18,7 @@ public class C2JDoublePrecision {
 	public static final int SIZE_OF_DOUBLE = 8;
 
 
-	private C2JDoublePrecision()
+	private C2JDP()
 	{
 	}
 

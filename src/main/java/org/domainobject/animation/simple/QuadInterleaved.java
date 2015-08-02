@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL45.*;
 
 import java.nio.ByteBuffer;
 
@@ -103,11 +104,11 @@ public class QuadInterleaved extends Animation {
         indicesBuffer.flip();
          
         // Create a new Vertex Array Object in memory and select it (bind)
-        vaoId = glGenVertexArrays();
+        vaoId = glCreateVertexArrays();
         glBindVertexArray(vaoId);
          
         // Create a new Vertex Buffer Object in memory and select it (bind)
-        vboId = glGenBuffers();
+        vboId = glCreateBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);
         // Put the positions in attribute list 0
@@ -120,7 +121,7 @@ public class QuadInterleaved extends Animation {
         glBindVertexArray(0);
          
         // Create a new VBO for the indices and select it (bind) - INDICES
-        vboiId = glGenBuffers();
+        vboiId = glCreateBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);	}

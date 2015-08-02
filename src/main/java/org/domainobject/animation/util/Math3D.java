@@ -1,8 +1,8 @@
 package org.domainobject.animation.util;
 
 
-import static org.domainobject.animation.util.C2JSinglePrecision.*;
-import static org.domainobject.animation.util.C2JDoublePrecision.*;
+import static org.domainobject.animation.util.C2JSP.*;
+import static org.domainobject.animation.util.C2JDP.*;
 
 /**
  * @author ayco

@@ -1,6 +1,6 @@
 package org.domainobject.animation.util.vertex;
 
-import static org.domainobject.animation.util.C2JSinglePrecision.*;
+import static org.domainobject.animation.util.C2JSP.*;
 
 import org.domainobject.animation.util.Array;
 
