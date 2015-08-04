@@ -1,9 +1,5 @@
 package org.domainobject.animation.util;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.BufferUtils;
 
 /**
  * Utility class with C-ish methods. Where applicable, methods of this class
