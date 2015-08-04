@@ -12,7 +12,7 @@ import org.domainobject.animation.Animation;
 import org.domainobject.animation.Program;
 import org.domainobject.animation.shaders.PassThruFragmentShader;
 import org.domainobject.animation.shaders.PassThruVertexShader;
-import org.domainobject.animation.util.vertex.Pos4Color4;
+import org.domainobject.animation.util.vertex.Pos4Color4Texture;
 import org.domainobject.animation.util.vertex.VertexArray;
 import org.lwjgl.BufferUtils;
 
@@ -112,9 +112,9 @@ public class QuadInterleaved extends Animation {
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);
         // Put the positions in attribute list 0
-        glVertexAttribPointer(0, 4, GL_FLOAT, false, Pos4Color4.BYTE_SIZE, Pos4Color4.strides[0]);
+        glVertexAttribPointer(0, 4, GL_FLOAT, false, Pos4Color4Texture.BYTE_SIZE, Pos4Color4Texture.strides[0]);
         // Put the colors in attribute list 1
-        glVertexAttribPointer(1, 4, GL_FLOAT, false, Pos4Color4.BYTE_SIZE, Pos4Color4.strides[1]);
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, Pos4Color4Texture.BYTE_SIZE, Pos4Color4Texture.strides[1]);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
          
         // Deselect (bind to 0) the VAO

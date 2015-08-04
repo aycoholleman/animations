@@ -1,6 +1,5 @@
 package org.domainobject.animation.util;
 
-
 /**
  * Utility class with C-ish methods. Where applicable, methods of this class
  * expect/return single-precision floating point numbers. The memcpy family of
@@ -61,6 +60,28 @@ public class C2JSP {
 			return 0;
 		}
 		return (array.length * array[0].length) << 2;
+	}
+
+
+	/**
+	 * Copy two array elements from {@code src} to {@code dst}.
+	 * 
+	 * @param dst
+	 *            Destination (write-to) array
+	 * @param dstPos
+	 *            Index from which to insert into destination array
+	 * @param src
+	 *            Source (read-from) array
+	 * @param srcPos
+	 *            Index from which the read the source array
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 *             This method does not perform array index checking!
+	 */
+	public static void memcpy2(float[] dst, int dstPos, float[] src, int srcPos)
+	{
+		dst[dstPos + 0] = src[srcPos + 0];
+		dst[dstPos + 1] = src[srcPos + 1];
 	}
 
 
