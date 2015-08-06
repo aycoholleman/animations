@@ -12,7 +12,7 @@ import org.domainobject.animation.Animation;
 import org.domainobject.animation.Program;
 import org.domainobject.animation.shaders.PassThruFragmentShader;
 import org.domainobject.animation.shaders.PassThruVertexShader;
-import org.domainobject.animation.util.vertex.VertexArray;
+import org.domainobject.animation.util.vertex.RawMemory;
 import org.lwjgl.BufferUtils;
 
 /**
@@ -93,13 +93,13 @@ public class QuadColoredWithVertexArray extends Animation {
 	private void setupQuad()
 	{
 
-		VertexArray vertices = new VertexArray(30);
+		RawMemory vertices = new RawMemory(30);
 		vertices.add(-0.5f, 0.5f, 0f, 1f);
 		vertices.add(-0.5f, -0.5f, 0f, 1f);
 		vertices.add(0.5f, -0.5f, 0f, 1f);
 		vertices.add(0.5f, 0.5f, 0f, 1f);
 		
-		VertexArray colors = new VertexArray(30);
+		RawMemory colors = new RawMemory(30);
 		colors.add(1f, 0f, 0f, 1f);
 		colors.add(0f, 1f, 0f, 1f);
 		colors.add(0f, 0f, 1f, 1f);
@@ -112,11 +112,11 @@ public class QuadColoredWithVertexArray extends Animation {
 		indicesBuffer.put(indices);
 		indicesBuffer.flip();
 
-		// Create a new Vertex Array Object in memory and select it (bind)
+		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 
-		// Create a new Vertex Buffer Object in memory and select it (bind) - VERTICES
+		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
 		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);

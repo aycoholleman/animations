@@ -5,8 +5,9 @@ import static org.domainobject.animation.util.C2JSP.*;
 import org.domainobject.animation.util.Array;
 
 /**
- * An 8-component vertex class suitable for specifying a position (first four
- * slots) and a color (last four slots).
+ * An 10-component vertex class suitable for specifying a position (first four
+ * slots) a color (next four slots) and two texture coordinates (last two
+ * slots).
  * 
  * @author Ayco Holleman
  * @created Jul 26, 2015
@@ -60,7 +61,7 @@ public class Pos4Color4Texture extends TypedVertex {
 
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param x
 	 * @param y
@@ -80,7 +81,7 @@ public class Pos4Color4Texture extends TypedVertex {
 
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param xyzrgb
 	 */

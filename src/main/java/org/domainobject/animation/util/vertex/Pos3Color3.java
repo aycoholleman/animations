@@ -35,7 +35,7 @@ public class Pos3Color3 extends TypedVertex {
 	///////////////////////////////////
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param x
 	 * @param y
@@ -51,7 +51,7 @@ public class Pos3Color3 extends TypedVertex {
 
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param xyzrgb
 	 */

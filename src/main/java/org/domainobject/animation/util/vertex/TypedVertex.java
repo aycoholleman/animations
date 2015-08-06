@@ -1,6 +1,6 @@
 package org.domainobject.animation.util.vertex;
 
-public abstract class TypedVertex extends Vertex {
+public abstract class TypedVertex extends ArrayObject {
 
 	/**
 	 * Settable static field, used as the default value for the w coordinate.

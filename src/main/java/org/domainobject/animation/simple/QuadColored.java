@@ -123,11 +123,11 @@ public class QuadColored extends Animation {
 		indicesBuffer.put(indices);
 		indicesBuffer.flip();
 
-		// Create a new Vertex Array Object in memory and select it (bind)
+		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 
-		// Create a new Vertex Buffer Object in memory and select it (bind) - VERTICES
+		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);

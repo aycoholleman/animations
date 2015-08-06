@@ -4,15 +4,15 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-public class VertexArray {
+public class RawMemory {
 
 	private FloatBuffer buf;
 	private float[] raw;
 	private int size;
-	private int numVertices;
+	private int numArrays;
 
 
-	public VertexArray(int maxSize)
+	public RawMemory(int maxSize)
 	{
 		raw = new float[maxSize];
 		buf = BufferUtils.createFloatBuffer(maxSize);
@@ -26,7 +26,7 @@ public class VertexArray {
 	public void clear()
 	{
 		size = 0;
-		numVertices = 0;
+		numArrays = 0;
 	}
 
 
@@ -35,14 +35,14 @@ public class VertexArray {
 	 * {@code VertexArray}. The {@code FloatBuffer} is flipped before being
 	 * returned to the caller. You cannot burn an empty {@code VertexArray}
 	 * (i.e. when {@link #getSize()} returns 0). Doing so triggers a
-	 * {@link VertexArrayException}. Since burning implicitly clears the
+	 * {@link MemoryException}. Since burning implicitly clears the
 	 * {@code VertexArray}, this means you cannot burn a {@code VertexArray}
 	 * twice without adding some vertex data in between.
 	 * 
 	 * @return A {@code FloatBuffer} containing all vertices added to this
 	 *         {@code VertexArray}
 	 * 
-	 * @throws VertexArrayException
+	 * @throws MemoryException
 	 *             If the {@code VertexArray} is empty.
 	 * 
 	 * @see #clear()
@@ -50,38 +50,14 @@ public class VertexArray {
 	public FloatBuffer burn()
 	{
 		if (size == 0) {
-			VertexArrayException.cannotBurnWhenEmpty();
+			MemoryException.cannotBurnWhenEmpty();
 		}
 		buf.clear();
 		buf.put(raw, 0, size);
 		buf.flip();
 		size = 0;
-		numVertices = 0;
+		numArrays = 0;
 		return buf;
-	}
-
-
-	public Pos3 newPos3()
-	{
-		return newVertex(new Pos3(raw, size));
-	}
-
-
-	public Pos4 newPos4()
-	{
-		return newVertex(new Pos4(raw, size));
-	}
-
-
-	public Color3 newColor3()
-	{
-		return newVertex(new Color3(raw, size));
-	}
-
-
-	public Color4 newColor4()
-	{
-		return newVertex(new Color4(raw, size));
 	}
 
 
@@ -94,7 +70,7 @@ public class VertexArray {
 	 * 
 	 * @return This instance
 	 */
-	public VertexArray xyz(float x, float y, float z)
+	public RawMemory xyz(float x, float y, float z)
 	{
 		add(x, y, z);
 		return this;
@@ -112,7 +88,7 @@ public class VertexArray {
 	 * 
 	 * @return This instance
 	 */
-	public VertexArray xyzw(float x, float y, float z)
+	public RawMemory xyzw(float x, float y, float z)
 	{
 		add(x, y, z, TypedVertex.DEFAULT_W);
 		return this;
@@ -129,7 +105,7 @@ public class VertexArray {
 	 * 
 	 * @return This instance
 	 */
-	public VertexArray xyzw(float x, float y, float z, float w)
+	public RawMemory xyzw(float x, float y, float z, float w)
 	{
 		add(x, y, z, w);
 		return this;
@@ -145,7 +121,7 @@ public class VertexArray {
 	 * 
 	 * @return This instance
 	 */
-	public VertexArray rgb(float red, float green, float blue)
+	public RawMemory rgb(float red, float green, float blue)
 	{
 		add(red, green, blue);
 		return this;
@@ -163,7 +139,7 @@ public class VertexArray {
 	 * 
 	 * @return This instance
 	 */
-	public VertexArray rgba(float red, float green, float blue)
+	public RawMemory rgba(float red, float green, float blue)
 	{
 		add(red, green, blue, TypedVertex.DEFAULT_ALPHA);
 		return this;
@@ -179,7 +155,7 @@ public class VertexArray {
 	 * @param alpha
 	 * @return This instance
 	 */
-	public VertexArray rgba(float red, float green, float blue, float alpha)
+	public RawMemory rgba(float red, float green, float blue, float alpha)
 	{
 		add(red, green, blue, alpha);
 		return this;
@@ -217,7 +193,7 @@ public class VertexArray {
 	 */
 	public int getNumVertices()
 	{
-		return numVertices;
+		return numArrays;
 	}
 
 
@@ -243,14 +219,6 @@ public class VertexArray {
 	public int available()
 	{
 		return raw.length - size;
-	}
-
-
-	private <T extends Vertex> T newVertex(T vertex)
-	{
-		++numVertices;
-		size += vertex.size();
-		return vertex;
 	}
 
 }

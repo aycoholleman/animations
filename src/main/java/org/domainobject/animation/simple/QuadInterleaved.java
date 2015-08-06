@@ -13,7 +13,7 @@ import org.domainobject.animation.Program;
 import org.domainobject.animation.shaders.PassThruFragmentShader;
 import org.domainobject.animation.shaders.PassThruVertexShader;
 import org.domainobject.animation.util.vertex.Pos4Color4Texture;
-import org.domainobject.animation.util.vertex.VertexArray;
+import org.domainobject.animation.util.vertex.RawMemory;
 import org.lwjgl.BufferUtils;
 
 /**
@@ -35,10 +35,10 @@ public class QuadInterleaved extends Animation {
 	private int indicesCount = 0;
 	
 	private Program program;
-	private VertexArray vertices;
+	private RawMemory vertices;
 	
 	public QuadInterleaved() {
-		vertices = new VertexArray(60);
+		vertices = new RawMemory(60);
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class QuadInterleaved extends Animation {
         indicesBuffer.put(indices);
         indicesBuffer.flip();
          
-        // Create a new Vertex Array Object in memory and select it (bind)
+        // Create a new Array Array Object in memory and select it (bind)
         vaoId = glCreateVertexArrays();
         glBindVertexArray(vaoId);
          
-        // Create a new Vertex Buffer Object in memory and select it (bind)
+        // Create a new Array Buffer Object in memory and select it (bind)
         vboId = glCreateBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);

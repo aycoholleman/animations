@@ -2,7 +2,7 @@ package org.domainobject.animation.util.vertex;
 
 import static org.domainobject.animation.util.vertex.VertexAttribute.*;
 
-public final class DynamicVertex extends Vertex {
+public final class DynamicVertex extends ArrayObject {
 
 	private VertexDefinition def;
 

@@ -12,14 +12,25 @@ import org.domainobject.animation.util.Array;
  * @created Jul 26, 2015
  *
  */
-public class Pos4Color4 extends TypedVertex {
+public final class Pos4Color4 extends TypedVertex {
+
+	public static Memory<Pos4Color4> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos4Color4>(new Pos4Color4[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Pos4Color4 construct(float[] raw, int offset)
+			{
+				return new Pos4Color4(raw, offset);
+			}
+		};
+	}
 
 	public static final int COMPONENT_COUNT = 8;
 	public static final int BYTE_SIZE = COMPONENT_COUNT * SIZE_OF_FLOAT;
 	public static final int[] strides = new int[] { 0, sizeof(4) };
 
 
-	Pos4Color4(float[] components, int offset)
+	private Pos4Color4(float[] components, int offset)
 	{
 		super(components, offset);
 	}
@@ -58,7 +69,7 @@ public class Pos4Color4 extends TypedVertex {
 
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param x
 	 * @param y
@@ -75,7 +86,7 @@ public class Pos4Color4 extends TypedVertex {
 
 
 	/**
-	 * Set all components of this {@code Vertex}.
+	 * Set all components of this {@code Array}.
 	 * 
 	 * @param xyzrgb
 	 */
