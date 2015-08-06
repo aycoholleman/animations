@@ -284,6 +284,49 @@ public class C2JSP {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             This method does not perform array index checking!
 	 */
+	public static void memcpy7(float[] dst, int dstPos, float[] src, int srcPos)
+	{
+		dst[dstPos + 0] = src[srcPos + 0];
+		dst[dstPos + 1] = src[srcPos + 1];
+		dst[dstPos + 2] = src[srcPos + 2];
+		dst[dstPos + 3] = src[srcPos + 3];
+		dst[dstPos + 4] = src[srcPos + 4];
+		dst[dstPos + 5] = src[srcPos + 5];
+		dst[dstPos + 6] = src[srcPos + 6];
+	}
+
+
+	/**
+	 * Copy first eight array elements from {@code src} to {@code dst}.
+	 * 
+	 * @param dst
+	 *            Destination (write-to) array
+	 * @param src
+	 *            Source (read-from) array
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 *             This method does not perform array index checking!
+	 */
+	public static void memcpy7(float[] dst, float[] src)
+	{
+		memcpy8(dst, 0, src, 0);
+	}
+
+	/**
+	 * Copy eight array elements from {@code src} to {@code dst}.
+	 * 
+	 * @param dst
+	 *            Destination (write-to) array
+	 * @param dstPos
+	 *            Index from which to insert into destination array
+	 * @param src
+	 *            Source (read-from) array
+	 * @param srcPos
+	 *            Index from which the read the source array
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 *             This method does not perform array index checking!
+	 */
 	public static void memcpy8(float[] dst, int dstPos, float[] src, int srcPos)
 	{
 		dst[dstPos + 0] = src[srcPos + 0];

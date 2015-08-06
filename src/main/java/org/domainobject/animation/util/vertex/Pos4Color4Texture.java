@@ -15,21 +15,41 @@ import org.domainobject.animation.util.Array;
  */
 public class Pos4Color4Texture extends TypedVertex {
 
-	public static final int COMPONENT_COUNT = 10;
-	public static final int BYTE_SIZE = COMPONENT_COUNT * SIZE_OF_FLOAT;
+	public static final Memory<Pos4Color4Texture> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos4Color4Texture>(new Pos4Color4Texture[maxNumObjects], SIZE) {
+			@Override
+			Pos4Color4Texture construct(float[] raw, int offset)
+			{
+				return new Pos4Color4Texture(raw, offset);
+			}
+		};
+	}
+
+	/**
+	 * The number of elements of the internal array (10).
+	 */
+	public static final int SIZE = 10;
+	/**
+	 * The number of bytes occupied by the internal array.
+	 */
+	public static final int BYTE_SIZE = SIZE * SIZE_OF_FLOAT;
+	/**
+	 * The start points (in bytes) of the component groups within the array.
+	 */
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(4) };
 
 
-	Pos4Color4Texture(float[] components, int offset)
+	private Pos4Color4Texture(float[] raw, int offset)
 	{
-		super(components, offset);
+		super(raw, offset);
 	}
 
 
 	@Override
 	int size()
 	{
-		return COMPONENT_COUNT;
+		return SIZE;
 	}
 
 
