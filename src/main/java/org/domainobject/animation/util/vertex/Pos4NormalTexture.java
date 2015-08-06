@@ -16,7 +16,7 @@ public final class Pos4NormalTexture extends TypedVertex {
 
 	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], SIZE) {
+		return new Memory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], NUM_COMPONENTS) {
 			@Override
 			Pos4NormalTexture construct(float[] raw, int offset)
 			{
@@ -28,11 +28,11 @@ public final class Pos4NormalTexture extends TypedVertex {
 	/**
 	 * The number of elements of the internal array (9).
 	 */
-	public static final int SIZE = 9;
+	public static final int NUM_COMPONENTS = 9;
 	/**
 	 * The number of bytes occupied by the internal array.
 	 */
-	public static final int BYTE_SIZE = SIZE * SIZE_OF_FLOAT;
+	public static final int BYTE_SIZE = NUM_COMPONENTS * SIZE_OF_FLOAT;
 	/**
 	 * The byte offsets of the component groups within the array.
 	 */
@@ -48,7 +48,7 @@ public final class Pos4NormalTexture extends TypedVertex {
 	@Override
 	int size()
 	{
-		return SIZE;
+		return NUM_COMPONENTS;
 	}
 
 

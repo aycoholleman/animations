@@ -14,26 +14,26 @@ public abstract class Memory<T extends ArrayObject> {
 	private final FloatBuffer buf;
 	private final float[] raw;
 	private final T[] objects;
-	private final int componentCount;
+	private final int numComponents;
 	
 	int numObjects;
 	private int size;
 
 
-	Memory(T[] objects, int componentCount)
+	Memory(T[] objects, int numComponents)
 	{
 		this.objects = objects;
-		this.componentCount = componentCount;
-		raw = new float[objects.length * componentCount];
+		this.numComponents = numComponents;
+		raw = new float[objects.length * numComponents];
 		buf = BufferUtils.createFloatBuffer(raw.length);
 	}
 
 
-	public T newArray()
+	public T newInstance()
 	{
 		T object = construct(raw, size);
 		objects[numObjects++] = object;
-		size += componentCount;
+		size += numComponents;
 		return object;
 	}
 
