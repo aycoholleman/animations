@@ -81,7 +81,7 @@ public class RawMemory {
 
 	/**
 	 * Adds the specified coordinates to this {@code VertexArray} <i>plus</i>
-	 * the value of {@link Vertex#DEFAULT_W}. In other words, this method
+	 * the value of {@link Vertex#defaultW}. In other words, this method
 	 * adds <i>four</i> components to this {@code VertexArray}.
 	 * 
 	 * @param x
@@ -92,7 +92,7 @@ public class RawMemory {
 	 */
 	public RawMemory xyzw(float x, float y, float z)
 	{
-		add(x, y, z, Vertex.DEFAULT_W);
+		add(x, y, z, Vertex.defaultW);
 		return this;
 	}
 
@@ -132,7 +132,7 @@ public class RawMemory {
 
 	/**
 	 * Adds the specified color to this {@code VertexArray} <i>plus</i> the
-	 * value of {@link Vertex#DEFAULT_ALPHA}. In other words, this method
+	 * value of {@link Vertex#defaultAlpha}. In other words, this method
 	 * adds <i>four</i> components to this {@code VertexArray}.
 	 * 
 	 * @param red
@@ -143,7 +143,7 @@ public class RawMemory {
 	 */
 	public RawMemory rgba(float red, float green, float blue)
 	{
-		add(red, green, blue, Vertex.DEFAULT_ALPHA);
+		add(red, green, blue, Vertex.defaultAlpha);
 		return this;
 	}
 

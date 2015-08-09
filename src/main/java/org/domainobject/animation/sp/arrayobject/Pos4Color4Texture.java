@@ -66,8 +66,8 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#DEFAULT_W} and the alpha channel is set to
-	 * {@link Vertex#DEFAULT_ALPHA}. Note that until you call this method
+	 * {@link Vertex#defaultW} and the alpha channel is set to
+	 * {@link Vertex#defaultAlpha}. Note that until you call this method
 	 * or one of the other setters, the internal state of a new instance is
 	 * undefined, both in theory and in practice!
 	 */
@@ -76,11 +76,11 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = DEFAULT_W;
+		components[offset + 3] = defaultW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
-		components[offset + 7] = DEFAULT_ALPHA;
+		components[offset + 7] = defaultAlpha;
 		components[offset + 8] = 0;
 		components[offset + 9] = 0;
 	}

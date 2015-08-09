@@ -33,7 +33,7 @@ public class Color4 extends Vertex implements _Color4 {
 	Color4(float[] components, int offset)
 	{
 		super(components, offset);
-		components[offset + 3] = DEFAULT_ALPHA;
+		components[offset + 3] = defaultAlpha;
 	}
 
 
@@ -162,13 +162,13 @@ public class Color4 extends Vertex implements _Color4 {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #DEFAULT_ALPHA} for the alpha channel.
+	 * {@link #defaultAlpha} for the alpha channel.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = DEFAULT_ALPHA;
+		result[3] = defaultAlpha;
 		return result;
 	}
 

@@ -2,7 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 /**
  * Interface to be implemented by classes capable of representing a 4-component
- * color.
+ * color (rgba).
  * 
  * @author Ayco Holleman
  * @created Aug 9, 2015

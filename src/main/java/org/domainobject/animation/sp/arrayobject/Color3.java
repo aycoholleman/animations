@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Color3 extends Vertex {
+public class Color3 extends Vertex implements _Color3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -31,34 +31,6 @@ public class Color3 extends Vertex {
 
 
 	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @param red
-	 * @param green
-	 * @param blue
-	 */
-	public void set(float red, float green, float blue)
-	{
-		Array.set3(components, offset, red, green, blue);
-	}
-
-
-	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @param rgb
-	 *            A {@code float} array containing at least 3 elements
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
-	 */
-	public void set(float[] rgb)
-	{
-		memcpy3(components, offset, rgb, 0);
-	}
-
-
-	/**
 	 * Copy the coordinates of the specified {@code Color3} to this instance.
 	 * 
 	 * @param other
@@ -69,11 +41,6 @@ public class Color3 extends Vertex {
 	}
 
 
-	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @return This instance
-	 */
 	public Color3 rgb(float red, float green, float blue)
 	{
 		Array.set3(components, offset, red, green, blue);
@@ -81,17 +48,6 @@ public class Color3 extends Vertex {
 	}
 
 
-	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @param rgb
-	 *            A {@code float} array containing at least 3 elements
-	 * 
-	 * @return This instance
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
-	 */
 	public Color3 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
@@ -162,14 +118,14 @@ public class Color3 extends Vertex {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #DEFAULT_ALPHA} for the alpha channel. Useful for converting a
+	 * {@link #defaultAlpha} for the alpha channel. Useful for converting a
 	 * 3-component color to a 4-component color.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = DEFAULT_ALPHA;
+		result[3] = defaultAlpha;
 		return result;
 	}
 

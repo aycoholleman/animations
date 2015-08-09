@@ -45,34 +45,6 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the x, y, z and w coordinates.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param w
-	 */
-	public void set(float x, float y, float z, float w)
-	{
-		Array.set4(components, offset, x, y, z, w);
-	}
-
-
-	/**
-	 * Set the x, y, z and w coordinates.
-	 * 
-	 * @param coordinates
-	 *        A {@code float} array containing at least 4 elements
-	 * @throws ArrayIndexOutOfBoundsException
-	 *         If the specified array contains less than 4 elements
-	 */
-	public void set(float[] coordinates)
-	{
-		memcpy4(components, offset, coordinates, 0);
-	}
-
-
-	/**
 	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param other

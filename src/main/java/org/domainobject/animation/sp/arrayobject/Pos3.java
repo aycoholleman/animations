@@ -166,7 +166,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 	///////////////////////////////////
 
 	/**
-	 * Get a 4-component coordinate array, using the value of {@link #DEFAULT_W}
+	 * Get a 4-component coordinate array, using the value of {@link #defaultW}
 	 * for the w coordinate.
 	 * 
 	 * @return A 4-component coordinate array
@@ -175,7 +175,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = DEFAULT_W;
+		result[3] = defaultW;
 		return result;
 	}
 
