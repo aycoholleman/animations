@@ -424,6 +424,12 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	}
 
 	@Override
+	public int hashCode()
+	{
+		return 0;
+	};
+
+	@Override
 	public Pos4 pos4()
 	{
 		return pos4;

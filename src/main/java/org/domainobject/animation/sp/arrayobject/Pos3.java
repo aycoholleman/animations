@@ -39,45 +39,6 @@ public class Pos3 extends Vertex implements _Pos3 {
 	 * @param x
 	 * @param y
 	 * @param z
-	 */
-	public void set(float x, float y, float z)
-	{
-		Array.set3(components, offset, x, y, z);
-	}
-
-
-	/**
-	 * Set the x, y, and z coordinates of this instance.
-	 * 
-	 * @param coordinates
-	 *            A {@code float} array containing at least 3 elements
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
-	 */
-	public void set(float[] coordinates)
-	{
-		memcpy3(components, offset, coordinates, 0);
-	}
-
-
-	/**
-	 * Copy the coordinates of the specified instance to this instance.
-	 * 
-	 * @param other
-	 */
-	public void set(Pos3 other)
-	{
-		memcpy3(components, offset, other.components, other.offset);
-	}
-
-
-	/**
-	 * Set the x, y, and z coordinates of this instance.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
 	 * 
 	 * @return This instance
 	 */

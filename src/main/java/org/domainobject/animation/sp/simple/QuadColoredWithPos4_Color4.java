@@ -10,38 +10,50 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.Pos4Color4;
-import org.domainobject.animation.sp.arrayobject.Pos4Color4Texture;
+import org.domainobject.animation.sp.arrayobject.Memory;
+import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
 import org.lwjgl.BufferUtils;
 
 /**
+ * @see http://wiki.lwjgl.org/wiki/The_Quad_colored
+ * 
  * @author Ayco Holleman
- * @created Jul 18, 2015
+ * @created Jul 17, 2015
  *
  */
-public class QuadInterleaved extends Animation {
+public class QuadColoredWithPos4_Color4 extends Animation {
 
 	public static void main(String[] args)
 	{
-		new QuadInterleaved().start();
+		new QuadColoredWithPos4_Color4().start();
 	}
 
 	// Quad variables
 	private int vaoId = 0;
 	private int vboId = 0;
+	private int vbocId = 0;
 	private int vboiId = 0;
 	private int indicesCount = 0;
 
 	private Program program;
-	private RawMemory vertices;
 
-	public QuadInterleaved()
+
+	public QuadColoredWithPos4_Color4()
 	{
-		vertices = new RawMemory(60);
+		super();
 	}
+
+
+	@Override
+	protected void init()
+	{
+		setupShaders();
+		setupQuad();
+	}
+
 
 	@Override
 	protected void update(double time)
@@ -71,6 +83,7 @@ public class QuadInterleaved extends Animation {
 
 	}
 
+
 	@Override
 	protected void dispose()
 	{
@@ -79,20 +92,21 @@ public class QuadInterleaved extends Animation {
 	}
 
 
-	@Override
-	protected void init()
-	{
-		setupShaders();
-		setupQuad();
-	}
-
-
 	private void setupQuad()
 	{
-		vertices.xyzw(-0.5f, 0.5f, 0f).rgba(1, 0, 0);
-		vertices.xyzw(-0.5f, -0.5f, 0f).rgba(0, 1, 0);
-		vertices.xyzw(0.5f, -0.5f, 0f).rgba(0, 0, 1);
-		vertices.xyzw(0.5f, 0.5f, 0f).rgba(1, 1, 1);
+		
+		Memory<Pos4> vertices = Pos4.allocate(30);
+		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f);
+		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f);
+		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f);
+		vertices.newInstance().xyzw(0.5f, 0.5f, 0f, 1f);
+
+		
+		RawMemory colors = new RawMemory(30);
+		colors.add(1f, 0f, 0f, 1f);
+		colors.add(0f, 1f, 0f, 1f);
+		colors.add(0f, 0f, 1f, 1f);
+		colors.add(1f, 1f, 1f, 1f);
 
 		// OpenGL expects to draw vertices in counter clockwise order by default
 		byte[] indices = { 0, 1, 2, 2, 3, 0 };
@@ -105,14 +119,18 @@ public class QuadInterleaved extends Animation {
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 
-		// Create a new Array Buffer Object in memory and select it (bind)
+		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
 		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);
-		// Put the positions in attribute list 0
-		glVertexAttribPointer(0, 4, GL_FLOAT, false, 8 * 4, 0);
-		// Put the colors in attribute list 1
-		glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 * 4, 4 * 4);
+		glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Create a new VBO for the indices and select it (bind) - COLORS
+		vbocId = glCreateBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vbocId);
+		glBufferData(GL_ARRAY_BUFFER, colors.burn(), GL_STATIC_DRAW);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Deselect (bind to 0) the VAO
@@ -133,4 +151,5 @@ public class QuadInterleaved extends Animation {
 		program.attach(new PassThruFragmentShader());
 		program.arm();
 	}
+
 }

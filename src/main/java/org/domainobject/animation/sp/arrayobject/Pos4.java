@@ -9,17 +9,31 @@ import org.domainobject.animation.sp.util.Array;
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
- *
  */
-public class Pos4 extends Vertex implements _Pos4{
+public final class Pos4 extends Vertex implements _Pos4 {
 
 	public static final int COMPONENT_COUNT = 4;
+
+	public static Pos4 create()
+	{
+		return allocate(1).newInstance();
+	}
+
+	public static Memory<Pos4> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos4>(new Pos4[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Pos4 construct(float[] raw, int offset)
+			{
+				return new Pos4(raw, offset);
+			}
+		};
+	}
 
 
 	Pos4(float[] components, int offset)
 	{
 		super(components, offset);
-		components[offset + 3] = DEFAULT_W;
 	}
 
 
@@ -48,10 +62,9 @@ public class Pos4 extends Vertex implements _Pos4{
 	 * Set the x, y, z and w coordinates.
 	 * 
 	 * @param coordinates
-	 *            A {@code float} array containing at least 4 elements
-	 * 
+	 *        A {@code float} array containing at least 4 elements
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 4 elements
+	 *         If the specified array contains less than 4 elements
 	 */
 	public void set(float[] coordinates)
 	{
@@ -86,12 +99,10 @@ public class Pos4 extends Vertex implements _Pos4{
 	 * Set the x, y, z and w coordinates and return it.
 	 * 
 	 * @param coordinates
-	 *            A {@code float} array containing at least 4 elements
-	 * 
+	 *        A {@code float} array containing at least 4 elements
 	 * @return This instance
-	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 4 elements
+	 *         If the specified array contains less than 4 elements
 	 */
 	public Pos4 xyzw(float[] coordinates)
 	{
@@ -128,10 +139,9 @@ public class Pos4 extends Vertex implements _Pos4{
 	 * Set the x, y, and z coordinates.
 	 * 
 	 * @param coordinates
-	 *            A {@code float} array containing at least 3 elements
-	 * 
+	 *        A {@code float} array containing at least 3 elements
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 *         If the specified array contains less than 3 elements
 	 */
 	public Pos4 xyz(float[] coordinates)
 	{

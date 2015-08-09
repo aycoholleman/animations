@@ -2,7 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 /**
  * {@link ArrayObject} is the abstract base class for all OpenGL objects that
- * basically wrap an array, like vectors, vertices and matrices.
+ * basically wrap a small float array, like vectors, vertices and matrices.
  * 
  * @author Ayco Holleman
  * @created Aug 5, 2015

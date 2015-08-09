@@ -9,12 +9,26 @@ import org.domainobject.animation.sp.util.Array;
  * 
  * @author Ayco Holleman
  * @created Jul 20, 2015
- *
  */
-public class Color4 extends Vertex {
+public class Color4 extends Vertex implements _Color4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
+	public static Color4 create()
+	{
+		return allocate(1).newInstance();
+	}
+
+	public static Memory<Color4> allocate(int maxNumObjects)
+	{
+		return new Memory<Color4>(new Color4[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Color4 construct(float[] raw, int offset)
+			{
+				return new Color4(raw, offset);
+			}
+		};
+	}
 
 	Color4(float[] components, int offset)
 	{
@@ -48,10 +62,9 @@ public class Color4 extends Vertex {
 	 * Set the red, green, blue and alpha channel.
 	 * 
 	 * @param rgba
-	 *            A {@code float} array containing at least 4 elements
-	 * 
+	 *        A {@code float} array containing at least 4 elements
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 4 elements
+	 *         If the specified array contains less than 4 elements
 	 */
 	public void set(float[] rgba)
 	{
@@ -70,23 +83,21 @@ public class Color4 extends Vertex {
 	}
 
 
-	/**
-	 * Set the red, green, blue and alpha channel.
-	 * 
-	 * @return This instance
-	 */
+	@Override
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
 		Array.set4(components, offset, red, green, blue, alpha);
 		return this;
 	}
 
+	@Override
+	public Color4 rgba(float[] rgba)
+	{
+		memcpy4(components, offset, rgba, 0);
+		return this;
+	}
 
-	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @return This instance
-	 */
+	@Override
 	public Color4 rgb(float red, float green, float blue)
 	{
 		Array.set3(components, offset, red, green, blue);
@@ -94,17 +105,7 @@ public class Color4 extends Vertex {
 	}
 
 
-	/**
-	 * Set the red, green and blue channel.
-	 * 
-	 * @param rgb
-	 *            A {@code float} array containing at least 3 elements
-	 * 
-	 * @return This instance
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
-	 */
+	@Override
 	public Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
