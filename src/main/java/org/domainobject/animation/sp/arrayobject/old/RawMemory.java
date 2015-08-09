@@ -1,7 +1,9 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject.old;
 
 import java.nio.FloatBuffer;
 
+import org.domainobject.animation.sp.arrayobject.MemoryException;
+import org.domainobject.animation.sp.arrayobject.TypedVertex;
 import org.lwjgl.BufferUtils;
 
 public class RawMemory {

@@ -1,11 +1,11 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject;
 
 /**
- * An {@code Array} is an object that wraps an a float array.
+ * {@link ArrayObject} is the abstract base class for all OpenGL objects that
+ * basically wrap an array, like vectors, vertices and matrices.
  * 
  * @author Ayco Holleman
  * @created Aug 5, 2015
- *
  */
 abstract class ArrayObject {
 
@@ -21,8 +21,7 @@ abstract class ArrayObject {
 
 
 	/**
-	 * Get the number of components (array elements) of this {@code Array}
-	 * .
+	 * Get the number of components (array elements) of this {@code Array} .
 	 * 
 	 * @return The number of components of this {@code Array}
 	 */

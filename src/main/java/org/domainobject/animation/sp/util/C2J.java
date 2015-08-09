@@ -8,7 +8,7 @@ package org.domainobject.animation.sp.util;
  * @author Ayco Holleman
  *
  */
-public class C2JSP {
+public class C2J {
 
 	/**
 	 * Size in bytes of a float (4 bytes).
@@ -16,7 +16,7 @@ public class C2JSP {
 	public static final int SIZE_OF_FLOAT = 4;
 
 
-	private C2JSP()
+	private C2J()
 	{
 	}
 

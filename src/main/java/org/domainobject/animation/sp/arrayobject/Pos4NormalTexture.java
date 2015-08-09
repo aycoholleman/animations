@@ -1,8 +1,9 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2JSP.*;
+import static org.domainobject.animation.sp.util.C2J.*;
 
 import org.domainobject.animation.sp.util.Array;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 /**
  * An 9-component vertex class suitable for specifying a position (first four
@@ -10,9 +11,13 @@ import org.domainobject.animation.sp.util.Array;
  * slots).
  * 
  * @author Ayco Holleman
- *
  */
 public final class Pos4NormalTexture extends TypedVertex {
+
+	public static Pos4NormalTexture create()
+	{
+		return allocate(1).newInstance();
+	}
 
 	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
@@ -93,9 +98,9 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 */
 	public void set(float x, float y, float z, float w, float nx, float ny, float nz, float s, float t)
 	{
-		Array.set(components, offset, x, y, z, w);
-		Array.set(components, offset + 4, nx, ny, nz);
-		Array.set(components, offset + 7, s, t);
+		Array.set4(components, offset, x, y, z, w);
+		Array.set3(components, offset + 4, nx, ny, nz);
+		Array.set2(components, offset + 7, s, t);
 	}
 
 
@@ -128,12 +133,11 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * @param y
 	 * @param z
 	 * @param w
-	 * 
 	 * @return This instance
 	 */
 	public Pos4NormalTexture xyzw(float x, float y, float z, float w)
 	{
-		Array.set(components, offset, x, y, z, w);
+		Array.set4(components, offset, x, y, z, w);
 		return this;
 	}
 
@@ -142,12 +146,10 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Set the x, y, z and w coordinate.
 	 * 
 	 * @param xyzw
-	 *            A {@code float} array containing at least 3 elements
-	 * 
+	 *        A {@code float} array containing at least 3 elements
 	 * @return This instance
-	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 *         If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture xyzw(float[] xyzw)
 	{
@@ -160,7 +162,6 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param pos4
-	 * 
 	 * @return This instance
 	 */
 	public Pos4NormalTexture xyzw(Pos4 pos4)
@@ -176,12 +177,11 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * 
 	 * @return This instance
 	 */
 	public Pos4NormalTexture xyz(float x, float y, float z)
 	{
-		Array.set(components, offset, x, y, z);
+		Array.set3(components, offset, x, y, z);
 		return this;
 	}
 
@@ -190,12 +190,10 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Set the x, y, and z coordinate.
 	 * 
 	 * @param xyz
-	 *            A {@code float} array containing at least 3 elements
-	 * 
+	 *        A {@code float} array containing at least 3 elements
 	 * @return This instance
-	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 *         If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture xyz(float[] xyz)
 	{
@@ -208,7 +206,6 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Copy the coordinates of the specified instance to this instance.
 	 * 
 	 * @param pos3
-	 * 
 	 * @return This instance
 	 */
 	public Pos4NormalTexture xyz(Pos3 pos3)
@@ -224,12 +221,11 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * 
 	 * @return This instance
 	 */
 	public Pos4NormalTexture normal(float x, float y, float z)
 	{
-		Array.set(components, offset + 4, x, y, z);
+		Array.set3(components, offset + 4, x, y, z);
 		return this;
 	}
 
@@ -238,12 +234,10 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Set the normal's x, y, and z coordinate.
 	 * 
 	 * @param xyz
-	 *            A {@code float} array containing at least 3 elements
-	 * 
+	 *        A {@code float} array containing at least 3 elements
 	 * @return This instance
-	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 *         If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture normal(float[] xyz)
 	{
@@ -256,15 +250,14 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *            The s texel
+	 *        The s texel
 	 * @param t
-	 *            The t texel
-	 * 
+	 *        The t texel
 	 * @return This instance
 	 */
 	public Pos4NormalTexture st(float s, float t)
 	{
-		Array.set(components, 7, s, t);
+		Array.set2(components, 7, s, t);
 		return this;
 	}
 
@@ -273,10 +266,9 @@ public final class Pos4NormalTexture extends TypedVertex {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *            The s texel
+	 *        The s texel
 	 * @param t
-	 *            The t texel
-	 * 
+	 *        The t texel
 	 * @return This instance
 	 */
 	public Pos4NormalTexture st(float[] st)
@@ -408,6 +400,22 @@ public final class Pos4NormalTexture extends TypedVertex {
 		float[] result = new float[9];
 		memcpy9(result, 0, components, offset);
 		return result;
+	}
+
+
+	///////////////////////////////////
+	// MISC
+	///////////////////////////////////
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null || !(obj instanceof Pos4NormalTexture))
+			return false;
+		Pos4NormalTexture you = (Pos4NormalTexture) obj;
+		return same4(components, offset, you.components, you.offset);
 	}
 
 }

@@ -1,6 +1,6 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2JSP.*;
+import static org.domainobject.animation.sp.util.C2J.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -46,7 +46,7 @@ public class Pos3Color3 extends TypedVertex {
 	 */
 	public void set(float x, float y, float z, float r, float g, float b)
 	{
-		Array.set(components, offset, x, y, z, r, g, b);
+		Array.set6(components, offset, x, y, z, r, g, b);
 	}
 
 
@@ -83,7 +83,7 @@ public class Pos3Color3 extends TypedVertex {
 	 */
 	public Pos3Color3 xyz(float x, float y, float z)
 	{
-		Array.set(components, offset, x, y, z);
+		Array.set3(components, offset, x, y, z);
 		return this;
 	}
 
@@ -128,7 +128,7 @@ public class Pos3Color3 extends TypedVertex {
 	 */
 	public Pos3Color3 rgb(float red, float green, float blue)
 	{
-		Array.set(components, offset + 3, red, green, blue);
+		Array.set3(components, offset + 3, red, green, blue);
 		return this;
 	}
 

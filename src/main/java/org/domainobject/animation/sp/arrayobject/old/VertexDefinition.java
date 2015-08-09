@@ -1,4 +1,4 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject.old;
 
 import java.util.Arrays;
 import java.util.HashSet;

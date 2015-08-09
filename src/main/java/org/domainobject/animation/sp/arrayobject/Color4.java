@@ -1,6 +1,6 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2JSP.*;
+import static org.domainobject.animation.sp.util.C2J.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -40,7 +40,7 @@ public class Color4 extends TypedVertex {
 	 */
 	public void set(float red, float green, float blue, float alpha)
 	{
-		Array.set(components, offset, red, green, blue, alpha);
+		Array.set4(components, offset, red, green, blue, alpha);
 	}
 
 
@@ -77,7 +77,7 @@ public class Color4 extends TypedVertex {
 	 */
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
-		Array.set(components, offset, red, green, blue, alpha);
+		Array.set4(components, offset, red, green, blue, alpha);
 		return this;
 	}
 
@@ -89,7 +89,7 @@ public class Color4 extends TypedVertex {
 	 */
 	public Color4 rgb(float red, float green, float blue)
 	{
-		Array.set(components, offset, red, green, blue);
+		Array.set3(components, offset, red, green, blue);
 		return this;
 	}
 

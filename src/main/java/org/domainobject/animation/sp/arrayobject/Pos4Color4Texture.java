@@ -1,45 +1,61 @@
-package org.domainobject.animation.sp.util.vertex;
+package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2JSP.*;
+import static org.domainobject.animation.sp.util.C2J.*;
 
 import org.domainobject.animation.sp.util.Array;
 
 /**
- * An 8-component vertex class suitable for specifying a position (first four
- * slots) and a color (last four slots).
+ * An 10-component vertex class suitable for specifying a position (first four
+ * slots) a color (next four slots) and two texture coordinates (last two
+ * slots).
  * 
  * @author Ayco Holleman
  * @created Jul 26, 2015
  *
  */
-public final class Pos4Color4 extends TypedVertex {
+public final class Pos4Color4Texture extends TypedVertex {
 
-	public static Memory<Pos4Color4> allocate(int maxNumObjects)
+	public static Pos4Color4Texture create()
 	{
-		return new Memory<Pos4Color4>(new Pos4Color4[maxNumObjects], COMPONENT_COUNT) {
+		return allocate(1).newInstance();
+	}
+
+
+	public static Memory<Pos4Color4Texture> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos4Color4Texture>(new Pos4Color4Texture[maxNumObjects], SIZE) {
 			@Override
-			Pos4Color4 construct(float[] raw, int offset)
+			Pos4Color4Texture construct(float[] raw, int offset)
 			{
-				return new Pos4Color4(raw, offset);
+				return new Pos4Color4Texture(raw, offset);
 			}
 		};
 	}
 
-	public static final int COMPONENT_COUNT = 8;
-	public static final int BYTE_SIZE = COMPONENT_COUNT * SIZE_OF_FLOAT;
-	public static final int[] strides = new int[] { 0, sizeof(4) };
+	/**
+	 * The number of elements of the internal array (10).
+	 */
+	public static final int SIZE = 10;
+	/**
+	 * The number of bytes occupied by the internal array.
+	 */
+	public static final int BYTE_SIZE = SIZE * SIZE_OF_FLOAT;
+	/**
+	 * The start points (in bytes) of the component groups within the array.
+	 */
+	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(4) };
 
 
-	private Pos4Color4(float[] components, int offset)
+	private Pos4Color4Texture(float[] raw, int offset)
 	{
-		super(components, offset);
+		super(raw, offset);
 	}
 
 
 	@Override
 	int size()
 	{
-		return COMPONENT_COUNT;
+		return SIZE;
 	}
 
 
@@ -65,6 +81,8 @@ public final class Pos4Color4 extends TypedVertex {
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
 		components[offset + 7] = DEFAULT_ALPHA;
+		components[offset + 8] = 0;
+		components[offset + 9] = 0;
 	}
 
 
@@ -77,11 +95,14 @@ public final class Pos4Color4 extends TypedVertex {
 	 * @param r
 	 * @param g
 	 * @param b
+	 * @param s
+	 * @param t
 	 */
-	public void set(float x, float y, float z, float w, float r, float g, float b, float a)
+	public void set(float x, float y, float z, float w, float r, float g, float b, float a, float s, float t)
 	{
-		Array.set(components, offset, x, y, z, w);
-		Array.set(components, offset + 4, r, g, b, a);
+		Array.set4(components, offset, x, y, z, w);
+		Array.set4(components, offset + 4, r, g, b, a);
+		Array.set2(components, offset + 8, s, t);
 	}
 
 
@@ -90,9 +111,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @param xyzrgb
 	 */
-	public void set(float[] xyzwrgba)
+	public void set(float[] xyzwrgbast)
 	{
-		memcpy8(components, offset, xyzwrgba, 0);
+		memcpy10(components, offset, xyzwrgbast, 0);
 	}
 
 
@@ -101,9 +122,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @param other
 	 */
-	public void set(Pos4Color4 other)
+	public void set(Pos4Color4Texture other)
 	{
-		memcpy8(components, offset, other.components, other.offset);
+		memcpy10(components, offset, other.components, other.offset);
 	}
 
 
@@ -117,9 +138,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 xyzw(float x, float y, float z, float w)
+	public Pos4Color4Texture xyzw(float x, float y, float z, float w)
 	{
-		Array.set(components, offset, x, y, z, w);
+		Array.set4(components, offset, x, y, z, w);
 		return this;
 	}
 
@@ -135,7 +156,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos4Color4 xyzw(float[] xyzw)
+	public Pos4Color4Texture xyzw(float[] xyzw)
 	{
 		memcpy4(components, offset, xyzw, 0);
 		return this;
@@ -149,7 +170,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 xyzw(Pos4 pos4)
+	public Pos4Color4Texture xyzw(Pos4 pos4)
 	{
 		memcpy4(components, offset, pos4.components, pos4.offset);
 		return this;
@@ -165,9 +186,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 xyz(float x, float y, float z)
+	public Pos4Color4Texture xyz(float x, float y, float z)
 	{
-		Array.set(components, offset, x, y, z);
+		Array.set3(components, offset, x, y, z);
 		return this;
 	}
 
@@ -183,7 +204,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos4Color4 xyz(float[] xyz)
+	public Pos4Color4Texture xyz(float[] xyz)
 	{
 		memcpy3(components, offset, xyz, 0);
 		return this;
@@ -197,7 +218,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 xyz(Pos3 pos3)
+	public Pos4Color4Texture xyz(Pos3 pos3)
 	{
 		memcpy3(components, offset, pos3.components, pos3.offset);
 		return this;
@@ -214,9 +235,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 rgba(float red, float green, float blue, float alpha)
+	public Pos4Color4Texture rgba(float red, float green, float blue, float alpha)
 	{
-		Array.set(components, offset + 4, red, green, blue, alpha);
+		Array.set4(components, offset + 4, red, green, blue, alpha);
 		return this;
 	}
 
@@ -232,7 +253,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 4 elements
 	 */
-	public Pos4Color4 rgba(float[] rgba)
+	public Pos4Color4Texture rgba(float[] rgba)
 	{
 		memcpy4(components, offset + 4, rgba, 0);
 		return this;
@@ -244,9 +265,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 rgb(float red, float green, float blue)
+	public Pos4Color4Texture rgb(float red, float green, float blue)
 	{
-		Array.set(components, offset + 3, red, green, blue);
+		Array.set3(components, offset + 4, red, green, blue);
 		return this;
 	}
 
@@ -262,9 +283,9 @@ public final class Pos4Color4 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
-	public Pos4Color4 rgb(float[] rgb)
+	public Pos4Color4Texture rgb(float[] rgb)
 	{
-		memcpy3(components, offset + 3, rgb, 0);
+		memcpy3(components, offset + 4, rgb, 0);
 		return this;
 	}
 
@@ -277,9 +298,43 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 rgb(Color3 color3)
+	public Pos4Color4Texture rgb(Color3 color3)
 	{
-		memcpy3(components, offset, color3.components, color3.offset);
+		memcpy3(components, offset + 4, color3.components, color3.offset);
+		return this;
+	}
+
+
+	/**
+	 * Set texture coordinates
+	 * 
+	 * @param s
+	 *            The s texel
+	 * @param t
+	 *            The t texel
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4Texture st(float s, float t)
+	{
+		Array.set2(components, 8, s, t);
+		return this;
+	}
+
+
+	/**
+	 * Set texture coordinates
+	 * 
+	 * @param s
+	 *            The s texel
+	 * @param t
+	 *            The t texel
+	 * 
+	 * @return This instance
+	 */
+	public Pos4Color4Texture st(float[] st)
+	{
+		memcpy2(components, offset + 8, st, 0);
 		return this;
 	}
 
@@ -289,7 +344,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 x(float x)
+	public Pos4Color4Texture x(float x)
 	{
 		components[offset + 0] = x;
 		return this;
@@ -301,7 +356,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 y(float y)
+	public Pos4Color4Texture y(float y)
 	{
 		components[offset + 1] = y;
 		return this;
@@ -313,7 +368,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 z(float z)
+	public Pos4Color4Texture z(float z)
 	{
 		components[offset + 2] = z;
 		return this;
@@ -325,7 +380,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 w(float w)
+	public Pos4Color4Texture w(float w)
 	{
 		components[offset + 3] = w;
 		return this;
@@ -337,7 +392,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 red(float r)
+	public Pos4Color4Texture red(float r)
 	{
 		components[offset + 4] = r;
 		return this;
@@ -349,7 +404,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 green(float g)
+	public Pos4Color4Texture green(float g)
 	{
 		components[offset + 5] = g;
 		return this;
@@ -361,7 +416,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 blue(float b)
+	public Pos4Color4Texture blue(float b)
 	{
 		components[offset + 6] = b;
 		return this;
@@ -373,7 +428,7 @@ public final class Pos4Color4 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4Color4 alpha(float a)
+	public Pos4Color4Texture alpha(float a)
 	{
 		components[offset + 7] = a;
 		return this;
@@ -437,6 +492,17 @@ public final class Pos4Color4 extends TypedVertex {
 	{
 		float[] result = new float[3];
 		memcpy3(result, 0, components, offset + 4);
+		return result;
+	}
+
+
+	/**
+	 * Get the texture coordinates.
+	 */
+	public float[] st()
+	{
+		float[] result = new float[2];
+		memcpy2(result, 0, components, offset + 8);
 		return result;
 	}
 
@@ -510,6 +576,24 @@ public final class Pos4Color4 extends TypedVertex {
 	public float alpha()
 	{
 		return components[offset + 7];
+	}
+
+
+	/**
+	 * Get the s texel.
+	 */
+	public float s()
+	{
+		return components[offset + 8];
+	}
+
+
+	/**
+	 * Get the t texel.
+	 */
+	public float t()
+	{
+		return components[offset + 9];
 	}
 
 

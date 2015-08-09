@@ -64,14 +64,14 @@ public class Array {
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1)
+	public static void set2(float[] dest, int offset, float e0, float e1)
 	{
 		dest[offset + 0] = e0;
 		dest[offset + 1] = e1;
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1, float e2)
+	public static void set3(float[] dest, int offset, float e0, float e1, float e2)
 	{
 		dest[offset + 0] = e0;
 		dest[offset + 1] = e1;
@@ -79,7 +79,7 @@ public class Array {
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1, float e2, float e3)
+	public static void set4(float[] dest, int offset, float e0, float e1, float e2, float e3)
 	{
 		dest[offset + 0] = e0;
 		dest[offset + 1] = e1;
@@ -88,7 +88,7 @@ public class Array {
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4)
+	public static void set5(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4)
 	{
 		dest[offset + 0] = e0;
 		dest[offset + 1] = e1;
@@ -98,7 +98,7 @@ public class Array {
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4, float e5)
+	public static void set6(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4, float e5)
 	{
 		dest[offset + 0] = e0;
 		dest[offset + 1] = e1;
@@ -109,7 +109,7 @@ public class Array {
 	}
 
 
-	public static void set(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4, float e5,
+	public static void set7(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4, float e5,
 			float e6)
 	{
 		dest[offset + 0] = e0;
@@ -119,6 +119,19 @@ public class Array {
 		dest[offset + 4] = e4;
 		dest[offset + 5] = e5;
 		dest[offset + 6] = e6;
+	}
+
+	public static void set8(float[] dest, int offset, float e0, float e1, float e2, float e3, float e4, float e5,
+			float e6, float e7)
+	{
+		dest[offset + 0] = e0;
+		dest[offset + 1] = e1;
+		dest[offset + 2] = e2;
+		dest[offset + 3] = e3;
+		dest[offset + 4] = e4;
+		dest[offset + 5] = e5;
+		dest[offset + 6] = e6;
+		dest[offset + 7] = e7;
 	}
 
 }
