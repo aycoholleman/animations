@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 26, 2015
  *
  */
-public class Pos3Color3 extends TypedVertex {
+public class Pos3Color3 extends Vertex {
 
 	public static final int COMPONENT_COUNT = 6;
 

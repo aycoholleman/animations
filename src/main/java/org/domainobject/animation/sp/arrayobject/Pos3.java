@@ -11,7 +11,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Pos3 extends TypedVertex {
+public class Pos3 extends Vertex implements _Pos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -81,6 +81,7 @@ public class Pos3 extends TypedVertex {
 	 * 
 	 * @return This instance
 	 */
+	@Override
 	public Pos3 xyz(float x, float y, float z)
 	{
 		Array.set3(components, offset, x, y, z);
@@ -99,6 +100,7 @@ public class Pos3 extends TypedVertex {
 	 * @throws ArrayIndexOutOfBoundsException
 	 *             If the specified array contains less than 3 elements
 	 */
+	@Override
 	public Pos3 xyz(float[] xyz)
 	{
 		memcpy3(components, offset, xyz, 0);
@@ -233,6 +235,13 @@ public class Pos3 extends TypedVertex {
 		memcpy3(result, 0, components, offset);
 		result[3] = w;
 		return result;
+	}
+
+
+	@Override
+	public Pos3 pos3()
+	{
+		return this;
 	}
 
 }

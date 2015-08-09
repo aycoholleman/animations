@@ -12,7 +12,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4NormalTexture extends TypedVertex {
+public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 
 	public static Pos4NormalTexture create()
 	{
@@ -44,9 +44,14 @@ public final class Pos4NormalTexture extends TypedVertex {
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(3) };
 
 
+	private final Pos4 pos4;
+	private final Normal normal;
+
 	private Pos4NormalTexture(float[] raw, int offset)
 	{
 		super(raw, offset);
+		pos4 = new Pos4(raw, offset);
+		normal = new Normal(raw, offset + Pos4.COMPONENT_COUNT);
 	}
 
 
@@ -64,10 +69,10 @@ public final class Pos4NormalTexture extends TypedVertex {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link TypedVertex#DEFAULT_W} and the alpha channel is set to
-	 * {@link TypedVertex#DEFAULT_ALPHA}. Note that until you call this method
-	 * or one of the other setters, the internal state of a new instance is
-	 * undefined, both in theory and in practice!
+	 * {@link Vertex#DEFAULT_W} and the alpha channel is set to
+	 * {@link Vertex#DEFAULT_ALPHA}. Note that until you call this method or one
+	 * of the other setters, the internal state of a new instance is undefined,
+	 * both in theory and in practice!
 	 */
 	public void init()
 	{
@@ -416,6 +421,18 @@ public final class Pos4NormalTexture extends TypedVertex {
 			return false;
 		Pos4NormalTexture you = (Pos4NormalTexture) obj;
 		return same4(components, offset, you.components, you.offset);
+	}
+
+	@Override
+	public Pos4 pos4()
+	{
+		return pos4;
+	}
+
+	@Override
+	public Normal normal()
+	{
+		return normal;
 	}
 
 }

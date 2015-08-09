@@ -11,7 +11,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Pos4 extends TypedVertex {
+public class Pos4 extends Vertex implements _Pos4{
 
 	public static final int COMPONENT_COUNT = 4;
 
@@ -243,6 +243,13 @@ public class Pos4 extends TypedVertex {
 	public float w()
 	{
 		return components[offset + 3];
+	}
+
+
+	@Override
+	public Pos4 pos4()
+	{
+		return this;
 	}
 
 }

@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 26, 2015
  *
  */
-public final class Pos4Color4 extends TypedVertex {
+public final class Pos4Color4 extends Vertex implements _Pos4 {
 
 	public static Memory<Pos4Color4> allocate(int maxNumObjects)
 	{
@@ -50,8 +50,8 @@ public final class Pos4Color4 extends TypedVertex {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link TypedVertex#DEFAULT_W} and the alpha channel is set to
-	 * {@link TypedVertex#DEFAULT_ALPHA}. Note that until you call this method
+	 * {@link Vertex#DEFAULT_W} and the alpha channel is set to
+	 * {@link Vertex#DEFAULT_ALPHA}. Note that until you call this method
 	 * or one of the other setters, the internal state of a new instance is
 	 * undefined, both in theory and in practice!
 	 */
@@ -517,11 +517,7 @@ public final class Pos4Color4 extends TypedVertex {
 	// CONVERSIONS
 	///////////////////////////////////
 
-	/**
-	 * Narrow this instance to a {@link Pos4} instance.
-	 * 
-	 * @return
-	 */
+	@Override
 	public Pos4 pos4()
 	{
 		return new Pos4(components, offset);

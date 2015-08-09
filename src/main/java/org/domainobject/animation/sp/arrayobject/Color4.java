@@ -11,7 +11,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Color4 extends TypedVertex {
+public class Color4 extends Vertex {
 
 	public static final int COMPONENT_COUNT = 4;
 
