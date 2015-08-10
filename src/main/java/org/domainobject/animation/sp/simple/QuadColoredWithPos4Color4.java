@@ -37,7 +37,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 	private int indicesCount = 0;
 
 	private Program program;
-
+	Memory<Pos4Color4> vertices;
 
 	public QuadColoredWithPos4Color4()
 	{
@@ -60,10 +60,22 @@ public class QuadColoredWithPos4Color4 extends Animation {
 
 		program.activate();
 
+		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);
+		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f);
+		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f);
+		vertices.newInstance().xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f);
+
 		// Bind to the VAO that has all the information about the vertices
 		glBindVertexArray(vaoId);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, vboId);
+		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STREAM_DRAW);
+		glVertexAttribPointer(0, 4, GL_FLOAT, false, 8 * 4, 0);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 * 4, 4 * 4);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 		// Bind to the index VBO that has all the information about the order of the vertices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
@@ -91,11 +103,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 	private void setupQuad()
 	{
 		
-		Memory<Pos4Color4> vertices = Pos4Color4.allocate(30);
-		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);
-		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f);
-		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f);
-		vertices.newInstance().xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f);
+		vertices = Pos4Color4.allocate(30);
 		
 		// OpenGL expects to draw vertices in counter clockwise order by default
 		byte[] indices = { 0, 1, 2, 2, 3, 0 };
@@ -107,17 +115,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
-
-		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);
-		// Put the positions in attribute list 0
-		glVertexAttribPointer(0, 4, GL_FLOAT, false, 8 * 4, 0);
-		// Put the colors in attribute list 1
-		glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 * 4, 4 * 4);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
 
 		// Create a new VBO for the indices and select it (bind) - INDICES
 		vboiId = glCreateBuffers();
