@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -67,9 +68,9 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
 	 * {@link Vertex#defaultW} and the alpha channel is set to
-	 * {@link Vertex#defaultAlpha}. Note that until you call this method
-	 * or one of the other setters, the internal state of a new instance is
-	 * undefined, both in theory and in practice!
+	 * {@link Vertex#defaultAlpha}. Note that until you call this method or one
+	 * of the other setters, the internal state of a new instance is undefined,
+	 * both in theory and in practice!
 	 */
 	public void init()
 	{
@@ -149,12 +150,12 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set the x, y, z and w coordinate.
 	 * 
 	 * @param xyzw
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4Color4Texture xyzw(float[] xyzw)
 	{
@@ -197,12 +198,12 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set the x, y, and z coordinate.
 	 * 
 	 * @param xyz
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4Color4Texture xyz(float[] xyz)
 	{
@@ -246,12 +247,12 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set the red, green, blue and alpha channel.
 	 * 
 	 * @param rgba
-	 *            A {@code float} array containing at least 4 elements
+	 * A {@code float} array containing at least 4 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 4 elements
+	 * If the specified array contains less than 4 elements
 	 */
 	public Pos4Color4Texture rgba(float[] rgba)
 	{
@@ -276,12 +277,12 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set the red, green and blue channel.
 	 * 
 	 * @param rgb
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4Color4Texture rgb(float[] rgb)
 	{
@@ -309,9 +310,9 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *            The s texel
+	 * The s texel
 	 * @param t
-	 *            The t texel
+	 * The t texel
 	 * 
 	 * @return This instance
 	 */
@@ -326,9 +327,9 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *            The s texel
+	 * The s texel
 	 * @param t
-	 *            The t texel
+	 * The t texel
 	 * 
 	 * @return This instance
 	 */
@@ -616,6 +617,18 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	public Color4 color4()
 	{
 		return new Color4(components, offset + 4);
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Pos4Color4Texture other = (Pos4Color4Texture) obj;
+		return same4(components, offset, other.components, other.offset)
+				&& same4(components, offset + 4, other.components, other.offset + 4)
+				&& same2(components, offset + 8, other.components, other.offset + 8);
 	}
 
 }

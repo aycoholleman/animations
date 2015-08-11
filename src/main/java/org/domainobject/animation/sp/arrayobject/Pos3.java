@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -54,12 +55,12 @@ public class Pos3 extends Vertex implements _Pos3 {
 	 * Set the x, y, and z coordinates of this instance.
 	 * 
 	 * @param xyz
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	@Override
 	public Pos3 xyz(float[] xyz)
@@ -185,7 +186,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 	 * coordinate.
 	 * 
 	 * @param w
-	 *            The value to use for the w coordinate.
+	 * The value to use for the w coordinate.
 	 * 
 	 * @return A 4-component coordinate array
 	 * 
@@ -203,6 +204,16 @@ public class Pos3 extends Vertex implements _Pos3 {
 	public Pos3 pos3()
 	{
 		return this;
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Pos3 other = (Pos3) obj;
+		return same3(components, offset, other.components, other.offset);
 	}
 
 }

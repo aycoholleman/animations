@@ -18,13 +18,13 @@ abstract class ArrayObject {
 		this.components = components;
 		this.offset = offset;
 	}
-
-
+	
 	/**
-	 * Get the number of components (array elements) of this {@code Array} .
+	 * Get the size of the array wrapped by this instance.
 	 * 
-	 * @return The number of components of this {@code Array}
+	 * @return The size of the array wrapped by this instance
 	 */
 	abstract int size();
+
 
 }

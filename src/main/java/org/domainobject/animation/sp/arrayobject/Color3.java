@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -168,6 +169,16 @@ public class Color3 extends Vertex implements _Color3 {
 	public float blue()
 	{
 		return components[offset + 2];
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Color3 other = (Color3) obj;
+		return same3(components, offset, other.components, other.offset);
 	}
 
 }

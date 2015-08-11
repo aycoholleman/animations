@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -92,12 +93,12 @@ public class Pos3Color3 extends Vertex {
 	 * Set the x, y, and z coordinates of this instance.
 	 * 
 	 * @param xyz
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos3Color3 xyz(float[] xyz)
 	{
@@ -137,12 +138,12 @@ public class Pos3Color3 extends Vertex {
 	 * Set the red, green and blue channel.
 	 * 
 	 * @param rgb
-	 *            A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos3Color3 rgb(float[] rgb)
 	{
@@ -341,6 +342,17 @@ public class Pos3Color3 extends Vertex {
 	public Color3 color()
 	{
 		return new Color3(components, offset + 3);
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Pos3Color3 other = (Pos3Color3) obj;
+		return same3(components, offset, other.components, other.offset)
+				&& same3(components, offset + 3, other.components, other.offset + 3);
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -62,9 +63,9 @@ public class Color4 extends Vertex implements _Color4 {
 	 * Set the red, green, blue and alpha channel.
 	 * 
 	 * @param rgba
-	 *        A {@code float} array containing at least 4 elements
+	 * A {@code float} array containing at least 4 elements
 	 * @throws ArrayIndexOutOfBoundsException
-	 *         If the specified array contains less than 4 elements
+	 * If the specified array contains less than 4 elements
 	 */
 	public void set(float[] rgba)
 	{
@@ -210,6 +211,15 @@ public class Color4 extends Vertex implements _Color4 {
 	public float blue()
 	{
 		return components[offset + 2];
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Color4 other = (Color4) obj;
+		return same4(components, offset, other.components, other.offset);
 	}
 
 }

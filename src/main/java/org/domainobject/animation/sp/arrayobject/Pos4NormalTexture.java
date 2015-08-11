@@ -3,6 +3,7 @@ package org.domainobject.animation.sp.arrayobject;
 import static org.domainobject.animation.sp.util.C2J.*;
 
 import org.domainobject.animation.sp.util.Array;
+
 import static org.domainobject.animation.sp.util.Comparators.*;
 
 /**
@@ -151,10 +152,10 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	 * Set the x, y, z and w coordinate.
 	 * 
 	 * @param xyzw
-	 *        A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * @return This instance
 	 * @throws ArrayIndexOutOfBoundsException
-	 *         If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture xyzw(float[] xyzw)
 	{
@@ -195,10 +196,10 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	 * Set the x, y, and z coordinate.
 	 * 
 	 * @param xyz
-	 *        A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * @return This instance
 	 * @throws ArrayIndexOutOfBoundsException
-	 *         If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture xyz(float[] xyz)
 	{
@@ -239,10 +240,10 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	 * Set the normal's x, y, and z coordinate.
 	 * 
 	 * @param xyz
-	 *        A {@code float} array containing at least 3 elements
+	 * A {@code float} array containing at least 3 elements
 	 * @return This instance
 	 * @throws ArrayIndexOutOfBoundsException
-	 *         If the specified array contains less than 3 elements
+	 * If the specified array contains less than 3 elements
 	 */
 	public Pos4NormalTexture normal(float[] xyz)
 	{
@@ -255,9 +256,9 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *        The s texel
+	 * The s texel
 	 * @param t
-	 *        The t texel
+	 * The t texel
 	 * @return This instance
 	 */
 	public Pos4NormalTexture st(float s, float t)
@@ -271,9 +272,9 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	 * Set texture coordinates
 	 * 
 	 * @param s
-	 *        The s texel
+	 * The s texel
 	 * @param t
-	 *        The t texel
+	 * The t texel
 	 * @return This instance
 	 */
 	public Pos4NormalTexture st(float[] st)
@@ -413,23 +414,6 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	///////////////////////////////////
 
 	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null || !(obj instanceof Pos4NormalTexture))
-			return false;
-		Pos4NormalTexture you = (Pos4NormalTexture) obj;
-		return same4(components, offset, you.components, you.offset);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return 0;
-	};
-
-	@Override
 	public Pos4 pos4()
 	{
 		return pos4;
@@ -439,6 +423,22 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	public Normal normal()
 	{
 		return normal;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		Pos4NormalTexture other = (Pos4NormalTexture) obj;
+		return same4(components, offset, other.components, other.offset)
+				&& same3(components, offset + 4, other.components, other.offset + 4)
+				&& same2(components, offset + 7, other.components, other.offset + 7);
+	}
+
+	public int hashCode()
+	{
+		return 0;
 	}
 
 }

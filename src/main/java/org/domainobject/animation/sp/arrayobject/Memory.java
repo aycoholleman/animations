@@ -14,7 +14,7 @@ public abstract class Memory<T extends ArrayObject> {
 	private final float[] raw;
 	private final T[] objects;
 	private final int numComponents;
-	
+
 	int numObjects;
 	private int size;
 
@@ -34,6 +34,31 @@ public abstract class Memory<T extends ArrayObject> {
 		objects[numObjects++] = object;
 		size += numComponents;
 		return object;
+	}
+
+	public T next()
+	{
+		if (objects[numObjects] == null)
+			return newInstance();
+		return objects[numObjects++];
+	}
+
+	/**
+	 * Get the {@link ArrayObject} at the specified position within the
+	 * internally maintained array of {@code ArrayObjects}s.
+	 * 
+	 * @param index
+	 * The index of the {@link ArrayObject} within the internally maintained
+	 * array of {@code ArrayObjects}s
+	 * 
+	 * @return The {@link ArrayObject}
+	 * 
+	 * @throws ArrayIndexOutOfBoundsException
+	 * No array index checking in this method!
+	 */
+	public T get(int index)
+	{
+		return objects[index];
 	}
 
 
@@ -57,10 +82,10 @@ public abstract class Memory<T extends ArrayObject> {
 	 * twice without adding some vertex data in between.
 	 * 
 	 * @return A {@code FloatBuffer} containing all vertices added to this
-	 *         {@code VertexArray}
+	 * {@code VertexArray}
 	 * 
 	 * @throws MemoryException
-	 *             If the {@code VertexArray} is empty.
+	 * If the {@code VertexArray} is empty.
 	 * 
 	 * @see #clear()
 	 */

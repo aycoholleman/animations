@@ -1,6 +1,7 @@
 package org.domainobject.animation.sp.util;
 
 import static java.lang.Math.abs;
+import static java.lang.Float.floatToIntBits;
 
 /**
  * @author Ayco Holleman
@@ -85,15 +86,15 @@ public final class Comparators {
 	 * distinguishability is set by {@link #distinguishable}.
 	 * 
 	 * @param a
-	 *        The first array
+	 * The first array
 	 * @param aOffset
-	 *        The offset into the first array
+	 * The offset into the first array
 	 * @param b
-	 *        The second array
+	 * The second array
 	 * @param bOffset
-	 *        The offset into the second array
+	 * The offset into the second array
 	 * @param length
-	 *        The number of array elements to compare
+	 * The number of array elements to compare
 	 * @return
 	 */
 	public static boolean same(float[] a, int aOffset, float[] b, int bOffset, int length)
@@ -107,17 +108,17 @@ public final class Comparators {
 	 * indistinguishable, {@code false otherwise}.
 	 * 
 	 * @param a
-	 *        The first array
+	 * The first array
 	 * @param aOffset
-	 *        The offset into the first array
+	 * The offset into the first array
 	 * @param b
-	 *        The second array
+	 * The second array
 	 * @param bOffset
-	 *        The offset into the second array
+	 * The offset into the second array
 	 * @param length
-	 *        The number of array elements to compare
+	 * The number of array elements to compare
 	 * @param distinguishable
-	 *        The treshold for distinguishability
+	 * The treshold for distinguishability
 	 * @return
 	 */
 	public static boolean same(float[] a, int aOffset, float[] b, int bOffset, int length,
@@ -205,6 +206,114 @@ public final class Comparators {
 				&& same(a[aOffset + 1], b[bOffset + 1], distinguishable)
 				&& same(a[aOffset + 2], b[bOffset + 2], distinguishable)
 				&& same(a[aOffset + 3], b[bOffset + 3], distinguishable);
+	}
+
+	public static int hash2(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		return h;
+	}
+
+	public static int hash3(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		return h;
+	}
+
+	public static int hash4(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		return h;
+	}
+
+	public static int hash5(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		return h;
+	}
+
+	public static int hash6(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		h = 31 * h + floatToIntBits(a[offset + 5]);
+		return h;
+	}
+
+	public static int hash7(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		h = 31 * h + floatToIntBits(a[offset + 5]);
+		h = 31 * h + floatToIntBits(a[offset + 6]);
+		return h;
+	}
+
+	public static int hash8(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		h = 31 * h + floatToIntBits(a[offset + 5]);
+		h = 31 * h + floatToIntBits(a[offset + 6]);
+		h = 31 * h + floatToIntBits(a[offset + 7]);
+		return h;
+	}
+
+	public static int hash9(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		h = 31 * h + floatToIntBits(a[offset + 5]);
+		h = 31 * h + floatToIntBits(a[offset + 6]);
+		h = 31 * h + floatToIntBits(a[offset + 7]);
+		h = 31 * h + floatToIntBits(a[offset + 8]);
+		return h;
+	}
+
+	public static int hash10(float[] a, int offset)
+	{
+		int h = 1;
+		h = 31 * h + floatToIntBits(a[offset + 0]);
+		h = 31 * h + floatToIntBits(a[offset + 1]);
+		h = 31 * h + floatToIntBits(a[offset + 2]);
+		h = 31 * h + floatToIntBits(a[offset + 3]);
+		h = 31 * h + floatToIntBits(a[offset + 4]);
+		h = 31 * h + floatToIntBits(a[offset + 5]);
+		h = 31 * h + floatToIntBits(a[offset + 6]);
+		h = 31 * h + floatToIntBits(a[offset + 7]);
+		h = 31 * h + floatToIntBits(a[offset + 8]);
+		h = 31 * h + floatToIntBits(a[offset + 9]);
+		return h;
 	}
 
 }
