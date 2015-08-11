@@ -1,5 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
+import static org.domainobject.animation.sp.arrayobject.Vertex.*;
 import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
@@ -11,14 +12,9 @@ import org.domainobject.animation.sp.util.Array;
  * @author Ayco Holleman
  * @created Jul 20, 2015
  */
-public class Color4 extends Vertex implements _Color4 {
+public class Color4 extends ArrayObject implements _Color4 {
 
 	public static final int COMPONENT_COUNT = 4;
-
-	public static Color4 create()
-	{
-		return allocate(1).newInstance();
-	}
 
 	public static Memory<Color4> allocate(int maxNumObjects)
 	{
@@ -31,12 +27,15 @@ public class Color4 extends Vertex implements _Color4 {
 		};
 	}
 
+	public Color4()
+	{
+		super();
+	}
+
 	Color4(float[] components, int offset)
 	{
 		super(components, offset);
-		components[offset + 3] = defaultAlpha;
 	}
-
 
 	@Override
 	int size()
@@ -163,13 +162,13 @@ public class Color4 extends Vertex implements _Color4 {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #defaultAlpha} for the alpha channel.
+	 * {@link #globalAlpha} for the alpha channel.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = defaultAlpha;
+		result[3] = globalAlpha;
 		return result;
 	}
 
@@ -220,6 +219,12 @@ public class Color4 extends Vertex implements _Color4 {
 			return true;
 		Color4 other = (Color4) obj;
 		return same4(components, offset, other.components, other.offset);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return hash4(components, offset);
 	}
 
 }

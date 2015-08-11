@@ -8,27 +8,7 @@ package org.domainobject.animation.sp.arrayobject;
  * @created Aug 9, 2015
  *
  */
-public interface _Color4 {
-
-	/**
-	 * Set the red, green and blue channel of this {@link _Color4} instance.
-	 * 
-	 * @return This instance
-	 */
-	_Color4 rgb(float red, float green, float blue);
-
-	/**
-	 * Set the red, green and blue channel of this {@link _Color4} instance.
-	 * 
-	 * @param rgb
-	 * A {@code float} array containing at least 3 elements
-	 * 
-	 * @return This instance
-	 * 
-	 * @throws ArrayIndexOutOfBoundsException
-	 * If the specified array contains less than 3 elements
-	 */
-	_Color4 rgb(float[] rgb);
+public interface _Color4 extends _Color3 {
 
 	/**
 	 * Set the channels of this {@link _Color4} instance.

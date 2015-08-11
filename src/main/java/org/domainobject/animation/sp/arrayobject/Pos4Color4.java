@@ -51,8 +51,8 @@ public final class Pos4Color4 extends Vertex implements _Pos4 {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#defaultW} and the alpha channel is set to
-	 * {@link Vertex#defaultAlpha}. Note that until you call this method or one
+	 * {@link Vertex#globalW} and the alpha channel is set to
+	 * {@link Vertex#globalAlpha}. Note that until you call this method or one
 	 * of the other setters, the internal state of a new instance is undefined,
 	 * both in theory and in practice!
 	 */
@@ -61,11 +61,11 @@ public final class Pos4Color4 extends Vertex implements _Pos4 {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = defaultW;
+		components[offset + 3] = globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
-		components[offset + 7] = defaultAlpha;
+		components[offset + 7] = globalAlpha;
 	}
 
 
@@ -544,6 +544,20 @@ public final class Pos4Color4 extends Vertex implements _Pos4 {
 		Pos4Color4 other = (Pos4Color4) obj;
 		return same4(components, offset, other.components, other.offset)
 				&& same4(components, offset + 4, other.components, other.offset + 4);
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return hash8(components, offset);
+	}
+
+
+	@Override
+	public Pos3 pos3()
+	{
+		return new Pos3(components, offset);
 	}
 
 }

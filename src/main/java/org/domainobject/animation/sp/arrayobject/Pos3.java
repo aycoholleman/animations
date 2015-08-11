@@ -16,6 +16,21 @@ public class Pos3 extends Vertex implements _Pos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
+	public static Memory<Pos3> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos3>(new Pos3[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Pos3 construct(float[] raw, int offset)
+			{
+				return new Pos3(raw, offset);
+			}
+		};
+	}
+
+	public Pos3()
+	{
+		super();
+	}
 
 	Pos3(float[] components, int offset)
 	{
@@ -167,7 +182,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 	///////////////////////////////////
 
 	/**
-	 * Get a 4-component coordinate array, using the value of {@link #defaultW}
+	 * Get a 4-component coordinate array, using the value of {@link #globalW}
 	 * for the w coordinate.
 	 * 
 	 * @return A 4-component coordinate array
@@ -176,7 +191,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = defaultW;
+		result[3] = globalW;
 		return result;
 	}
 
@@ -214,6 +229,13 @@ public class Pos3 extends Vertex implements _Pos3 {
 			return true;
 		Pos3 other = (Pos3) obj;
 		return same3(components, offset, other.components, other.offset);
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return hash3(components, offset);
 	}
 
 }

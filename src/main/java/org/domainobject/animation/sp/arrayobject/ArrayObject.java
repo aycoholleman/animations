@@ -12,13 +12,19 @@ abstract class ArrayObject {
 	final float[] components;
 	final int offset;
 
+	ArrayObject()
+	{
+		this.components = new float[size()];
+		this.offset = 0;
+	}
+
 
 	ArrayObject(float[] components, int offset)
 	{
 		this.components = components;
 		this.offset = offset;
 	}
-	
+
 	/**
 	 * Get the size of the array wrapped by this instance.
 	 * 

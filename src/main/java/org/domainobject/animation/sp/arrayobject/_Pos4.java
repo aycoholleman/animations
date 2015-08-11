@@ -1,6 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
-public interface _Pos4 {
+public interface _Pos4 extends _Pos3 {
 
 	/**
 	 * Set the x, y and z coordinate of this instance.

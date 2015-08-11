@@ -2,6 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
+import static org.domainobject.animation.sp.arrayobject.Vertex.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -13,10 +14,26 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Color3 extends Vertex implements _Color3 {
+public class Color3 extends ArrayObject implements _Color3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
+	public static Memory<Color3> allocate(int maxNumObjects)
+	{
+		return new Memory<Color3>(new Color3[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Color3 construct(float[] raw, int offset)
+			{
+				return new Color3(raw, offset);
+			}
+		};
+	}
+
+
+	public Color3()
+	{
+		super();
+	}
 
 	Color3(float[] components, int offset)
 	{
@@ -119,14 +136,14 @@ public class Color3 extends Vertex implements _Color3 {
 
 	/**
 	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #defaultAlpha} for the alpha channel. Useful for converting a
+	 * {@link #globalAlpha} for the alpha channel. Useful for converting a
 	 * 3-component color to a 4-component color.
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
 		memcpy3(result, 0, components, offset);
-		result[3] = defaultAlpha;
+		result[3] = globalAlpha;
 		return result;
 	}
 
@@ -179,6 +196,13 @@ public class Color3 extends Vertex implements _Color3 {
 			return true;
 		Color3 other = (Color3) obj;
 		return same3(components, offset, other.components, other.offset);
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return hash3(components, offset);
 	}
 
 }

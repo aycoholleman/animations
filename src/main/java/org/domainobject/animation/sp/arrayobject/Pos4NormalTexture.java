@@ -15,11 +15,6 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 
-	public static Pos4NormalTexture create()
-	{
-		return allocate(1).newInstance();
-	}
-
 	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
 		return new Memory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], NUM_COMPONENTS) {
@@ -70,8 +65,8 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#defaultW} and the alpha channel is set to
-	 * {@link Vertex#defaultAlpha}. Note that until you call this method or one
+	 * {@link Vertex#globalW} and the alpha channel is set to
+	 * {@link Vertex#globalAlpha}. Note that until you call this method or one
 	 * of the other setters, the internal state of a new instance is undefined,
 	 * both in theory and in practice!
 	 */
@@ -80,7 +75,7 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = defaultW;
+		components[offset + 3] = globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
@@ -416,7 +411,7 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	@Override
 	public Pos4 pos4()
 	{
-		return pos4;
+		return new Pos4(components, offset);
 	}
 
 	@Override
@@ -438,7 +433,14 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 
 	public int hashCode()
 	{
-		return 0;
+		return hash9(components, offset);
+	}
+
+
+	@Override
+	public Pos3 pos3()
+	{
+		return new Pos3(components, offset);
 	}
 
 }

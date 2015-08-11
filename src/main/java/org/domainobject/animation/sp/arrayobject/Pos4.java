@@ -15,11 +15,6 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	public static Pos4 create()
-	{
-		return allocate(1).newInstance();
-	}
-
 	public static Memory<Pos4> allocate(int maxNumObjects)
 	{
 		return new Memory<Pos4>(new Pos4[maxNumObjects], COMPONENT_COUNT) {
@@ -242,6 +237,19 @@ public final class Pos4 extends Vertex implements _Pos4 {
 			return true;
 		Pos4 other = (Pos4) obj;
 		return same4(components, offset, other.components, other.offset);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return hash4(components, offset);
+	}
+
+
+	@Override
+	public Pos3 pos3()
+	{
+		return new Pos3(components, offset);
 	}
 
 }

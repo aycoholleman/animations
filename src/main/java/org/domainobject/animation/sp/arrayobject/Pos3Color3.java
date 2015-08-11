@@ -13,10 +13,21 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 26, 2015
  *
  */
-public class Pos3Color3 extends Vertex {
+public class Pos3Color3 extends ArrayObject implements _Pos3, _Color3 {
 
 	public static final int COMPONENT_COUNT = 6;
 
+
+	public static Memory<Pos3Color3> allocate(int maxNumObjects)
+	{
+		return new Memory<Pos3Color3>(new Pos3Color3[maxNumObjects], COMPONENT_COUNT) {
+			@Override
+			Pos3Color3 construct(float[] raw, int offset)
+			{
+				return new Pos3Color3(raw, offset);
+			}
+		};
+	}
 
 	Pos3Color3(float[] components, int offset)
 	{
@@ -353,6 +364,19 @@ public class Pos3Color3 extends Vertex {
 		Pos3Color3 other = (Pos3Color3) obj;
 		return same3(components, offset, other.components, other.offset)
 				&& same3(components, offset + 3, other.components, other.offset + 3);
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return hash6(components, offset);
+	}
+
+	@Override
+	public Pos3 pos3()
+	{
+		return new Pos3(components, offset);
 	}
 
 }

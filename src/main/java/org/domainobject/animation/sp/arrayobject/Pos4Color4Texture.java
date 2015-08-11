@@ -16,12 +16,6 @@ import org.domainobject.animation.sp.util.Array;
  */
 public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 
-	public static Pos4Color4Texture create()
-	{
-		return allocate(1).newInstance();
-	}
-
-
 	public static Memory<Pos4Color4Texture> allocate(int maxNumObjects)
 	{
 		return new Memory<Pos4Color4Texture>(new Pos4Color4Texture[maxNumObjects], SIZE) {
@@ -46,6 +40,10 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	 */
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(4) };
 
+	public Pos4Color4Texture()
+	{
+		super();
+	}
 
 	private Pos4Color4Texture(float[] raw, int offset)
 	{
@@ -67,8 +65,8 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#defaultW} and the alpha channel is set to
-	 * {@link Vertex#defaultAlpha}. Note that until you call this method or one
+	 * {@link Vertex#globalW} and the alpha channel is set to
+	 * {@link Vertex#globalAlpha}. Note that until you call this method or one
 	 * of the other setters, the internal state of a new instance is undefined,
 	 * both in theory and in practice!
 	 */
@@ -77,11 +75,11 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = defaultW;
+		components[offset + 3] = globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
-		components[offset + 7] = defaultAlpha;
+		components[offset + 7] = globalAlpha;
 		components[offset + 8] = 0;
 		components[offset + 9] = 0;
 	}
@@ -629,6 +627,20 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 		return same4(components, offset, other.components, other.offset)
 				&& same4(components, offset + 4, other.components, other.offset + 4)
 				&& same2(components, offset + 8, other.components, other.offset + 8);
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return hash10(components, offset);
+	}
+
+
+	@Override
+	public Pos3 pos3()
+	{
+		return new Pos3(components, offset);
 	}
 
 }
