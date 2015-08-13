@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.Memory;
+import org.domainobject.animation.sp.arrayobject.AbstractMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
@@ -95,7 +95,7 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 	private void setupQuad()
 	{
 		
-		Memory<Pos4> vertices = Pos4.allocate(30);
+		AbstractMemory<Pos4> vertices = Pos4.allocate(30);
 		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f);
 		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f);
 		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f);
@@ -122,7 +122,7 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.burn().getArrayBuffer(), GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 

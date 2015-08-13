@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.Memory;
+import org.domainobject.animation.sp.arrayobject.AbstractMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
@@ -37,7 +37,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 	private int indicesCount = 0;
 
 	private Program program;
-	Memory<Pos4Color4> vertices;
+	AbstractMemory<Pos4Color4> vertices;
 
 	public QuadColoredWithPos4Color4()
 	{
@@ -71,7 +71,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 		glEnableVertexAttribArray(1);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.burn(), GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.burn().getArrayBuffer(), GL_STREAM_DRAW);
 		glVertexAttribPointer(0, 4, GL_FLOAT, false, 8 * 4, 0);
 		glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 * 4, 4 * 4);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -7,13 +7,13 @@ import org.domainobject.animation.sp.util.Array;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
 /**
- * An 9-component vertex class suitable for specifying a position (first four
+ * A 9-component vertex class suitable for specifying a position (first four
  * slots) a normal (next three slots) and two texture coordinates (last two
  * slots).
  * 
  * @author Ayco Holleman
  */
-public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
+public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Normal {
 
 	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
@@ -40,14 +40,14 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(3) };
 
 
-	private final Pos4 pos4;
-	private final Normal normal;
+	public Pos4NormalTexture()
+	{
+		super();
+	}
 
 	private Pos4NormalTexture(float[] raw, int offset)
 	{
 		super(raw, offset);
-		pos4 = new Pos4(raw, offset);
-		normal = new Normal(raw, offset + Pos4.COMPONENT_COUNT);
 	}
 
 
@@ -75,7 +75,7 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = globalW;
+		components[offset + 3] = Vertex.globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
@@ -417,7 +417,7 @@ public final class Pos4NormalTexture extends Vertex implements _Pos4, _Normal {
 	@Override
 	public Normal normal()
 	{
-		return normal;
+		return new Normal(components, offset + 4);
 	}
 
 	@Override
