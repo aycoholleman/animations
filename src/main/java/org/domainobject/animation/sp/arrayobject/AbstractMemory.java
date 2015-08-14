@@ -8,7 +8,7 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class AbstractMemory<T extends ArrayObject> {
+abstract class AbstractMemory<T extends ArrayObject> {
 
 	final FloatBuffer buf;
 	final float[] raw;

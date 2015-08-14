@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.AbstractMemory;
+import org.domainobject.animation.sp.arrayobject.Memory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
@@ -95,7 +95,7 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 	private void setupQuad()
 	{
 		
-		AbstractMemory<Pos4> vertices = Pos4.allocate(30);
+		Memory<Pos4> vertices = Pos4.allocate(30);
 		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f);
 		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f);
 		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f);
