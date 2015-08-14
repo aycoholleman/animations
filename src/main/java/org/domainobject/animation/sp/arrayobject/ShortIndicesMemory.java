@@ -9,12 +9,11 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class ShortIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class ShortIndicesMemory<T extends ArrayObject> extends LazilyIndexedMemory<T> {
 
 	private final short[] indices;
 	private final ByteBuffer indicesBuf;
-
-	public ShortIndicesMemory(T[] objects, int numComponents)
+	ShortIndicesMemory(T[] objects, int numComponents)
 	{
 		super(objects, numComponents);
 		indices = new short[objects.length];
@@ -22,11 +21,16 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 	}
 
 	@Override
+	public Class<?> getIndexType()
+	{
+		return short.class;
+	}
+
+	@Override
 	public ShaderInput burn()
 	{
-		if (numElements == 0) {
+		if (numElements == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		}
 		int uniqueObjects = fillIndices();
 		indicesBuf.clear();
 		indicesBuf.asShortBuffer().put(indices, 0, numObjects);
@@ -34,6 +38,10 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 		buf.clear();
 		if (uniqueObjects == numObjects)
 			buf.put(raw, 0, numElements);
+		else if (shuffle) {
+			reshuffle();
+			buf.put(raw, 0, numElements);
+		}
 		else {
 			float[] compressed = compress(uniqueObjects);
 			buf.put(compressed, 0, compressed.length);
@@ -53,6 +61,17 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 			offset += numComponents;
 		}
 		return compressed;
+	}
+
+	private void reshuffle()
+	{
+		numElements = 0;
+		for (short s = 1; s < indices.length; ++s) {
+			if (s == indices[s])
+				continue;
+			objects[indices[s]].copyTo(raw, numElements);
+			numElements += numComponents;
+		}
 	}
 
 	private int fillIndices()

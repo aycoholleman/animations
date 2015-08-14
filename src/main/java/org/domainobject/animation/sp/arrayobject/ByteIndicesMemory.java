@@ -9,7 +9,7 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class ByteIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class ByteIndicesMemory<T extends ArrayObject> extends LazilyIndexedMemory<T> {
 
 	private final byte[] indices;
 	private final ByteBuffer indicesBuf;
@@ -22,11 +22,16 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends AbstractM
 	}
 
 	@Override
+	public Class<?> getIndexType()
+	{
+		return byte.class;
+	}
+
+	@Override
 	public ShaderInput burn()
 	{
-		if (numElements == 0) {
+		if (numElements == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		}
 		int uniqueObjects = fillIndices();
 		indicesBuf.clear();
 		indicesBuf.put(indices, 0, numObjects);
@@ -34,6 +39,10 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends AbstractM
 		buf.clear();
 		if (uniqueObjects == numObjects)
 			buf.put(raw, 0, numElements);
+		else if (shuffle) {
+			reshuffle();
+			buf.put(raw, 0, numElements);
+		}
 		else {
 			float[] compressed = compress(uniqueObjects);
 			buf.put(compressed, 0, compressed.length);
@@ -55,6 +64,17 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends AbstractM
 		return compressed;
 	}
 
+	private void reshuffle()
+	{
+		numElements = 0;
+		for (byte b = 1; b < indices.length; ++b) {
+			if (b == indices[b])
+				continue;
+			objects[indices[b]].copyTo(raw, numElements);
+			numElements += numComponents;
+		}
+	}
+	
 	private int fillIndices()
 	{
 		HashMap<T, Byte> table = new HashMap<>(numObjects, 1.0f);
