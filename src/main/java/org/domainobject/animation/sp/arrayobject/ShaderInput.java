@@ -7,7 +7,7 @@ import java.nio.FloatBuffer;
  * @author Ayco Holleman
  *
  */
-public class ShaderInput {
+public final class ShaderInput {
 
 	FloatBuffer arrayBuffer;
 	ByteBuffer elementArrayBuffer;
@@ -15,6 +15,12 @@ public class ShaderInput {
 	ShaderInput(FloatBuffer arrayBuffer)
 	{
 		this.arrayBuffer = arrayBuffer;
+	}
+
+	ShaderInput(FloatBuffer arrayBuffer, ByteBuffer elementArrayBuffer)
+	{
+		this.arrayBuffer = arrayBuffer;
+		this.elementArrayBuffer=elementArrayBuffer;
 	}
 
 	public FloatBuffer getArrayBuffer()

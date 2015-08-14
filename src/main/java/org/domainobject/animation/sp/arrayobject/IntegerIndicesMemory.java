@@ -9,16 +9,16 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class ShortIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class IntegerIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
 
-	private final short[] indices;
+	private final int[] indices;
 	private final ByteBuffer indicesBuf;
 
-	public ShortIndicesMemory(T[] objects, int numComponents)
+	public IntegerIndicesMemory(T[] objects, int numComponents)
 	{
 		super(objects, numComponents);
-		indices = new short[objects.length];
-		indicesBuf = BufferUtils.createByteBuffer(objects.length * Short.BYTES);
+		indices = new int[objects.length];
+		indicesBuf = BufferUtils.createByteBuffer(objects.length * Integer.BYTES);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 		}
 		int uniqueObjects = fillIndices();
 		indicesBuf.clear();
-		indicesBuf.asShortBuffer().put(indices, 0, numObjects);
+		indicesBuf.asIntBuffer().put(indices, 0, numObjects);
 		indicesBuf.flip();
 		buf.clear();
 		if (uniqueObjects == numObjects)
@@ -48,7 +48,7 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 	{
 		float[] compressed = new float[uniqueObjects * numComponents];
 		int offset = 0;
-		for (short index : indices) {
+		for (int index : indices) {
 			objects[index].copyTo(compressed, offset);
 			offset += numComponents;
 		}
@@ -57,11 +57,11 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 
 	private int fillIndices()
 	{
-		HashMap<T, Short> table = new HashMap<>(numObjects, 1.0f);
+		HashMap<T, Integer> table = new HashMap<>(numObjects, 1.0f);
 		for (int i = 0; i < numObjects; ++i) {
-			Short index = table.get(objects[i]);
+			Integer index = table.get(objects[i]);
 			if (index == null)
-				table.put(objects[i], (indices[i] = (short) i));
+				table.put(objects[i], (indices[i] = i));
 			else
 				indices[i] = index;
 		}

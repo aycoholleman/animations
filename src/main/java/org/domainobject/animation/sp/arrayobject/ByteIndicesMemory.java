@@ -9,16 +9,16 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class ShortIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class ByteIndicesMemory<T extends ArrayObject> extends AbstractMemory<T> {
 
-	private final short[] indices;
+	private final byte[] indices;
 	private final ByteBuffer indicesBuf;
 
-	public ShortIndicesMemory(T[] objects, int numComponents)
+	public ByteIndicesMemory(T[] objects, int numComponents)
 	{
 		super(objects, numComponents);
-		indices = new short[objects.length];
-		indicesBuf = BufferUtils.createByteBuffer(objects.length * Short.BYTES);
+		indices = new byte[objects.length];
+		indicesBuf = BufferUtils.createByteBuffer(objects.length * Byte.BYTES);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 		}
 		int uniqueObjects = fillIndices();
 		indicesBuf.clear();
-		indicesBuf.asShortBuffer().put(indices, 0, numObjects);
+		indicesBuf.put(indices, 0, numObjects);
 		indicesBuf.flip();
 		buf.clear();
 		if (uniqueObjects == numObjects)
@@ -57,11 +57,11 @@ public abstract class ShortIndicesMemory<T extends ArrayObject> extends Abstract
 
 	private int fillIndices()
 	{
-		HashMap<T, Short> table = new HashMap<>(numObjects, 1.0f);
+		HashMap<T, Byte> table = new HashMap<>(numObjects, 1.0f);
 		for (int i = 0; i < numObjects; ++i) {
-			Short index = table.get(objects[i]);
+			Byte index = table.get(objects[i]);
 			if (index == null)
-				table.put(objects[i], (indices[i] = (short) i));
+				table.put(objects[i], (indices[i] = (byte) i));
 			else
 				indices[i] = index;
 		}
