@@ -9,7 +9,7 @@ import org.lwjgl.BufferUtils;
  * @author Ayco Holleman
  *
  */
-public abstract class ByteIndicesMemory<T extends ArrayObject> extends LazilyIndexedMemory<T> {
+public abstract class ByteIndicesMemory<T extends ArrayObject> extends IndexedMemoryLazy<T> {
 
 	private final byte[] indices;
 	private final ByteBuffer indicesBuf;
@@ -55,11 +55,11 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends LazilyInd
 
 	private float[] compress(int uniqueObjects)
 	{
-		float[] compressed = new float[uniqueObjects * numComponents];
+		float[] compressed = new float[uniqueObjects * objSize];
 		int offset = 0;
 		for (short index : indices) {
 			objects[index].copyTo(compressed, offset);
-			offset += numComponents;
+			offset += objSize;
 		}
 		return compressed;
 	}
@@ -71,7 +71,7 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends LazilyInd
 			if (b == indices[b])
 				continue;
 			objects[indices[b]].copyTo(raw, numElements);
-			numElements += numComponents;
+			numElements += objSize;
 		}
 	}
 	

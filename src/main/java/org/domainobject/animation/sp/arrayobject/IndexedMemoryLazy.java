@@ -1,11 +1,11 @@
 package org.domainobject.animation.sp.arrayobject;
 
 
-public abstract class LazilyIndexedMemory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class IndexedMemoryLazy<T extends ArrayObject> extends AbstractMemory<T> {
 
 	boolean shuffle;
 
-	public LazilyIndexedMemory(T[] objects, int numComponents)
+	public IndexedMemoryLazy(T[] objects, int numComponents)
 	{
 		super(objects, numComponents);
 	}

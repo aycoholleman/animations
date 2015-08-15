@@ -36,6 +36,10 @@ abstract class ArrayObject {
 	public void copyTo(float[] array, int offset) {
 		
 	}
+	
+	<T extends ArrayObject> void copyTo(T other) {
+		
+	}
 
 
 }

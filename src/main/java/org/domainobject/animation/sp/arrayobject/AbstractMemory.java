@@ -13,17 +13,17 @@ abstract class AbstractMemory<T extends ArrayObject> {
 	final FloatBuffer buf;
 	final float[] raw;
 	final T[] objects;
-	final int numComponents;
+	final int objSize;
 
 	int numObjects;
 	int numElements;
 
 
-	AbstractMemory(T[] objects, int numComponents)
+	AbstractMemory(T[] objects, int objSize)
 	{
 		this.objects = objects;
-		this.numComponents = numComponents;
-		raw = new float[objects.length * numComponents];
+		this.objSize = objSize;
+		raw = new float[objects.length * objSize];
 		buf = BufferUtils.createFloatBuffer(raw.length);
 	}
 
@@ -32,7 +32,7 @@ abstract class AbstractMemory<T extends ArrayObject> {
 	{
 		T object = construct(raw, numElements);
 		objects[numObjects++] = object;
-		numElements += numComponents;
+		numElements += objSize;
 		return object;
 	}
 
