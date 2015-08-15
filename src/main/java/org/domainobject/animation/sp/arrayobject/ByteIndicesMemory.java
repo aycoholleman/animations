@@ -30,27 +30,27 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends IndexedMe
 	@Override
 	public ShaderInput burn()
 	{
-		if (numElements == 0)
+		if (numElems == 0)
 			MemoryException.cannotBurnWhenEmpty();
 		int uniqueObjects = fillIndices();
 		indicesBuf.clear();
-		indicesBuf.put(indices, 0, numObjects);
+		indicesBuf.put(indices, 0, numObjs);
 		indicesBuf.flip();
-		buf.clear();
-		if (uniqueObjects == numObjects)
-			buf.put(raw, 0, numElements);
+		objBuf.clear();
+		if (uniqueObjects == numObjs)
+			objBuf.put(raw, 0, numElems);
 		else if (shuffle) {
 			reshuffle();
-			buf.put(raw, 0, numElements);
+			objBuf.put(raw, 0, numElems);
 		}
 		else {
 			float[] compressed = compress(uniqueObjects);
-			buf.put(compressed, 0, compressed.length);
+			objBuf.put(compressed, 0, compressed.length);
 		}
-		buf.flip();
-		numElements = 0;
-		numObjects = 0;
-		return new ShaderInput(buf, indicesBuf);
+		objBuf.flip();
+		numElems = 0;
+		numObjs = 0;
+		return new ShaderInput(objBuf, indicesBuf);
 	}
 
 	private float[] compress(int uniqueObjects)
@@ -66,19 +66,19 @@ public abstract class ByteIndicesMemory<T extends ArrayObject> extends IndexedMe
 
 	private void reshuffle()
 	{
-		numElements = 0;
+		numElems = 0;
 		for (byte b = 1; b < indices.length; ++b) {
 			if (b == indices[b])
 				continue;
-			objects[indices[b]].copyTo(raw, numElements);
-			numElements += objSize;
+			objects[indices[b]].copyTo(raw, numElems);
+			numElems += objSize;
 		}
 	}
 	
 	private int fillIndices()
 	{
-		HashMap<T, Byte> table = new HashMap<>(numObjects, 1.0f);
-		for (int i = 0; i < numObjects; ++i) {
+		HashMap<T, Byte> table = new HashMap<>(numObjs, 1.0f);
+		for (int i = 0; i < numObjs; ++i) {
 			Byte index = table.get(objects[i]);
 			if (index == null)
 				table.put(objects[i], (indices[i] = (byte) i));

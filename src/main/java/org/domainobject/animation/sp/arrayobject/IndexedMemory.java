@@ -4,9 +4,9 @@ package org.domainobject.animation.sp.arrayobject;
  * @author Ayco Holleman
  *
  */
-public abstract class IndexedMemoryFast<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class IndexedMemory<T extends ArrayObject> extends AbstractMemory<T> {
 
-	public IndexedMemoryFast(T[] objects, int objSize)
+	public IndexedMemory(T[] objects, int objSize)
 	{
 		super(objects, objSize);
 	}

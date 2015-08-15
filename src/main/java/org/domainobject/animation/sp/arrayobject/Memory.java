@@ -32,14 +32,14 @@ public abstract class Memory<T extends ArrayObject> extends AbstractMemory<T> {
 	@Override
 	public ShaderInput burn()
 	{
-		if (numElements == 0) {
+		if (numElems == 0) {
 			MemoryException.cannotBurnWhenEmpty();
 		}
-		buf.clear();
-		buf.put(raw, 0, numElements);
-		buf.flip();
-		numElements = 0;
-		numObjects = 0;
-		return new ShaderInput(buf);
+		objBuf.clear();
+		objBuf.put(raw, 0, numElems);
+		objBuf.flip();
+		numElems = 0;
+		numObjs = 0;
+		return new ShaderInput(objBuf);
 	}
 }

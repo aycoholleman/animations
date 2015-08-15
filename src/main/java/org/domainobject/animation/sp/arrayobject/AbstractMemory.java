@@ -10,13 +10,13 @@ import org.lwjgl.BufferUtils;
  */
 abstract class AbstractMemory<T extends ArrayObject> {
 
-	final FloatBuffer buf;
+	final FloatBuffer objBuf;
 	final float[] raw;
 	final T[] objects;
 	final int objSize;
 
-	int numObjects;
-	int numElements;
+	int numObjs;
+	int numElems;
 
 
 	AbstractMemory(T[] objects, int objSize)
@@ -24,23 +24,23 @@ abstract class AbstractMemory<T extends ArrayObject> {
 		this.objects = objects;
 		this.objSize = objSize;
 		raw = new float[objects.length * objSize];
-		buf = BufferUtils.createFloatBuffer(raw.length);
+		objBuf = BufferUtils.createFloatBuffer(raw.length);
 	}
 
 
 	public T newInstance()
 	{
-		T object = construct(raw, numElements);
-		objects[numObjects++] = object;
-		numElements += objSize;
+		T object = construct(raw, numElems);
+		objects[numObjs++] = object;
+		numElems += objSize;
 		return object;
 	}
 
 	public T next()
 	{
-		if (objects[numObjects] == null)
+		if (objects[numObjs] == null)
 			return newInstance();
-		return objects[numObjects++];
+		return objects[numObjs++];
 	}
 
 	/**
@@ -67,8 +67,8 @@ abstract class AbstractMemory<T extends ArrayObject> {
 
 	public void clear()
 	{
-		numElements = 0;
-		numObjects = 0;
+		numElems = 0;
+		numObjs = 0;
 	}
 
 
