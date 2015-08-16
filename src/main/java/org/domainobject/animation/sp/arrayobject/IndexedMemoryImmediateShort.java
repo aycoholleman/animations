@@ -11,8 +11,9 @@ import java.util.LinkedHashMap;
  * @author Ayco Holleman
  *
  */
-abstract class FastShortIndexedMemory<T extends ArrayObject> {
+abstract class IndexedMemoryImmediateShort<T extends ArrayObject> implements _IndexedMemoryImmediate<T> {
 
+	private final LinkedHashMap<T, Short> objs;
 	private float[] raw;
 	private final FloatBuffer objBuf;
 	private final int objSize;
@@ -20,35 +21,35 @@ abstract class FastShortIndexedMemory<T extends ArrayObject> {
 	private final short[] indices;
 	private final ByteBuffer idxBuf;
 
-	private LinkedHashMap<T, Short> tbl;
-	private short numObjs;
+	private int numObjs;
 	private int numElems;
 
-	FastShortIndexedMemory(int maxNumObjects, int objSize)
+	IndexedMemoryImmediateShort(int maxNumObjects, int objSize)
 	{
 		this.objSize = objSize;
 		raw = new float[maxNumObjects * objSize];
 		objBuf = createFloatBuffer(raw.length);
 		indices = new short[maxNumObjects];
 		idxBuf = createByteBuffer(maxNumObjects * Short.BYTES);
-		tbl = new LinkedHashMap<>(maxNumObjects, 1.0f);
+		objs = new LinkedHashMap<>(maxNumObjects, 1.0f);
 	}
 
 	abstract T construct(float[] raw, int offset);
 
+	@Override
 	public Class<?> getIndexType()
 	{
 		return short.class;
 	}
 
+	@Override
 	public void add(T arrayObject)
 	{
-		Short index = tbl.get(arrayObject);
+		Short index = objs.get(arrayObject);
 		if (index == null) {
 			T copy = construct(raw, numElems);
 			arrayObject.copyTo(copy);
-			indices[numObjs] = numObjs;
-			tbl.put(copy, numObjs);
+			objs.put(copy, (indices[numObjs] = (short) numObjs));
 			numElems += objSize;
 		}
 		else {
@@ -57,21 +58,23 @@ abstract class FastShortIndexedMemory<T extends ArrayObject> {
 		numObjs++;
 	}
 
-	public void addUnique(T arrayObject)
+	@Override
+	public void unique(T arrayObject)
 	{
 		T copy = construct(raw, numElems);
 		arrayObject.copyTo(copy);
-		indices[numObjs] = numObjs;
-		tbl.put(copy, numObjs);
+		objs.put(copy, (indices[numObjs] = (short) numObjs));
 		numElems += objSize;
 		numObjs++;
 	}
 
+	@Override
 	public boolean contains(T arrayObject)
 	{
-		return tbl.keySet().contains(arrayObject);
+		return objs.keySet().contains(arrayObject);
 	}
 
+	@Override
 	public ShaderInput burn()
 	{
 		if (numObjs == 0)
@@ -85,15 +88,16 @@ abstract class FastShortIndexedMemory<T extends ArrayObject> {
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
+	@Override
 	public void clear()
 	{
 		numObjs = 0;
 		numElems = 0;
-		tbl = new LinkedHashMap<>(indices.length, 1.0f);
+		objs.clear();
 	}
 
 	public Iterator<T> iterator()
 	{
-		return tbl.keySet().iterator();
+		return objs.keySet().iterator();
 	}
 }

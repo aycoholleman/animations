@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Ayco Holleman
  *
  */
-public abstract class LazyShortIndexedMemory<T extends ArrayObject> implements _LazyIndexedMemory<T> {
+abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
 
 	private final T[] objs;
 	private final float[] raw;
@@ -25,7 +25,7 @@ public abstract class LazyShortIndexedMemory<T extends ArrayObject> implements _
 	private int numObjs;
 	private int numElems;
 
-	LazyShortIndexedMemory(T[] objects, int objSize)
+	IndexedMemoryLazyShort(T[] objects, int objSize)
 	{
 		this.objs = objects;
 		this.objSize = objSize;
