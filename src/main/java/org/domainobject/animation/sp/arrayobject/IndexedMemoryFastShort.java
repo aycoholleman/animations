@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
  * @author Ayco Holleman
  *
  */
-abstract class IndexedMemoryImmediateShort<T extends ArrayObject> implements _IndexedMemoryImmediate<T> {
+abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _IndexedMemoryFast<T> {
 
 	private final LinkedHashMap<T, Short> objs;
 	private float[] raw;
@@ -24,7 +24,7 @@ abstract class IndexedMemoryImmediateShort<T extends ArrayObject> implements _In
 	private int numObjs;
 	private int numElems;
 
-	IndexedMemoryImmediateShort(int maxNumObjects, int objSize)
+	IndexedMemoryFastShort(int maxNumObjects, int objSize)
 	{
 		this.objSize = objSize;
 		raw = new float[maxNumObjects * objSize];

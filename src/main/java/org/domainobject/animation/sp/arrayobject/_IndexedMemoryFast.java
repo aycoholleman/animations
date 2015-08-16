@@ -1,7 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 
-interface _IndexedMemoryImmediate<T extends ArrayObject> extends _IndexedMemory<T> {
+interface _IndexedMemoryFast<T extends ArrayObject> extends _IndexedMemory<T> {
 
 	void unique(T arrayObject);
 
