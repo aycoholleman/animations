@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Ayco Holleman
  *
  */
-public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements Iterable<T> {
+public abstract class LazyShortIndexedMemory<T extends ArrayObject> implements _LazyIndexedMemory<T> {
 
 	private final T[] objs;
 	private final float[] raw;
@@ -22,10 +22,10 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 	private final ByteBuffer idxBuf;
 
 	private boolean pack;
-	private short numObjs;
+	private int numObjs;
 	private int numElems;
 
-	IndexedMemoryLazyShort(T[] objects, int objSize)
+	LazyShortIndexedMemory(T[] objects, int objSize)
 	{
 		this.objs = objects;
 		this.objSize = objSize;
@@ -37,31 +37,7 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 
 	abstract T construct(float[] raw, int offset);
 
-	public Class<?> getIndexType()
-	{
-		return short.class;
-	}
-
-	public int size()
-	{
-		return numElems;
-	}
-
-	public int countObjects()
-	{
-		return numObjs;
-	}
-
-	public boolean pack()
-	{
-		return pack;
-	}
-
-	public void pack(boolean pack)
-	{
-		this.pack = pack;
-	}
-
+	@Override
 	public T newInstance()
 	{
 		T obj = construct(raw, numElems);
@@ -70,6 +46,41 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 		return obj;
 	}
 
+	@Override
+	public Class<?> getIndexType()
+	{
+		return short.class;
+	}
+
+	@Override
+	public int size()
+	{
+		return numObjs;
+	}
+
+	@Override
+	public void add(T arrayObject)
+	{
+		T copy = construct(raw, numElems);
+		arrayObject.copyTo(copy);
+		indices[numObjs] = (short) numObjs;
+		numElems += objSize;
+		numObjs++;
+	}
+
+	@Override
+	public boolean pack()
+	{
+		return pack;
+	}
+
+	@Override
+	public void pack(boolean pack)
+	{
+		this.pack = pack;
+	}
+
+	@Override
 	public ShaderInput burn()
 	{
 		if (numElems == 0)
@@ -79,7 +90,7 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 		if (uniqObjs == numObjs)
 			objBuf.put(raw, 0, numElems);
 		else if (pack)
-			packAndPut();
+			packAndPut(uniqObjs);
 		else
 			copyAndPut(uniqObjs);
 		objBuf.flip();
@@ -89,6 +100,24 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
+	public ShaderInput burnAssumeUnique()
+	{
+		if (numElems == 0)
+			MemoryException.cannotBurnWhenEmpty();
+		for (short i = 0; i < numObjs; ++i) {
+			indices[i] = i;
+		}
+		objBuf.clear();
+		objBuf.put(raw, 0, numElems);
+		objBuf.flip();
+		idxBuf.clear();
+		idxBuf.asShortBuffer().put(indices, 0, numObjs);
+		idxBuf.flip();
+		return new ShaderInput(objBuf, idxBuf);
+
+	}
+
+	@Override
 	public void clear()
 	{
 		numObjs = 0;
@@ -111,29 +140,28 @@ public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements I
 		};
 	}
 
-	private void packAndPut()
+	private void packAndPut(int uniqObjs)
 	{
-		/*
-		 * Skip 1st object because it will never evaporate or relocate because
-		 * of packing
-		 */
+		// Skip 1st object because it will never evaporate or relocate
 		numElems = objSize;
-		for (numObjs = 1; numObjs < indices.length; ++numObjs) {
-			short idx = indices[numObjs];
-			if (idx == numObjs)
+		for (int i = 1; i < numObjs; ++i) {
+			if (indices[i] != i)
 				continue;
-			objs[idx].copyTo(raw, numElems);
+			objs[indices[i]].copyTo(raw, numElems);
 			numElems += objSize;
 		}
+		numObjs = (short) uniqObjs;
 		objBuf.put(raw, 0, numElems);
 	}
 
-	private void copyAndPut(int uniqueObjects)
+	private void copyAndPut(int uniqObjs)
 	{
-		float[] copy = new float[uniqueObjects * objSize];
+		float[] copy = new float[uniqObjs * objSize];
 		int offset = 0;
-		for (short idx : indices) {
-			objs[idx].copyTo(copy, offset);
+		for (int i = 1; i < numObjs; ++i) {
+			if (indices[i] != i)
+				continue;
+			objs[indices[i]].copyTo(copy, offset);
 			offset += objSize;
 		}
 		objBuf.put(copy, 0, copy.length);

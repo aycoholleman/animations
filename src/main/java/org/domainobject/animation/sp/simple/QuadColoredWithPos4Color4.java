@@ -88,6 +88,8 @@ public class QuadColoredWithPos4Color4 extends Animation {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glBindVertexArray(0);
+		
+		vertices.clear();
 
 	}
 

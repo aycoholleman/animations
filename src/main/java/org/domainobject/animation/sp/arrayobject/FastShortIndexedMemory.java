@@ -4,13 +4,14 @@ import static org.lwjgl.BufferUtils.*;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 /**
  * @author Ayco Holleman
  *
  */
-abstract class IndexedMemoryShort<T extends ArrayObject> {
+abstract class FastShortIndexedMemory<T extends ArrayObject> {
 
 	private float[] raw;
 	private final FloatBuffer objBuf;
@@ -18,12 +19,12 @@ abstract class IndexedMemoryShort<T extends ArrayObject> {
 
 	private final short[] indices;
 	private final ByteBuffer idxBuf;
-	private final LinkedHashMap<T, Short> tbl;
 
+	private LinkedHashMap<T, Short> tbl;
 	private short numObjs;
 	private int numElems;
 
-	IndexedMemoryShort(int maxNumObjects, int objSize)
+	FastShortIndexedMemory(int maxNumObjects, int objSize)
 	{
 		this.objSize = objSize;
 		raw = new float[maxNumObjects * objSize];
@@ -40,7 +41,7 @@ abstract class IndexedMemoryShort<T extends ArrayObject> {
 		return short.class;
 	}
 
-	public void append(T arrayObject)
+	public void add(T arrayObject)
 	{
 		Short index = tbl.get(arrayObject);
 		if (index == null) {
@@ -54,6 +55,21 @@ abstract class IndexedMemoryShort<T extends ArrayObject> {
 			indices[numObjs] = index;
 		}
 		numObjs++;
+	}
+
+	public void addUnique(T arrayObject)
+	{
+		T copy = construct(raw, numElems);
+		arrayObject.copyTo(copy);
+		indices[numObjs] = numObjs;
+		tbl.put(copy, numObjs);
+		numElems += objSize;
+		numObjs++;
+	}
+
+	public boolean contains(T arrayObject)
+	{
+		return tbl.keySet().contains(arrayObject);
 	}
 
 	public ShaderInput burn()
@@ -73,6 +89,11 @@ abstract class IndexedMemoryShort<T extends ArrayObject> {
 	{
 		numObjs = 0;
 		numElems = 0;
-		tbl.clear();
+		tbl = new LinkedHashMap<>(indices.length, 1.0f);
+	}
+
+	public Iterator<T> iterator()
+	{
+		return tbl.keySet().iterator();
 	}
 }

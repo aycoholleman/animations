@@ -1,16 +1,41 @@
 package org.domainobject.animation.sp.arrayobject;
 
+import static org.lwjgl.BufferUtils.*;
+
+import java.nio.FloatBuffer;
+
 /**
  * @author Ayco Holleman
  *
  */
-public abstract class Memory<T extends ArrayObject> extends AbstractMemory<T> {
+public abstract class Memory<T extends ArrayObject> {
 
-	Memory(T[] objects, int numComponents)
+	private final T[] objs;
+	private final float[] raw;
+	private final FloatBuffer objBuf;
+	private final int objSize;
+
+	private int numObjs;
+	private int numElems;
+
+
+	Memory(T[] objects, int objSize)
 	{
-		super(objects, numComponents);
+		this.objs = objects;
+		this.objSize = objSize;
+		raw = new float[objects.length * objSize];
+		objBuf = createFloatBuffer(raw.length);
 	}
 
+	public T newInstance()
+	{
+		T object = construct(raw, numElems);
+		objs[numObjs++] = object;
+		numElems += objSize;
+		return object;
+	}
+
+	abstract T construct(float[] raw, int offset);
 
 	/**
 	 * Burns the vertex data to a {@code FloatBuffer} and then clears the
@@ -29,7 +54,6 @@ public abstract class Memory<T extends ArrayObject> extends AbstractMemory<T> {
 	 * 
 	 * @see #clear()
 	 */
-	@Override
 	public ShaderInput burn()
 	{
 		if (numElems == 0) {
@@ -38,8 +62,13 @@ public abstract class Memory<T extends ArrayObject> extends AbstractMemory<T> {
 		objBuf.clear();
 		objBuf.put(raw, 0, numElems);
 		objBuf.flip();
-		numElems = 0;
-		numObjs = 0;
 		return new ShaderInput(objBuf);
 	}
+	
+	public void clear()
+	{
+		numElems = 0;
+		numObjs = 0;
+	}
+	
 }
