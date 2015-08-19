@@ -16,9 +16,9 @@ public class Pos3 extends Vertex implements _Pos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
-	public static Memory<Pos3> allocate(int maxNumObjects)
+	public static NonIndexedMemory<Pos3> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos3>(new Pos3[maxNumObjects], COMPONENT_COUNT) {
+		return new NonIndexedMemory<Pos3>(new Pos3[maxNumObjects], COMPONENT_COUNT) {
 			@Override
 			Pos3 construct(float[] raw, int offset)
 			{

@@ -15,9 +15,9 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	public static Memory<Pos4> allocate(int maxNumObjects)
+	public static NonIndexedMemory<Pos4> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos4>(new Pos4[maxNumObjects], COMPONENT_COUNT) {
+		return new NonIndexedMemory<Pos4>(new Pos4[maxNumObjects], COMPONENT_COUNT) {
 			@Override
 			Pos4 construct(float[] raw, int offset)
 			{

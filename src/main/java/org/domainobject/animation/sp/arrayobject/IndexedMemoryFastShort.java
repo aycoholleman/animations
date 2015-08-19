@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _IndexedMemoryFast<T> {
 
 	private final LinkedHashMap<T, Short> objs;
-	private float[] raw;
+	private final float[] raw;
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
@@ -27,11 +27,11 @@ abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _Indexed
 	IndexedMemoryFastShort(int maxNumObjects, int objSize)
 	{
 		this.objSize = objSize;
-		raw = new float[maxNumObjects * objSize];
-		objBuf = createFloatBuffer(raw.length);
-		indices = new short[maxNumObjects];
-		idxBuf = createByteBuffer(maxNumObjects * Short.BYTES);
 		objs = new LinkedHashMap<>(maxNumObjects, 1.0f);
+		raw = new float[maxNumObjects * objSize];
+		indices = new short[maxNumObjects];
+		objBuf = createFloatBuffer(raw.length);
+		idxBuf = createByteBuffer(maxNumObjects * Short.BYTES);
 	}
 
 	abstract T construct(float[] raw, int offset);

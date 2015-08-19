@@ -2,8 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 /**
  * {@link ArrayObject} is the abstract base class for all OpenGL objects that
- * basically wrap a small array of float elements, like vectors, vertices and
- * matrices.
+ * wrap a small array of float elements, like vectors, vertices and matrices.
  * 
  * @author Ayco Holleman
  * @created Aug 5, 2015
@@ -32,13 +31,15 @@ abstract class ArrayObject {
 	 * @return The size of the array wrapped by this instance
 	 */
 	abstract int size();
-	
-	public void copyTo(float[] array, int offset) {
-		
+
+	public void copyTo(float[] array, int offset)
+	{
+
 	}
-	
-	<T extends ArrayObject> void copyTo(T other) {
-		
+
+	<T extends ArrayObject> void copyTo(T other)
+	{
+
 	}
 
 

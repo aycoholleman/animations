@@ -11,9 +11,9 @@ public final class Normal extends ArrayObject implements _Normal {
 	public static final int COMPONENT_COUNT = 3;
 
 
-	public static Memory<Normal> allocate(int maxNumObjects)
+	public static NonIndexedMemory<Normal> allocate(int maxNumObjects)
 	{
-		return new Memory<Normal>(new Normal[maxNumObjects], COMPONENT_COUNT) {
+		return new NonIndexedMemory<Normal>(new Normal[maxNumObjects], COMPONENT_COUNT) {
 			@Override
 			Normal construct(float[] raw, int offset)
 			{

@@ -8,7 +8,7 @@ import java.nio.FloatBuffer;
  * @author Ayco Holleman
  *
  */
-public abstract class Memory<T extends ArrayObject> {
+public abstract class NonIndexedMemory<T extends ArrayObject> {
 
 	private final T[] objs;
 	private final float[] raw;
@@ -19,7 +19,7 @@ public abstract class Memory<T extends ArrayObject> {
 	private int numElems;
 
 
-	Memory(T[] objects, int objSize)
+	NonIndexedMemory(T[] objects, int objSize)
 	{
 		this.objs = objects;
 		this.objSize = objSize;

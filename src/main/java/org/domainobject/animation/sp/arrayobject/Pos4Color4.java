@@ -15,9 +15,9 @@ import org.domainobject.animation.sp.util.Array;
  */
 public final class Pos4Color4 extends Vertex implements _Pos4 {
 
-	public static Memory<Pos4Color4> allocate(int maxNumObjects)
+	public static NonIndexedMemory<Pos4Color4> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos4Color4>(new Pos4Color4[maxNumObjects], COMPONENT_COUNT) {
+		return new NonIndexedMemory<Pos4Color4>(new Pos4Color4[maxNumObjects], COMPONENT_COUNT) {
 			@Override
 			Pos4Color4 construct(float[] raw, int offset)
 			{

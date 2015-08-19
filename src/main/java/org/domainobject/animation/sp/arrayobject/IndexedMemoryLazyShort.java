@@ -47,6 +47,18 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	}
 
 	@Override
+	public void commit()
+	{
+		// no-op!
+	}
+
+	@Override
+	public void discard()
+	{
+		// no-op!
+	}
+
+	@Override
 	public Class<?> getIndexType()
 	{
 		return short.class;
@@ -66,18 +78,6 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 		indices[numObjs] = (short) numObjs;
 		numElems += objSize;
 		numObjs++;
-	}
-
-	@Override
-	public boolean pack()
-	{
-		return pack;
-	}
-
-	@Override
-	public void pack(boolean pack)
-	{
-		this.pack = pack;
 	}
 
 	@Override

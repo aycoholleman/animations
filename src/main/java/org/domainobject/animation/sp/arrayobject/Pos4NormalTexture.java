@@ -15,9 +15,9 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Normal {
 
-	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
+	public static NonIndexedMemory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], NUM_COMPONENTS) {
+		return new NonIndexedMemory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], NUM_COMPONENTS) {
 			@Override
 			Pos4NormalTexture construct(float[] raw, int offset)
 			{
