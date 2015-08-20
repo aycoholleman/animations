@@ -20,7 +20,7 @@ package org.domainobject.animation.sp.arrayobject;
  * @param <T>
  * The type of array object stored
  */
-interface _Memory<T extends ArrayObject> extends Iterable<T> {
+public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 
 	/**
 	 * Get the number of array objects stored in memory.
@@ -43,15 +43,14 @@ interface _Memory<T extends ArrayObject> extends Iterable<T> {
 	 * small portion of this memory object's backing array. Thus, you will
 	 * receive a new instance of type T, but no array creation or array copying
 	 * takes places. With the "fast" implementations of {@code _Memory} you
-	 * <i>must</i> call {@link #commit()} before array objects created through
-	 * {@code newInstance} become visible to the burn process. In other words,
-	 * if you don't call {@code commit}, they won't get burnt to OpenGL memory.
-	 * Also, the object counter (reflected by the {@link #size()} method) won't
-	 * be updated until you call {@code commit}. For the "lazy" and
-	 * "non-indexed" implementations of {@code _Memory} the {@code commit}
-	 * method is a no-op. With them, you have in fact no way of preventing array
-	 * objects, once added, from being burnt because the {@link #discard()} is
-	 * also a no-op.
+	 * <b>must</b> call {@link ArrayObject#commit()} on the array objects
+	 * created through {@code newInstance()}. Otherwise they will not be visible
+	 * to the burn process. Also, the memory's object counter (reflected by the
+	 * {@link #size()} method) will not be updated until you call
+	 * {@code ArrayObject.commit()}. When using the "lazy" or "non-indexed"
+	 * implementations of {@code _Memory} you don't need to call
+	 * {@code ArrayObject.commit()}. It's a no-op in that case (as is
+	 * {@link ArrayObject#discard()}).
 	 * 
 	 * @return A new array object of type T
 	 * 
@@ -62,22 +61,6 @@ interface _Memory<T extends ArrayObject> extends Iterable<T> {
 	 */
 	T newInstance();
 
-	/**
-	 * Commit all array objects created through {@link #newInstance()} to
-	 * memory, thereby increasing the object counter and making them visible to
-	 * the {@link #burn()} method.
-	 * 
-	 * @see #discard()
-	 */
-	void commit();
-
-	/**
-	 * Discard all uncommitted array objects.
-	 * 
-	 * @see #newInstance()
-	 * @see #commit()
-	 */
-	void discard();
 
 	/**
 	 * Burn the internal arrays and/or {@code Collection} objects to OpenGL

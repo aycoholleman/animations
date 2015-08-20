@@ -38,24 +38,22 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	abstract T construct(float[] raw, int offset);
 
 	@Override
+	public void add(T arrayObject)
+	{
+		T copy = construct(raw, numElems);
+		arrayObject.copyTo(copy);
+		indices[numObjs] = (short) numObjs;
+		numElems += objSize;
+		numObjs++;
+	}
+	
+	@Override
 	public T newInstance()
 	{
 		T obj = construct(raw, numElems);
 		objs[numObjs++] = obj;
 		numElems += objSize;
 		return obj;
-	}
-
-	@Override
-	public void commit()
-	{
-		// no-op!
-	}
-
-	@Override
-	public void discard()
-	{
-		// no-op!
 	}
 
 	@Override
@@ -68,16 +66,6 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	public int size()
 	{
 		return numObjs;
-	}
-
-	@Override
-	public void add(T arrayObject)
-	{
-		T copy = construct(raw, numElems);
-		arrayObject.copyTo(copy);
-		indices[numObjs] = (short) numObjs;
-		numElems += objSize;
-		numObjs++;
 	}
 
 	@Override

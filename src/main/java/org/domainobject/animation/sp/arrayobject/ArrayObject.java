@@ -5,12 +5,13 @@ package org.domainobject.animation.sp.arrayobject;
  * wrap a small array of float elements, like vectors, vertices and matrices.
  * 
  * @author Ayco Holleman
- * @created Aug 5, 2015
  */
-abstract class ArrayObject {
+public abstract class ArrayObject {
 
 	final float[] components;
 	final int offset;
+
+	_Commitable commitable;
 
 	ArrayObject()
 	{
@@ -31,6 +32,12 @@ abstract class ArrayObject {
 	 * @return The size of the array wrapped by this instance
 	 */
 	abstract int size();
+
+	public void commit()
+	{
+		if (commitable != null)
+			commitable.commit(this);
+	}
 
 	public void copyTo(float[] array, int offset)
 	{

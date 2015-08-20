@@ -24,6 +24,8 @@ abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _Indexed
 	private int numObjs;
 	private int numElems;
 
+	private T pending;
+
 	IndexedMemoryFastShort(int maxNumObjects, int objSize)
 	{
 		this.objSize = objSize;
@@ -34,38 +36,70 @@ abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _Indexed
 		idxBuf = createByteBuffer(maxNumObjects * Short.BYTES);
 	}
 
-	abstract T construct(float[] raw, int offset);
 
 	@Override
-	public Class<?> getIndexType()
+	public int size()
 	{
-		return short.class;
+		return numObjs;
 	}
+
+
+	abstract T construct(float[] raw, int offset);
+
 
 	@Override
 	public void add(T arrayObject)
 	{
-		Short index = objs.get(arrayObject);
-		if (index == null) {
+		Short idx = objs.get(arrayObject);
+		if (idx == null) {
 			T copy = construct(raw, numElems);
 			arrayObject.copyTo(copy);
 			objs.put(copy, (indices[numObjs] = (short) numObjs));
 			numElems += objSize;
 		}
 		else {
-			indices[numObjs] = index;
+			indices[numObjs] = idx;
 		}
 		numObjs++;
 	}
 
 	@Override
-	public void unique(T arrayObject)
+	public void addUnique(T arrayObject)
 	{
 		T copy = construct(raw, numElems);
 		arrayObject.copyTo(copy);
 		objs.put(copy, (indices[numObjs] = (short) numObjs));
 		numElems += objSize;
 		numObjs++;
+	}
+
+	@Override
+	public T newInstance()
+	{
+		pending = construct(raw, numElems);
+		pending.commitable = new _Commitable() {
+			public void commit(ArrayObject caller)
+			{
+				if (caller != pending)
+					MemoryException.overwritten();
+				Short idx = objs.get(pending);
+				if (idx == null) {
+					objs.put(pending, (indices[numObjs] = (short) numObjs));
+					numElems += objSize;
+				}
+				else {
+					indices[numObjs] = idx;
+				}
+				numObjs++;
+			}
+		};
+		return pending;
+	}
+
+	@Override
+	public Class<?> getIndexType()
+	{
+		return short.class;
 	}
 
 	@Override
