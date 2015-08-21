@@ -1,10 +1,9 @@
 package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
+import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
-
-import static org.domainobject.animation.sp.util.Comparators.*;
 
 /**
  * A 9-component vertex class suitable for specifying a position (first four
@@ -50,6 +49,35 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		}
 		return new IndexedMemoryLazyByte<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
 				NUM_COMPONENTS) {
+			@Override
+			Pos4NormalTexture construct(float[] raw, int offset)
+			{
+				return new Pos4NormalTexture(raw, offset);
+			}
+		};
+	}
+
+	public static _IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjects, boolean useIntIndices)
+	{
+		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
+			return new IndexedMemoryFastInt<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
+				@Override
+				Pos4NormalTexture construct(float[] raw, int offset)
+				{
+					return new Pos4NormalTexture(raw, offset);
+				}
+			};
+		}
+		if (maxNumObjects > Byte.MAX_VALUE) {
+			return new IndexedMemoryFastShort<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
+				@Override
+				Pos4NormalTexture construct(float[] raw, int offset)
+				{
+					return new Pos4NormalTexture(raw, offset);
+				}
+			};
+		}
+		return new IndexedMemoryFastByte<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
 			@Override
 			Pos4NormalTexture construct(float[] raw, int offset)
 			{
