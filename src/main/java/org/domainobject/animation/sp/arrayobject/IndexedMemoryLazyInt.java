@@ -11,28 +11,28 @@ import java.util.Iterator;
  * @author Ayco Holleman
  *
  */
-abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
+abstract class IndexedMemoryLazyInt<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
 
 	private final T[] objs;
 	private final float[] raw;
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
-	private final short[] indices;
+	private final int[] indices;
 	private final ByteBuffer idxBuf;
 
 	private boolean destructive;
 	private int numObjs;
 	private int numElems;
 
-	IndexedMemoryLazyShort(T[] objects, int objSize)
+	IndexedMemoryLazyInt(T[] objects, int objSize)
 	{
 		this.objs = objects;
 		this.objSize = objSize;
 		raw = new float[objects.length * objSize];
 		objBuf = createFloatBuffer(raw.length);
-		indices = new short[objects.length];
-		idxBuf = createByteBuffer(objects.length * Short.BYTES);
+		indices = new int[objects.length];
+		idxBuf = createByteBuffer(objects.length * Integer.BYTES);
 	}
 
 	abstract T construct(float[] raw, int offset);
@@ -58,7 +58,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	@Override
 	public Class<?> getIndexType()
 	{
-		return short.class;
+		return int.class;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 			objs[indices[i]].copyTo(raw, numElems);
 			numElems += objSize;
 		}
-		numObjs = (short) uniqObjs;
+		numObjs = uniqObjs;
 		objBuf.put(raw, 0, numElems);
 	}
 
@@ -110,7 +110,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 			copyAndPut(uniqObjs);
 		objBuf.flip();
 		idxBuf.clear();
-		idxBuf.asShortBuffer().put(indices, 0, numObjs);
+		idxBuf.asIntBuffer().put(indices, 0, numObjs);
 		idxBuf.flip();
 		return new ShaderInput(objBuf, idxBuf);
 	}
@@ -120,14 +120,14 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 		if (numElems == 0)
 			MemoryException.cannotBurnWhenEmpty();
 		// Create brainless index
-		for (short i = 0; i < numObjs; ++i) {
+		for (int i = 0; i < numObjs; ++i) {
 			indices[i] = i;
 		}
 		objBuf.clear();
 		objBuf.put(raw, 0, numElems);
 		objBuf.flip();
 		idxBuf.clear();
-		idxBuf.asShortBuffer().put(indices, 0, numObjs);
+		idxBuf.asIntBuffer().put(indices, 0, numObjs);
 		idxBuf.flip();
 		return new ShaderInput(objBuf, idxBuf);
 
@@ -166,7 +166,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 			objs[indices[i]].copyTo(raw, numElems);
 			numElems += objSize;
 		}
-		numObjs = (short) uniqObjs;
+		numObjs = uniqObjs;
 		objBuf.put(raw, 0, numElems);
 	}
 
@@ -185,11 +185,11 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 
 	private int createIndex()
 	{
-		HashMap<T, Short> tbl = new HashMap<>(numObjs, 1.0f);
+		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
 		for (int i = 0; i < numObjs; ++i) {
-			Short idx = tbl.get(objs[i]);
+			Integer idx = tbl.get(objs[i]);
 			if (idx == null)
-				tbl.put(objs[i], (indices[i] = (short) i));
+				tbl.put(objs[i], (indices[i] = i));
 			else
 				indices[i] = idx;
 		}

@@ -19,9 +19,9 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 * proper order (as specified by the index), and that is the array that is
 	 * burnt to the OpenGL buffer. The staging area remains exactly as it was
 	 * before burning, duplicates and all. When destructive burning is allowed,
-	 * duplicate array objects will be removed from the staging area and which
-	 * the remaining array objects will be packed together again. The staging
-	 * area is itself burnt to OpenGL (no new array is created).
+	 * no new array is created. Duplicate array objects will be removed from the
+	 * staging area and the remaining array objects will be packed together
+	 * again. The staging area is itself burnt to OpenGL.
 	 * 
 	 * @return Whether or not the burn process is allowed to alter the staging
 	 * area.
@@ -39,13 +39,13 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 * @see #isDestructive()
 	 */
 	void setDestructive(boolean b);
-	
+
 	/**
 	 * Purge duplicates from the staging area and pack the remaining array
 	 * objects. Always destructive of course.
 	 */
 	void pack();
-	
+
 	ShaderInput burnUnique();
 
 }

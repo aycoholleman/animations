@@ -26,6 +26,38 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		};
 	}
 
+	public static _IndexedMemoryLazy<Pos4NormalTexture> indexLazy(int maxNumObjects, boolean useIntIndices)
+	{
+		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
+			return new IndexedMemoryLazyInt<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
+					NUM_COMPONENTS) {
+				@Override
+				Pos4NormalTexture construct(float[] raw, int offset)
+				{
+					return new Pos4NormalTexture(raw, offset);
+				}
+			};
+		}
+		if (maxNumObjects > Byte.MAX_VALUE) {
+			return new IndexedMemoryLazyShort<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
+					NUM_COMPONENTS) {
+				@Override
+				Pos4NormalTexture construct(float[] raw, int offset)
+				{
+					return new Pos4NormalTexture(raw, offset);
+				}
+			};
+		}
+		return new IndexedMemoryLazyByte<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
+				NUM_COMPONENTS) {
+			@Override
+			Pos4NormalTexture construct(float[] raw, int offset)
+			{
+				return new Pos4NormalTexture(raw, offset);
+			}
+		};
+	}
+
 	/**
 	 * The number of elements of the internal array (9).
 	 */
@@ -58,9 +90,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	}
 
 
-	///////////////////////////////////
+	// /////////////////////////////////
 	// SETTERS
-	///////////////////////////////////
+	// /////////////////////////////////
 
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
@@ -387,9 +419,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	}
 
 
-	///////////////////////////////////
+	// /////////////////////////////////
 	// GETTERS
-	///////////////////////////////////
+	// /////////////////////////////////
 
 	/**
 	 * Get a copy of this instance's components.
@@ -404,9 +436,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	}
 
 
-	///////////////////////////////////
+	// /////////////////////////////////
 	// MISC
-	///////////////////////////////////
+	// /////////////////////////////////
 
 	@Override
 	public Pos4 pos4()
@@ -444,17 +476,16 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	}
 
 
-
 	@Override
 	public void copyTo(float[] array, int offset)
 	{
-		memcpy11(array, offset, components, this.offset);
+		memcpy9(array, offset, components, this.offset);
 	}
 
 
 	@Override
 	void copyTo(ArrayObject other)
 	{
-		memcpy11(other.components, other.offset, components, offset);
+		memcpy9(other.components, other.offset, components, offset);
 	}
 }
