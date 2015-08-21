@@ -3,56 +3,22 @@ package org.domainobject.animation.sp.arrayobject;
 import static org.lwjgl.BufferUtils.*;
 
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * @author Ayco Holleman
  *
  */
-abstract class IndexedMemoryLazyByte<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
-
-	private final T[] objs;
-	private final float[] raw;
-	private final FloatBuffer objBuf;
-	private final int objSize;
+abstract class IndexedMemoryLazyByte<T extends ArrayObject> extends IndexedMemoryLazy<T> {
 
 	private final byte[] indices;
 	private final ByteBuffer idxBuf;
 
-	private boolean destructive;
-	private int numObjs;
-	private int numElems;
-
 	IndexedMemoryLazyByte(T[] objects, int objSize)
 	{
-		this.objs = objects;
-		this.objSize = objSize;
-		raw = new float[objects.length * objSize];
-		objBuf = createFloatBuffer(raw.length);
+		super(objects, objSize);
 		indices = new byte[objects.length];
 		idxBuf = createByteBuffer(objects.length * Byte.BYTES);
-	}
-
-	abstract T construct(float[] raw, int offset);
-
-	@Override
-	public void add(T arrayObject)
-	{
-		T copy = construct(raw, numElems);
-		arrayObject.copyTo(copy);
-		numElems += objSize;
-		numObjs++;
-	}
-
-	@Override
-	public T newInstance()
-	{
-		T obj = construct(raw, numElems);
-		objs[numObjs++] = obj;
-		numElems += objSize;
-		return obj;
 	}
 
 	@Override
@@ -61,24 +27,6 @@ abstract class IndexedMemoryLazyByte<T extends ArrayObject> implements _IndexedM
 		return byte.class;
 	}
 
-	@Override
-	public int size()
-	{
-		return numObjs;
-	}
-
-	@Override
-	public boolean isDestructive()
-	{
-		return destructive;
-	}
-
-	@Override
-	public void setDestructive(boolean destructive)
-	{
-		this.destructive = destructive;
-	}
-	
 	@Override
 	public void pack()
 	{
@@ -131,29 +79,6 @@ abstract class IndexedMemoryLazyByte<T extends ArrayObject> implements _IndexedM
 		idxBuf.flip();
 		return new ShaderInput(objBuf, idxBuf);
 
-	}
-
-	@Override
-	public void clear()
-	{
-		numObjs = 0;
-		numElems = 0;
-	}
-
-	@Override
-	public Iterator<T> iterator()
-	{
-		return new Iterator<T>() {
-			int i = 0;
-			public boolean hasNext()
-			{
-				return i < numObjs;
-			}
-			public T next()
-			{
-				return objs[i++];
-			}
-		};
 	}
 
 	private void packAndPut(int uniqObjs)
