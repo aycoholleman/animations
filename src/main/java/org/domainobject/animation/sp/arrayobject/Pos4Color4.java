@@ -560,4 +560,18 @@ public final class Pos4Color4 extends Vertex implements _Pos4 {
 		return new Pos3(components, offset);
 	}
 
+
+
+	@Override
+	public void copyTo(float[] array, int offset)
+	{
+		memcpy8(array, offset, components, this.offset);
+	}
+
+
+	@Override
+	void copyTo(ArrayObject other)
+	{
+		memcpy8(other.components, other.offset, components, offset);
+	}
 }

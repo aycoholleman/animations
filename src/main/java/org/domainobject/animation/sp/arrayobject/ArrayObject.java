@@ -26,12 +26,7 @@ public abstract class ArrayObject {
 		this.offset = offset;
 	}
 
-	/**
-	 * Get the size of the array wrapped by this instance.
-	 * 
-	 * @return The size of the array wrapped by this instance
-	 */
-	abstract int size();
+	public abstract void copyTo(float[] array, int offset);
 
 	public void commit()
 	{
@@ -39,15 +34,19 @@ public abstract class ArrayObject {
 			commitable.commit(this);
 	}
 
-	public void copyTo(float[] array, int offset)
-	{
+	/**
+	 * Get the size of the array wrapped by this instance.
+	 * 
+	 * @return The size of the array wrapped by this instance
+	 */
+	abstract int size();
 
-	}
-
-	<T extends ArrayObject> void copyTo(T other)
-	{
-
-	}
+	/*
+	 * NB In spite of the ArrayObject argument, this method really expects this
+	 * array object and the other array object to be instances of exactly the
+	 * same subclass of ArrayObject.
+	 */
+	abstract void copyTo(ArrayObject other);
 
 
 }

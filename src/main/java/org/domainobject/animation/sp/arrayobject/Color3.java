@@ -205,4 +205,17 @@ public class Color3 extends ArrayObject implements _Color3 {
 		return hash3(components, offset);
 	}
 
+
+	@Override
+	public void copyTo(float[] array, int offset)
+	{
+		memcpy3(array, offset, components, this.offset);
+	}
+
+
+	public void copyTo(ArrayObject other)
+	{
+		memcpy3(other.components, other.offset, components, offset);
+	}
+
 }

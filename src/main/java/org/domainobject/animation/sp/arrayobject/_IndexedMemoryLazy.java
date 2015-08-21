@@ -9,7 +9,7 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 * 
 	 * @return The type of the indices in the element array buffer
 	 */
-	public Class<?> getIndexType();
+	Class<?> getIndexType();
 
 	/**
 	 * Whether or not the burn process is allowed to delete and move around
@@ -28,7 +28,7 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 * 
 	 * @see #burn()
 	 */
-	public boolean isDestructive();
+	boolean isDestructive();
 
 	/**
 	 * Enable or disable destructive burning.
@@ -38,11 +38,14 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 * 
 	 * @see #isDestructive()
 	 */
-	public void setDestructive(boolean b);
-
+	void setDestructive(boolean b);
+	
 	/**
 	 * Purge duplicates from the staging area and pack the remaining array
 	 * objects. Always destructive of course.
 	 */
-	public void pack();
+	void pack();
+	
+	ShaderInput burnUnique();
+
 }

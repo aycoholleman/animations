@@ -443,4 +443,18 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		return new Pos3(components, offset);
 	}
 
+
+
+	@Override
+	public void copyTo(float[] array, int offset)
+	{
+		memcpy11(array, offset, components, this.offset);
+	}
+
+
+	@Override
+	void copyTo(ArrayObject other)
+	{
+		memcpy11(other.components, other.offset, components, offset);
+	}
 }

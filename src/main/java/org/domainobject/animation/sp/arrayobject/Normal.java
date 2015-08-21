@@ -93,4 +93,18 @@ public final class Normal extends ArrayObject implements _Normal {
 		return hash3(components, offset);
 	}
 
+
+	@Override
+	public void copyTo(float[] array, int offset)
+	{
+		memcpy3(array, offset, components, this.offset);
+	}
+
+
+	@Override
+	void copyTo(ArrayObject other)
+	{
+		memcpy3(other.components, other.offset, components, offset);
+	}
+
 }

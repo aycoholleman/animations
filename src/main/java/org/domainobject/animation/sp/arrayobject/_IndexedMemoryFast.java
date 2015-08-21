@@ -1,7 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
 
-interface _IndexedMemoryFast<T extends ArrayObject> extends _IndexedMemory<T> {
+public interface _IndexedMemoryFast<T extends ArrayObject> extends _IndexedMemory<T> {
 
 	/**
 	 * Add the specified array object under the assumption that it is unique.

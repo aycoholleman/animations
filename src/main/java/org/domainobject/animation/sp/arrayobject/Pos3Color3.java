@@ -379,4 +379,17 @@ public class Pos3Color3 extends ArrayObject implements _Pos3, _Color3 {
 		return new Pos3(components, offset);
 	}
 
+
+	@Override
+	public void copyTo(float[] array, int offset)
+	{
+		memcpy6(array, offset, components, this.offset);
+	}
+
+
+	@Override
+	void copyTo(ArrayObject other)
+	{
+		memcpy6(other.components, other.offset, components, offset);
+	}
 }

@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Ayco Holleman
  *
  */
-abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
+public abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
 
 	private final T[] objs;
 	private final float[] raw;
@@ -21,7 +21,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	private final short[] indices;
 	private final ByteBuffer idxBuf;
 
-	private boolean pack;
+	private boolean destructive;
 	private int numObjs;
 	private int numElems;
 
@@ -46,7 +46,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 		numElems += objSize;
 		numObjs++;
 	}
-	
+
 	@Override
 	public T newInstance()
 	{
@@ -69,6 +69,33 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 	}
 
 	@Override
+	public boolean isDestructive()
+	{
+		return destructive;
+	}
+
+	@Override
+	public void setDestructive(boolean destructive)
+	{
+		this.destructive = destructive;
+	}
+	@Override
+	public void pack()
+	{
+		// Skip 1st object because it will never evaporate or relocate
+		int uniqObjs = createIndex();
+		numElems = objSize;
+		for (int i = 1; i < numObjs; ++i) {
+			if (indices[i] != i)
+				continue;
+			objs[indices[i]].copyTo(raw, numElems);
+			numElems += objSize;
+		}
+		numObjs = (short) uniqObjs;
+		objBuf.put(raw, 0, numElems);
+	}
+
+	@Override
 	public ShaderInput burn()
 	{
 		if (numElems == 0)
@@ -77,7 +104,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 		objBuf.clear();
 		if (uniqObjs == numObjs)
 			objBuf.put(raw, 0, numElems);
-		else if (pack)
+		else if (destructive)
 			packAndPut(uniqObjs);
 		else
 			copyAndPut(uniqObjs);
@@ -88,7 +115,7 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> implements _Indexed
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
-	public ShaderInput burnAssumeUnique()
+	public ShaderInput burnUnique()
 	{
 		if (numElems == 0)
 			MemoryException.cannotBurnWhenEmpty();
