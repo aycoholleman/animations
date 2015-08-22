@@ -5,6 +5,7 @@ import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
+import org.domainobject.animation.sp.util.Math3D;
 
 public final class Normal extends ArrayObject implements _Normal {
 
@@ -105,6 +106,13 @@ public final class Normal extends ArrayObject implements _Normal {
 	void copyTo(ArrayObject other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
+	}
+
+	@Override
+	public _Normal normalize()
+	{
+		Math3D.m3dNormalizeVector3(components, offset);
+		return this;
 	}
 
 }

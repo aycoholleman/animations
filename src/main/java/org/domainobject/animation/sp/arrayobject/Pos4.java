@@ -26,6 +26,11 @@ public final class Pos4 extends Vertex implements _Pos4 {
 		};
 	}
 
+	public Pos4()
+	{
+		super();
+	}
+
 
 	Pos4(float[] components, int offset)
 	{

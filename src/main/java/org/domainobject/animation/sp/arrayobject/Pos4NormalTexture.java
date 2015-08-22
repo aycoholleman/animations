@@ -4,6 +4,8 @@ import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
+import org.domainobject.animation.sp.util.Math3D;
+
 
 /**
  * A 9-component vertex class suitable for specifying a position (first four
@@ -98,16 +100,23 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	 * The byte offsets of the component groups within the array.
 	 */
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(3) };
+	
+	public final Pos4 position;
+	public final Normal normal;
 
 
 	public Pos4NormalTexture()
 	{
 		super();
+		position=new Pos4();
+		normal=new Normal();
 	}
 
 	private Pos4NormalTexture(float[] raw, int offset)
 	{
 		super(raw, offset);
+		position=new Pos4();
+		normal=new Normal();
 	}
 
 
@@ -516,4 +525,13 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		memcpy9(other.components, other.offset, components, offset);
 	}
+
+
+	@Override
+	public _Normal normalize()
+	{
+		Math3D.m3dNormalizeVector3(components, offset + 4);
+		return this;
+	}
+
 }
