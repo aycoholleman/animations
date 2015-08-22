@@ -52,7 +52,7 @@ public final class Pos4Color4Texture extends Vertex implements _Pos4 {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return SIZE;
 	}

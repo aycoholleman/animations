@@ -42,7 +42,7 @@ public class Color3 extends ArrayObject implements _Color3 {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

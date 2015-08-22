@@ -34,7 +34,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

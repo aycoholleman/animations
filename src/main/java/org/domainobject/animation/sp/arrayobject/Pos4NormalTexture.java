@@ -112,7 +112,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return NUM_COMPONENTS;
 	}

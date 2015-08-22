@@ -39,7 +39,7 @@ public class Pos3 extends Vertex implements _Pos3 {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

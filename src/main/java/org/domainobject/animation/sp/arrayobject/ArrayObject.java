@@ -1,10 +1,9 @@
 package org.domainobject.animation.sp.arrayobject;
 
 /**
- * Abstract base class for all OpenGL objects that basically wrap a small array
- * of float elements, like vectors, vertices and matrices. The elements of the
- * array are often referred to as components, e.g. the x component or the red
- * component.
+ * Abstract base class for all OpenGL objects that wrap a small array of float
+ * elements, like vectors, vertices and matrices. The elements of the array are
+ * often referred to as components, e.g. the x component or the red component.
  * 
  * @author Ayco Holleman
  */
@@ -17,7 +16,7 @@ public abstract class ArrayObject {
 
 	ArrayObject()
 	{
-		this.components = new float[size()];
+		this.components = new float[objSize()];
 		this.offset = 0;
 	}
 
@@ -43,12 +42,12 @@ public abstract class ArrayObject {
 
 	/**
 	 * When you obtained this instance through the {@link _Memory#newInstance()
-	 * newInstance} method a {@link _IndexedMemoryFast "fast"} type of indexed
-	 * memory, you <b> must</b> call {@code commit} to commit the array object
-	 * to memory. Otherwise it will not be visibly to the burn process. For the
+	 * newInstance} method of a {@link _IndexedMemoryFast "fast"} type of
+	 * memory, you <b>must</b> call {@code commit} to commit the array object to
+	 * memory. Otherwise it will not be visible to the burn process. For the
 	 * other types of memory this method is a no-op. This method will throw a
-	 * {@link MemoryException} if you call {@code commit} on an instance that
-	 * has meanwhile been overwritten in memory because of another call to
+	 * {@link MemoryException} if you call it on an instance that has meanwhile
+	 * been overwritten in memory because subsequent calls to
 	 * {@link _Memory#newInstance() newInstance}.
 	 */
 	public void commit()
@@ -57,12 +56,12 @@ public abstract class ArrayObject {
 			commitable.commit(this);
 	}
 
-	/*
-	 * Get the size of the array wrapped by this instance.
+	/**
+	 * Get the number of components in this array object.
 	 * 
 	 * @return The size of the array wrapped by this instance
 	 */
-	abstract int size();
+	abstract int objSize();
 
 	/*
 	 * NB In spite of the ArrayObject argument, this method really expects this

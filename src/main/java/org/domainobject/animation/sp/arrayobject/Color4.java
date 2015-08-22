@@ -38,7 +38,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	}
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

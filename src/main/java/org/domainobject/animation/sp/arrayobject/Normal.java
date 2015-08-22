@@ -50,7 +50,7 @@ public final class Normal extends ArrayObject implements _Normal {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

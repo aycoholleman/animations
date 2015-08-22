@@ -23,14 +23,14 @@ package org.domainobject.animation.sp.arrayobject;
 public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 
 	/**
-	 * Get the number of array objects stored in memory.
+	 * Returns the number of array objects stored in memory.
 	 * 
 	 * @return The number of array objects stored in memory
 	 */
 	int size();
 
 	/**
-	 * Add a <i>copy</i> of the specified array object to this memory object.
+	 * Adds a <i>copy</i> of the specified array object to this memory object.
 	 * The array object passed to this method is read only.
 	 * 
 	 * @param arrayObject
@@ -39,7 +39,7 @@ public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 	void add(T arrayObject);
 
 	/**
-	 * Create a new array object of type T. The new array object will occupy a
+	 * Creates a new array object of type T. The new array object will occupy a
 	 * small portion of this memory object's backing array. Thus, you will
 	 * receive a new instance of type T, but no array creation or array copying
 	 * takes places. With the "fast" implementations of {@code _Memory} you
@@ -63,9 +63,10 @@ public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 
 
 	/**
-	 * Burn the internal arrays and/or {@code Collection} objects to OpenGL
-	 * memory. Whether or not these internal structures still are still intact
-	 * after burning is implementation-dependent.
+	 * Burns the array objects to OpenGL memory, creating an OpenGL array buffer
+	 * ({@code GL_ARRAY_BUFFER}) and, in the case of {@link _IndexedMemory
+	 * indexed memory}, also an OpenGL element array buffer (
+	 * {@code GL_ELEMENT_ARRAY_BUFFER}).
 	 * 
 	 * @return
 	 */

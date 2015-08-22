@@ -36,7 +36,7 @@ public class Pos3Color3 extends ArrayObject implements _Pos3, _Color3 {
 
 
 	@Override
-	int size()
+	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}

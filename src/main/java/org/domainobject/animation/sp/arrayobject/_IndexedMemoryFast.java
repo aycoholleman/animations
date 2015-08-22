@@ -11,8 +11,8 @@ package org.domainobject.animation.sp.arrayobject;
  * <p>
  * Contrary to plain (non-indexed) and "lazy" memory, you <b>must</b> call
  * {@link ArrayObject#commit() commit} on an array object created through the
- * {@link newInstance() newInstance} method. Otherwise it will not be visible to the
- * burn process. Also, a fast memory's object counter (reflected by the
+ * {@link newInstance() newInstance} method. Otherwise it will not be visible to
+ * the burn process. Also, a fast memory's object counter (reflected by the
  * {@link #size() size} method) will not be updated until you call
  * {@code commit} on the array object. You must call {@code commit} before you
  * call {@code newInstance} or {@link #add(ArrayObject) add} again. Otherwise
@@ -26,12 +26,14 @@ package org.domainobject.animation.sp.arrayobject;
 public interface _IndexedMemoryFast<T extends ArrayObject> extends _IndexedMemory<T> {
 
 	/**
-	 * Add the specified array object under the assumption that it is unique.
+	 * Adds the specified array object under the assumption that it is unique.
 	 * This saves a hash table lookup to see if an equivalent array object
 	 * already exists in memory, which might be advantageous for very large
 	 * memory objects. Only use this method if you <i>know</i> the array object
 	 * to be distinguishable from all other array objects in memory. Adding
-	 * non-unique array objects has undefined consequences.
+	 * non-unique array objects has undefined consequences. Like with the
+	 * {@link #add(ArrayObject)} method, it's a copy of the specified array
+	 * object that is added to memory, not the array object itself.
 	 * 
 	 * @param arrayObject
 	 * 
