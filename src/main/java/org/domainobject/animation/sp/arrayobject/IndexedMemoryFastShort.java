@@ -130,6 +130,7 @@ abstract class IndexedMemoryFastShort<T extends ArrayObject> implements _Indexed
 		objs.clear();
 	}
 
+	@Override
 	public Iterator<T> iterator()
 	{
 		return objs.keySet().iterator();

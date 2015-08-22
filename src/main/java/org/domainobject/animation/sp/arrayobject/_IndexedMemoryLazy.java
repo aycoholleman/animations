@@ -1,15 +1,15 @@
 package org.domainobject.animation.sp.arrayobject;
 
-
-public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
-
-	/**
-	 * Get the type of the indices in the element array buffer. Will be either
-	 * {@code byte.class} or {@code short.class} or {@code int.class}.
-	 * 
-	 * @return The type of the indices in the element array buffer
-	 */
-	Class<?> getIndexType();
+/**
+ * A type of indexed memory that indexes the array objects stored in it only
+ * when it is request to burn the array buffer and element array buffer.
+ * 
+ * @author Ayco Holleman
+ *
+ * @param <T>
+ * The type of array object held in memory
+ */
+public interface _IndexedMemoryLazy<T extends ArrayObject> extends _IndexedMemory<T> {
 
 	/**
 	 * Whether or not the burn process is allowed to delete and move around
@@ -46,6 +46,13 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _Memory<T> {
 	 */
 	void pack();
 
+	/**
+	 * Burn this memory object to OpenGL buffers under the assumption that all
+	 * array objects contained in it are unique. No attempt will be made to
+	 * filter out non-unique array objects.
+	 * 
+	 * @return
+	 */
 	ShaderInput burnUnique();
 
 }

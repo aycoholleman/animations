@@ -1,8 +1,10 @@
 package org.domainobject.animation.sp.arrayobject;
 
 /**
- * {@link ArrayObject} is the abstract base class for all OpenGL objects that
- * wrap a small array of float elements, like vectors, vertices and matrices.
+ * Abstract base class for all OpenGL objects that basically wrap a small array
+ * of float elements, like vectors, vertices and matrices. The elements of the
+ * array are often referred to as components, e.g. the x component or the red
+ * component.
  * 
  * @author Ayco Holleman
  */
@@ -26,15 +28,36 @@ public abstract class ArrayObject {
 		this.offset = offset;
 	}
 
-	public abstract void copyTo(float[] array, int offset);
+	/**
+	 * Copies the components of this array object to the specified array.
+	 * 
+	 * @param target
+	 * The arget array
+	 * @param offset
+	 * The offset within the target array
+	 * 
+	 * @throw {@link ArrayIndexOutOfBoundsException} If there are not enough
+	 * elements in the target array (after {@code offset})
+	 */
+	public abstract void copyTo(float[] target, int offset);
 
+	/**
+	 * When you obtained this instance through the {@link _Memory#newInstance()
+	 * newInstance} method a {@link _IndexedMemoryFast "fast"} type of indexed
+	 * memory, you <b> must</b> call {@code commit} to commit the array object
+	 * to memory. Otherwise it will not be visibly to the burn process. For the
+	 * other types of memory this method is a no-op. This method will throw a
+	 * {@link MemoryException} if you call {@code commit} on an instance that
+	 * has meanwhile been overwritten in memory because of another call to
+	 * {@link _Memory#newInstance() newInstance}.
+	 */
 	public void commit()
 	{
 		if (commitable != null)
 			commitable.commit(this);
 	}
 
-	/**
+	/*
 	 * Get the size of the array wrapped by this instance.
 	 * 
 	 * @return The size of the array wrapped by this instance

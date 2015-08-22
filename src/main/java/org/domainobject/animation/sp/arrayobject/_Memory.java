@@ -18,7 +18,7 @@ package org.domainobject.animation.sp.arrayobject;
  * @author Ayco Holleman
  *
  * @param <T>
- * The type of array object stored
+ * The type of array object held in memory
  */
 public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 
