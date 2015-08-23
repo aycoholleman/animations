@@ -20,11 +20,25 @@ public abstract class ArrayObject {
 		this.offset = 0;
 	}
 
-
+	/*
+	 * Embeds this instance within a large {@code float} array at the specified
+	 * offset.
+	 */
 	ArrayObject(float[] components, int offset)
 	{
 		this.components = components;
 		this.offset = offset;
+	}
+
+	/*
+	 * Embeds another, smaller type of array object within the specified array
+	 * object at the specified position. The specified offset is relative to the
+	 * start of the embedding instance!
+	 */
+	ArrayObject(ArrayObject embedder, int offset)
+	{
+		this.components = embedder.components;
+		this.offset = embedder.offset + offset;
 	}
 
 	/**

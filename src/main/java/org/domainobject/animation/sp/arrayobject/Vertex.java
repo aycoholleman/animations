@@ -74,15 +74,20 @@ public abstract class Vertex extends ArrayObject {
 	 */
 	public static float globalT = 0.0f;
 
-	public Vertex()
+	Vertex()
 	{
 		super();
 	}
-
 
 	Vertex(float[] components, int offset)
 	{
 		super(components, offset);
 	}
+
+	Vertex(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
+	}
+
 
 }

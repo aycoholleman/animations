@@ -2,7 +2,6 @@ package org.domainobject.animation.sp.arrayobject;
 
 import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
-import static org.domainobject.animation.sp.arrayobject.Vertex.*;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -40,31 +39,17 @@ public class Color3 extends ArrayObject implements _Color3 {
 		super(components, offset);
 	}
 
-
 	@Override
 	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}
 
-
-	/**
-	 * Copy the coordinates of the specified {@code Color3} to this instance.
-	 * 
-	 * @param other
-	 */
-	public void set(Color3 other)
+	public Color3 rgb(float r, float g, float b)
 	{
-		memcpy3(components, offset, other.components, other.offset);
-	}
-
-
-	public Color3 rgb(float red, float green, float blue)
-	{
-		Array.set3(components, offset, red, green, blue);
+		Array.set3(components, offset, r, g, b);
 		return this;
 	}
-
 
 	public Color3 rgb(float[] rgb)
 	{
@@ -72,56 +57,52 @@ public class Color3 extends ArrayObject implements _Color3 {
 		return this;
 	}
 
-
 	/**
-	 * Copy the channels of the specified instance to this instance.
+	 * Copies the channels of the specified {@link _Color3} instance to this
+	 * instance.
 	 * 
 	 * @param other
 	 * 
 	 * @return This instance
 	 */
-	public Color3 rgb(Color3 other)
+	public Color3 rgb(_Color3 other)
 	{
-		memcpy3(components, offset, other.components, other.offset);
+		memcpy3(components, offset, other.color().components, other.color().offset);
 		return this;
 	}
 
-
 	/**
-	 * Set the red channel.
+	 * Set red channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color3 red(float r)
+	public Color3 r(float r)
 	{
 		components[offset + 0] = r;
 		return this;
 	}
 
-
 	/**
-	 * Set the green channel.
+	 * Set green channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color3 green(float g)
+	public Color3 g(float g)
 	{
 		components[offset + 1] = g;
 		return this;
 	}
 
-
 	/**
-	 * Set the blue channel.
+	 * Set blue channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color3 blue(float b)
+	public Color3 b(float b)
 	{
 		components[offset + 2] = b;
 		return this;
 	}
-
 
 	/**
 	 * Get the red, green and blue channel.
@@ -133,71 +114,44 @@ public class Color3 extends ArrayObject implements _Color3 {
 		return result;
 	}
 
-
 	/**
-	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #globalAlpha} for the alpha channel. Useful for converting a
-	 * 3-component color to a 4-component color.
+	 * Get red channel.
 	 */
-	public float[] rgba()
-	{
-		float[] result = new float[4];
-		memcpy3(result, 0, components, offset);
-		result[3] = globalAlpha;
-		return result;
-	}
-
-
-	/**
-	 * Get red, green, blue and alpha channel, using the specified value for the
-	 * alpha channel. Useful for converting a 3-component color to a 4-component
-	 * color.
-	 */
-	public float[] rgba(float alpha)
-	{
-		float[] result = new float[4];
-		memcpy3(result, 0, components, offset);
-		result[3] = alpha;
-		return result;
-	}
-
-
-	/**
-	 * Get the red channel.
-	 */
-	public float red()
+	public float r()
 	{
 		return components[offset + 0];
 	}
 
-
 	/**
-	 * Get the green channel.
+	 * Get green channel.
 	 */
-	public float green()
+	public float g()
 	{
 		return components[offset + 1];
 	}
 
-
 	/**
-	 * Get the blue channel.
+	 * Get blue channel.
 	 */
-	public float blue()
+	public float b()
 	{
 		return components[offset + 2];
 	}
 
+	@Override
+	public Color3 color()
+	{
+		return this;
+	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		Color3 other = (Color3) obj;
+		Color3 other = ((_Color3) obj).color();
 		return same3(components, offset, other.components, other.offset);
 	}
-
 
 	@Override
 	public int hashCode()
@@ -205,15 +159,14 @@ public class Color3 extends ArrayObject implements _Color3 {
 		return hash3(components, offset);
 	}
 
-
 	@Override
 	public void copyTo(float[] array, int offset)
 	{
 		memcpy3(array, offset, components, this.offset);
 	}
 
-
-	public void copyTo(ArrayObject other)
+	@Override
+	void copyTo(ArrayObject other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
 	}

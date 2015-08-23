@@ -33,6 +33,11 @@ public final class Normal extends ArrayObject implements _Normal {
 		super(components, offset);
 	}
 
+	Normal(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
+	}
+
 	public Normal init()
 	{
 		components[offset + 0] = 0;
@@ -49,27 +54,102 @@ public final class Normal extends ArrayObject implements _Normal {
 		return this;
 	}
 
-
 	@Override
 	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}
 
-	@Override
-	public Normal normal(float x, float y, float z)
+	public Normal xyz(float x, float y, float z)
 	{
 		Array.set3(components, offset, x, y, z);
 		return this;
 	}
 
-	@Override
-	public Normal normal(float[] normal)
+	public Normal xyz(float[] xyz)
 	{
-		memcpy3(components, offset, normal, 0);
+		memcpy3(components, offset, xyz, 0);
 		return this;
 	}
 
+	public Normal xyz(_Normal other)
+	{
+		memcpy3(components, offset, other.normal().components, other.normal().offset);
+		return this;
+	}
+	
+	/**
+	 * Set x component.
+	 * 
+	 * @return This instance
+	 */
+	public Normal x(float x)
+	{
+		components[offset + 0] = x;
+		return this;
+	}
+
+	/**
+	 * Set y component.
+	 * 
+	 * @return This instance
+	 */
+	public Normal y(float y)
+	{
+		components[offset + 1] = y;
+		return this;
+	}
+
+	/**
+	 * Set z component.
+	 * 
+	 * @return This instance
+	 */
+	public Normal z(float z)
+	{
+		components[offset + 2] = z;
+		return this;
+	}	
+
+	public Normal normalize()
+	{
+		Math3D.m3dNormalizeVector3(components, offset);
+		return this;
+	}
+	
+	/**
+	 * Get the x, y and z coordinates.
+	 */
+	public float[] xyz()
+	{
+		float[] result = new float[3];
+		memcpy3(result, 0, components, offset);
+		return result;
+	}
+
+	/**
+	 * Get x component.
+	 */
+	public float x()
+	{
+		return components[offset + 0];
+	}
+
+	/**
+	 * Get y component.
+	 */
+	public float y()
+	{
+		return components[offset + 1];
+	}
+
+	/**
+	 * Get z component.
+	 */
+	public float z()
+	{
+		return components[offset + 2];
+	}
 
 	@Override
 	public Normal normal()
@@ -77,16 +157,14 @@ public final class Normal extends ArrayObject implements _Normal {
 		return this;
 	}
 
-
 	@Override
 	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		Normal other = (Normal) obj;
+		Normal other = ((_Normal) obj).normal();
 		return same3(components, offset, other.components, other.offset);
 	}
-
 
 	@Override
 	public int hashCode()
@@ -94,25 +172,16 @@ public final class Normal extends ArrayObject implements _Normal {
 		return hash3(components, offset);
 	}
 
-
 	@Override
 	public void copyTo(float[] array, int offset)
 	{
 		memcpy3(array, offset, components, this.offset);
 	}
 
-
 	@Override
 	void copyTo(ArrayObject other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
-	}
-
-	@Override
-	public _Normal normalize()
-	{
-		Math3D.m3dNormalizeVector3(components, offset);
-		return this;
 	}
 
 }

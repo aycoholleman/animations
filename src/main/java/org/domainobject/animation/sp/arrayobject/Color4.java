@@ -1,6 +1,5 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.arrayobject.Vertex.*;
 import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
@@ -37,179 +36,137 @@ public class Color4 extends ArrayObject implements _Color4 {
 		super(components, offset);
 	}
 
+	Color4(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
+	}
+
 	@Override
 	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}
 
-
-	/**
-	 * Set the red, green, blue and alpha channel.
-	 * 
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @param alpha
-	 */
-	public void set(float red, float green, float blue, float alpha)
-	{
-		Array.set4(components, offset, red, green, blue, alpha);
-	}
-
-
-	/**
-	 * Set the red, green, blue and alpha channel.
-	 * 
-	 * @param rgba
-	 * A {@code float} array containing at least 4 elements
-	 * @throws ArrayIndexOutOfBoundsException
-	 * If the specified array contains less than 4 elements
-	 */
-	public void set(float[] rgba)
-	{
-		memcpy4(components, offset, rgba, 0);
-	}
-
-
-	/**
-	 * Copy the color channels of the specified {@code Color4} to this instance.
-	 * 
-	 * @param other
-	 */
-	public void set(Color4 other)
-	{
-		memcpy4(components, offset, other.components, other.offset);
-	}
-
-
-	@Override
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
 		Array.set4(components, offset, red, green, blue, alpha);
 		return this;
 	}
 
-	@Override
 	public Color4 rgba(float[] rgba)
 	{
 		memcpy4(components, offset, rgba, 0);
 		return this;
 	}
 
-	@Override
-	public Color4 rgb(float red, float green, float blue)
+	public Color4 rgba(_Color4 other)
 	{
-		Array.set3(components, offset, red, green, blue);
+		memcpy4(components, offset, other.color().components, other.color().offset);
 		return this;
 	}
 
+	public Color4 rgb(float r, float g, float b)
+	{
+		Array.set4(components, offset, r, g, b, Vertex.globalAlpha);
+		return this;
+	}
 
-	@Override
 	public Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
-		return this;
+		return a(Vertex.globalAlpha);
 	}
 
-
 	/**
-	 * Set the red channel.
+	 * Set red channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color4 red(float r)
+	public Color4 r(float r)
 	{
 		components[offset + 0] = r;
 		return this;
 	}
 
-
 	/**
-	 * Set the green channel.
+	 * Set green channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color4 green(float g)
+	public Color4 g(float g)
 	{
 		components[offset + 1] = g;
 		return this;
 	}
 
-
 	/**
-	 * Set the blue channel.
+	 * Set blue channel.
 	 * 
 	 * @return This instance
 	 */
-	public Color4 blue(float b)
+	public Color4 b(float b)
 	{
 		components[offset + 2] = b;
 		return this;
 	}
 
-
 	/**
-	 * Get the red, green and blue channel.
+	 * Set alpha channel.
+	 * 
+	 * @return This instance
 	 */
-	public float[] rgb()
+	public Color4 a(float a)
 	{
-		float[] result = new float[3];
-		memcpy3(result, 0, components, offset);
-		return result;
+		components[offset + 3] = a;
+		return this;
 	}
 
-
 	/**
-	 * Get red, green, blue and alpha channels, using the value of
-	 * {@link #globalAlpha} for the alpha channel.
+	 * Get red, green, blue and alpha channel
 	 */
 	public float[] rgba()
 	{
 		float[] result = new float[4];
-		memcpy3(result, 0, components, offset);
-		result[3] = globalAlpha;
+		memcpy4(result, 0, components, offset);
 		return result;
 	}
 
-
 	/**
-	 * Get red, green, blue and alpha channel, using the specified value for the
-	 * alpha channel.
+	 * Get red channel.
 	 */
-	public float[] rgba(float alpha)
-	{
-		float[] result = new float[4];
-		memcpy3(result, 0, components, offset);
-		result[3] = alpha;
-		return result;
-	}
-
-
-	/**
-	 * Get the red channel.
-	 */
-	public float red()
+	public float r()
 	{
 		return components[offset + 0];
 	}
 
-
 	/**
-	 * Get the green channel.
+	 * Get green channel.
 	 */
-	public float green()
+	public float g()
 	{
 		return components[offset + 1];
 	}
 
-
 	/**
-	 * Get the blue channel.
+	 * Get blue channel.
 	 */
-	public float blue()
+	public float b()
 	{
 		return components[offset + 2];
+	}
+
+	/**
+	 * Get alpha channel.
+	 */
+	public float a()
+	{
+		return components[offset + 3];
+	}
+
+	@Override
+	public Color4 color()
+	{
+		return this;
 	}
 
 	@Override
@@ -217,7 +174,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	{
 		if (this == obj)
 			return true;
-		Color4 other = (Color4) obj;
+		Color4 other = ((_Color4) obj).color();
 		return same4(components, offset, other.components, other.offset);
 	}
 
@@ -228,9 +185,9 @@ public class Color4 extends ArrayObject implements _Color4 {
 	}
 
 	@Override
-	public void copyTo(float[] array, int offset)
+	public void copyTo(float[] target, int offset)
 	{
-		memcpy4(array, offset, components, this.offset);
+		memcpy4(target, offset, components, this.offset);
 	}
 
 	@Override

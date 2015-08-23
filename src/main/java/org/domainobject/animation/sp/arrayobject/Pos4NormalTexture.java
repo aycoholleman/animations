@@ -100,23 +100,26 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	 * The byte offsets of the component groups within the array.
 	 */
 	public static final int[] strides = new int[] { 0, sizeof(4), sizeof(3) };
-	
+
 	public final Pos4 position;
 	public final Normal normal;
+	public final Texture texture;
 
 
 	public Pos4NormalTexture()
 	{
 		super();
-		position=new Pos4();
-		normal=new Normal();
+		position = new Pos4(this, 0);
+		normal = new Normal(this, 4);
+		texture = new Texture(this, 7);
 	}
 
 	private Pos4NormalTexture(float[] raw, int offset)
 	{
 		super(raw, offset);
-		position=new Pos4();
-		normal=new Normal();
+		position = new Pos4(this, 0);
+		normal = new Normal(this, 4);
+		texture = new Texture(this, 7);
 	}
 
 

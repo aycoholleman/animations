@@ -9,7 +9,6 @@ import org.domainobject.animation.sp.util.Array;
  * A 4-component vertex class suitable for specifying 4D coordinates.
  * 
  * @author Ayco Holleman
- * @created Jul 20, 2015
  */
 public final class Pos4 extends Vertex implements _Pos4 {
 
@@ -38,23 +37,16 @@ public final class Pos4 extends Vertex implements _Pos4 {
 	}
 
 
+	Pos4(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
+	}
+
 	@Override
 	int objSize()
 	{
 		return COMPONENT_COUNT;
 	}
-
-
-	/**
-	 * Copy the coordinates of the specified instance to this instance.
-	 * 
-	 * @param other
-	 */
-	public void set(Pos4 other)
-	{
-		memcpy4(components, offset, other.components, other.offset);
-	}
-
 
 	/**
 	 * Set the x, y, z and w coordinates and return it.
@@ -85,34 +77,39 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Copy the coordinates of the specified instance to this instance.
+	 * Copies the coordinates of the specified instance to this instance.
 	 * 
 	 * @param other
 	 */
-	public Pos4 xyzw(Pos4 other)
+	public Pos4 xyzw(_Pos4 other)
 	{
-		memcpy4(components, offset, other.components, other.offset);
+		memcpy4(components, offset, other.position().components, other.position().offset);
 		return this;
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates.
+	 * Set the x, y, and z coordinates to the specified values and the w
+	 * coordinate to {@link Vertex#globalW globalW}.
 	 * 
 	 * @return This instance
 	 */
 	public Pos4 xyz(float x, float y, float z)
 	{
-		Array.set3(components, offset, x, y, z);
+		Array.set4(components, offset, x, y, z, globalW);
 		return this;
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates.
+	 * Set the x, y, and z coordinates as specified by the array argument and
+	 * the w coordinate to {@link Vertex#globalW globalW}.
 	 * 
 	 * @param coordinates
 	 * A {@code float} array containing at least 3 elements
+	 * 
+	 * @return This instance
+	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 * If the specified array contains less than 3 elements
 	 */
@@ -124,7 +121,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the x coordinate.
+	 * Set x coordinate.
 	 * 
 	 * @return This instance
 	 */
@@ -136,7 +133,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the y coordinate.
+	 * Set y coordinate.
 	 * 
 	 * @return This instance
 	 */
@@ -148,7 +145,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the z coordinate.
+	 * Set z coordinate.
 	 * 
 	 * @return This instance
 	 */
@@ -160,7 +157,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the w coordinate.
+	 * Set w coordinate.
 	 * 
 	 * @return This instance
 	 */
@@ -230,7 +227,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	@Override
-	public Pos4 pos4()
+	public Pos4 position()
 	{
 		return this;
 	}
@@ -249,14 +246,6 @@ public final class Pos4 extends Vertex implements _Pos4 {
 	{
 		return hash4(components, offset);
 	}
-
-
-	@Override
-	public Pos3 pos3()
-	{
-		return new Pos3(components, offset);
-	}
-
 
 	@Override
 	public void copyTo(float[] array, int offset)

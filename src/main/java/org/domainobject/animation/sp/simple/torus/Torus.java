@@ -65,6 +65,9 @@ public class Torus extends Animation {
 				vertex.normal(x0 * c, y0 * c, z / minorRadius).normalize();
 				vertex.xyzw(x0 * r, y0 * r, z, 1.0f);
 				
+				vertex.texture.st((float) (i) / (float) (numMajor),(float) (j) / (float) (numMinor));
+				vertex.normal.normal(x0 * c, y0 * c, z / minorRadius);
+				
 
 			}
 
