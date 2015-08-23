@@ -96,10 +96,10 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 	{
 		
 		NonIndexedMemory<Pos4> vertices = Pos4.allocate(30);
-		vertices.newInstance().xyzw(-0.5f, 0.5f, 0f, 1f);
-		vertices.newInstance().xyzw(-0.5f, -0.5f, 0f, 1f);
-		vertices.newInstance().xyzw(0.5f, -0.5f, 0f, 1f);
-		vertices.newInstance().xyzw(0.5f, 0.5f, 0f, 1f);
+		vertices.make().xyzw(-0.5f, 0.5f, 0f, 1f);
+		vertices.make().xyzw(-0.5f, -0.5f, 0f, 1f);
+		vertices.make().xyzw(0.5f, -0.5f, 0f, 1f);
+		vertices.make().xyzw(0.5f, 0.5f, 0f, 1f);
 
 		
 		RawMemory colors = new RawMemory(30);

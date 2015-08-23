@@ -37,7 +37,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 	}
 
 	@Override
-	public T newInstance()
+	public T make()
 	{
 		T obj = construct(raw, numElems);
 		objs[numObjs++] = obj;

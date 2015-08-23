@@ -60,10 +60,10 @@ public class QuadColoredWithPos4Color4 extends Animation {
 
 		program.activate();
 
-		vertices.newInstance().position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);
-		vertices.newInstance().position(-0.5f, -0.5f, 0f, 1f).color(0f, 1f, 0f, 1f);
-		vertices.newInstance().position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);
-		vertices.newInstance().position(0.5f, 0.5f, 0f, 1f).color(1f, 1f, 1f, 1f);
+		vertices.make().position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);
+		vertices.make().position(-0.5f, -0.5f, 0f, 1f).color(0f, 1f, 0f, 1f);
+		vertices.make().position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);
+		vertices.make().position(0.5f, 0.5f, 0f, 1f).color(1f, 1f, 1f, 1f);
 
 		// Bind to the VAO that has all the information about the vertices
 		glBindVertexArray(vaoId);

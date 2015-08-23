@@ -55,14 +55,14 @@ public abstract class ArrayObject {
 	public abstract void copyTo(float[] target, int offset);
 
 	/**
-	 * When you obtained this instance through the {@link _Memory#newInstance()
+	 * When you obtained this instance through the {@link _Memory#make()
 	 * newInstance} method of a {@link _IndexedMemoryFast "fast"} type of
 	 * memory, you <b>must</b> call {@code commit} to commit the array object to
 	 * memory. Otherwise it will not be visible to the burn process. For the
 	 * other types of memory this method is a no-op. This method will throw a
 	 * {@link MemoryException} if you call it on an instance that has meanwhile
 	 * been overwritten in memory because subsequent calls to
-	 * {@link _Memory#newInstance() newInstance}.
+	 * {@link _Memory#make() newInstance}.
 	 */
 	public void commit()
 	{

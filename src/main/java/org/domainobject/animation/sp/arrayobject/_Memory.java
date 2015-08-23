@@ -59,7 +59,7 @@ public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 	 * @see #discard()
 	 * 
 	 */
-	T newInstance();
+	T make();
 
 
 	/**

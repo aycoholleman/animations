@@ -74,7 +74,7 @@ abstract class IndexedMemoryFastByte<T extends ArrayObject> implements _IndexedM
 	}
 
 	@Override
-	public T newInstance()
+	public T make()
 	{
 		pending = construct(raw, numElems);
 		pending.commitable = new _Commitable() {

@@ -51,7 +51,7 @@ public class Torus extends Animation {
 			float x1 = (float) cos(a1);
 			float y1 = (float) sin(a1);
 
-			Pos4NormalTexture vertex = verts.newInstance();
+			Pos4NormalTexture vertex = verts.make();
 
 			for (j = 0; j <= numMinor; ++j) {
 				double b = j * minorStep;

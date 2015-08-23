@@ -52,11 +52,6 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		return COMPONENT_COUNT;
 	}
 
-
-	// /////////////////////////////////
-	// SETTERS
-	// /////////////////////////////////
-
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
@@ -76,20 +71,17 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		components[offset + 7] = Vertex.globalAlpha;
 	}
 
-
 	public Pos4Color4 position(float x, float y, float z, float w)
 	{
 		position.xyzw(x, y, z, w);
 		return this;
 	}
 
-
 	public Pos4Color4 color(float r, float g, float b, float a)
 	{
 		color.rgba(r, g, b, a);
 		return this;
 	}
-
 
 	@Override
 	public Pos4 position()
@@ -103,7 +95,6 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		return color;
 	}
 
-
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -114,20 +105,17 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 				&& same4(components, offset + 4, other.components, other.offset + 4);
 	}
 
-
 	@Override
 	public int hashCode()
 	{
 		return hash8(components, offset);
 	}
 
-
 	@Override
 	public void copyTo(float[] array, int offset)
 	{
 		memcpy8(array, offset, components, this.offset);
 	}
-
 
 	@Override
 	void copyTo(ArrayObject other)

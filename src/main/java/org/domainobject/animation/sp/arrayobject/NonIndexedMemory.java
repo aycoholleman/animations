@@ -27,7 +27,7 @@ public abstract class NonIndexedMemory<T extends ArrayObject> {
 		objBuf = createFloatBuffer(raw.length);
 	}
 
-	public T newInstance()
+	public T make()
 	{
 		T object = construct(raw, numElems);
 		objs[numObjs++] = object;
