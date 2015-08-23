@@ -39,6 +39,11 @@ public class Color3 extends ArrayObject implements _Color3 {
 		super(components, offset);
 	}
 
+	Color3(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
+	}
+
 	@Override
 	int objSize()
 	{

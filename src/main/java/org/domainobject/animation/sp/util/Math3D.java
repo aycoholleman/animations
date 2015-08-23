@@ -433,9 +433,9 @@ public class Math3D {
 	}
 
 
-	////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////
 	// Matrix functions
-	////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////
 
 	public static void m3dCopyMatrix33(float[] dst, float[] src)
 	{
@@ -648,7 +648,8 @@ public class Math3D {
 	}
 
 
-	public static void m3dMakePerspectiveMatrix(float[] m44Projection, float fFov, float fAspect, float zMin, float zMax)
+	public static void m3dMakePerspectiveMatrix(float[] m44Projection, float fFov, float fAspect, float zMin,
+			float zMax)
 	{
 		m3dLoadIdentity44(m44Projection);
 		float yMax = zMin * (float) Math.tan(fFov * 0.5f);
@@ -666,8 +667,8 @@ public class Math3D {
 	}
 
 
-	public static void m3dMakeOrthographicMatrix(float[] m44Projection, float xMin, float xMax, float yMin, float yMax,
-			float zMin, float zMax)
+	public static void m3dMakeOrthographicMatrix(float[] m44Projection, float xMin, float xMax, float yMin,
+			float yMax, float zMin, float zMax)
 	{
 		m3dLoadIdentity44(m44Projection);
 		m44Projection[0] = 2.0f / (xMax - xMin);
@@ -868,7 +869,8 @@ public class Math3D {
 		float[] vec3Tmp0 = new float[3];
 		float[] vec3Tmp1 = new float[3];
 
-		// Calculate two vectors from the three points. Assumes counter clockwise
+		// Calculate two vectors from the three points. Assumes counter
+		// clockwise
 		// winding!
 		vec3Tmp0[0] = vec3a[0] - vec3b[0];
 		vec3Tmp0[1] = vec3a[1] - vec3b[1];
@@ -933,9 +935,10 @@ public class Math3D {
 	 * does not intersect. Return value is 0.0 if ray is tangent Positive value
 	 * is distance to the intersection point.
 	 */
-	public static float m3dRaySphereTest(float[] v3Point, float[] v3Ray, float[] v3SphereCenter, float sphereRadius)
+	public static float m3dRaySphereTest(float[] v3Point, float[] v3Ray, float[] v3SphereCenter,
+			float sphereRadius)
 	{
-		//m3dNormalizeVector(ray);	// Make sure ray is unit length
+		// m3dNormalizeVector(ray); // Make sure ray is unit length
 
 		float[] rayToCenter = new float[3]; // Ray to center of sphere
 		rayToCenter[0] = v3SphereCenter[0] - v3Point[0];
@@ -968,8 +971,8 @@ public class Math3D {
 	 * @param iViewPort
 	 * @param vec3In
 	 */
-	public static void m3dProjectXY(float[] vec2Out, float[] m44ModelView, float[] m44Projection, int[] iViewPort,
-			float[] vec3In)
+	public static void m3dProjectXY(float[] vec2Out, float[] m44ModelView, float[] m44Projection,
+			int[] iViewPort, float[] vec3In)
 	{
 		float[] v4Back = new float[4];
 		float[] v4Forth = new float[4];
@@ -1008,8 +1011,8 @@ public class Math3D {
 	 * @param iViewPort
 	 * @param v2PointIn
 	 */
-	public static void m3dProjectXYZ(float[] v2PointOut, float[] m44ModelView, float[] m44Projection, int[] iViewPort,
-			float[] v2PointIn)
+	public static void m3dProjectXYZ(float[] v2PointOut, float[] m44ModelView, float[] m44Projection,
+			int[] iViewPort, float[] v2PointIn)
 	{
 		float[] vBack = new float[4];
 		float[] vForth = new float[4];
@@ -1052,7 +1055,8 @@ public class Math3D {
 	 * @param v3P3
 	 * @param t
 	 */
-	public static void m3dCatmullRom(float[] vec3Out, float[] v3P0, float[] v3P1, float[] v3P2, float[] v3P3, float t)
+	public static void m3dCatmullRom(float[] vec3Out, float[] v3P0, float[] v3P1, float[] v3P2, float[] v3P3,
+			float t)
 	{
 		float t2 = t * t;
 		float t3 = t2 * t;
@@ -1095,8 +1099,8 @@ public class Math3D {
 	 * @param v2x3TexCoords
 	 * @param N
 	 */
-	public static void m3dCalculateTangentBasis(float[] vec3Tangent, float[][] v3x3Triangle, float[][] v2x3TexCoords,
-			float[] N)
+	public static void m3dCalculateTangentBasis(float[] vec3Tangent, float[][] v3x3Triangle,
+			float[][] v2x3TexCoords, float[] N)
 	{
 		float[] dv2v1 = new float[3];
 		float[] dv3v1 = new float[3];
@@ -1118,7 +1122,8 @@ public class Math3D {
 		m3dScaleVector3(dv3v1, dc2c1b);
 
 		m3dSubtractVectors3(vec3Tangent, dv2v1, dv3v1);
-		m3dScaleVector3(vec3Tangent, M); // This potentially changes the direction of the vector
+		m3dScaleVector3(vec3Tangent, M); // This potentially changes the
+											// direction of the vector
 		m3dNormalizeVector3(vec3Tangent);
 
 		float[] B = new float[3];
@@ -1197,14 +1202,13 @@ public class Math3D {
 	 * return the distance squared of the two points.
 	 * 
 	 * @param vPointOnRay
-	 *            Out: vPointOnRay is the poing on the ray closest to
-	 *            vPointInSpace
+	 * Out: vPointOnRay is the poing on the ray closest to vPointInSpace
 	 * @param vRayOrigin
-	 *            In: vRayOrigin is the origin of the ray
+	 * In: vRayOrigin is the origin of the ray
 	 * @param vUnitRayDir
-	 *            In: vUnitRayDir is the unit vector of the ray
+	 * In: vUnitRayDir is the unit vector of the ray
 	 * @param vPointInSpace
-	 *            In: vPointInSpace is the point in space
+	 * In: vPointInSpace is the point in space
 	 * @return The distance squared of the two points
 	 */
 	public static float m3dClosestPointOnRay(float[] v3PointOnRay, float[] v3RayOrigin, float[] v3UnitRayDir,
@@ -1217,6 +1221,11 @@ public class Math3D {
 		v3PointOnRay[1] = v3RayOrigin[1] + (t * v3UnitRayDir[1]);
 		v3PointOnRay[2] = v3RayOrigin[2] + (t * v3UnitRayDir[2]);
 		return m3dGetDistanceSquared3(v3PointOnRay, v3PointInSpace);
+	}
+
+	public static float m3dDiv(int i, int j)
+	{
+		return ((float) i / (float) j);
 	}
 
 }

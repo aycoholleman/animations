@@ -60,14 +60,8 @@ public class Torus extends Animation {
 				float z = minorRadius * (float) sin(b);
 
 				// First point
-				vertex.s((float) (i) / (float) (numMajor));
-				vertex.t((float) (j) / (float) (numMinor));
-				vertex.normal(x0 * c, y0 * c, z / minorRadius).normalize();
-				vertex.xyzw(x0 * r, y0 * r, z, 1.0f);
-				
-				vertex.texture.st((float) (i) / (float) (numMajor),(float) (j) / (float) (numMinor));
-				vertex.normal.normal(x0 * c, y0 * c, z / minorRadius);
-				
+				vertex.texture.st(m3dDiv(i, numMajor), m3dDiv(j, numMinor));
+				vertex.normal.xyz(x0 * c, y0 * c, z / minorRadius);
 
 			}
 

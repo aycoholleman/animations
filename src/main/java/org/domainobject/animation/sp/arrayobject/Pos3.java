@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Pos3 extends Vertex implements _Pos3 {
+public class Pos3 extends ArrayObject implements _Pos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -35,6 +35,11 @@ public class Pos3 extends Vertex implements _Pos3 {
 	Pos3(float[] components, int offset)
 	{
 		super(components, offset);
+	}	
+
+	Pos3(ArrayObject embedder, int offset)
+	{
+		super(embedder, offset);
 	}
 
 	@Override
