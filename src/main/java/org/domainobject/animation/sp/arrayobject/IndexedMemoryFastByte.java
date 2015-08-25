@@ -84,7 +84,7 @@ abstract class IndexedMemoryFastByte<T extends ArrayObject> implements _IndexedM
 			public void commit(ArrayObject caller)
 			{
 				if (caller != pending)
-					MemoryException.overwritten();
+					MemoryException.commitWindowClosed();
 				Byte idx = objs.get(pending);
 				if (idx == null) {
 					objs.put(pending, (indices[numObjs] = (byte) numObjs));

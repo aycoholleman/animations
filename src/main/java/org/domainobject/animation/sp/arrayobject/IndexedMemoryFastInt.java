@@ -84,7 +84,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 			public void commit(ArrayObject caller)
 			{
 				if (caller != pending)
-					MemoryException.overwritten();
+					MemoryException.commitWindowClosed();
 				Integer idx = objs.get(pending);
 				if (idx == null) {
 					objs.put(pending, (indices[numObjs] = numObjs));

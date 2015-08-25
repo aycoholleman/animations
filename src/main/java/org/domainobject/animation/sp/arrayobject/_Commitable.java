@@ -1,7 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
-interface _Commitable {
+interface _Commitable<T extends ArrayObject> {
 
-	void commit(ArrayObject caller);
+	void commit(T caller);
 
 }
