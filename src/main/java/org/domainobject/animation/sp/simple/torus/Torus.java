@@ -1,29 +1,11 @@
 package org.domainobject.animation.sp.simple.torus;
 
+import static java.lang.Math.*;
+import static org.domainobject.animation.sp.util.Math3D.*;
+
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.arrayobject.Pos4NormalTexture;
-import org.domainobject.animation.sp.arrayobject._IndexedMemoryFast;
-
-import static org.domainobject.animation.sp.util.Math3D.*;
-import static java.lang.Math.*;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL14.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL21.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL32.*;
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.opengl.GL40.*;
-import static org.lwjgl.opengl.GL41.*;
-import static org.lwjgl.opengl.GL42.*;
-import static org.lwjgl.opengl.GL43.*;
-import static org.lwjgl.opengl.GL44.*;
-import static org.lwjgl.opengl.GL45.*;
+import org.domainobject.animation.sp.arrayobject._IndexedMemoryLazy;
 
 
 public class Torus extends Animation {
@@ -33,11 +15,11 @@ public class Torus extends Animation {
 		new Torus().start();
 	}
 
-	private final _IndexedMemoryFast<Pos4NormalTexture> vertices = Pos4NormalTexture.indexFast(1000, false);
+	private final _IndexedMemoryLazy<Pos4NormalTexture> vertices = Pos4NormalTexture.indexLazy(1000, false);
 
 	private void createTorus(float majorRadius, float minorRadius, int numMajor, int numMinor)
 	{
-		_IndexedMemoryFast<Pos4NormalTexture> verts = vertices;
+		_IndexedMemoryLazy<Pos4NormalTexture> verts = vertices;
 
 		double majorStep = 2.0f * M3D_PI / numMajor;
 		double minorStep = 2.0f * M3D_PI / numMinor;
@@ -51,7 +33,7 @@ public class Torus extends Animation {
 			float x1 = (float) cos(a1);
 			float y1 = (float) sin(a1);
 
-			Pos4NormalTexture vertex = verts.make();
+			Pos4NormalTexture vertex;
 
 			for (j = 0; j <= numMinor; ++j) {
 				double b = j * minorStep;
@@ -60,8 +42,35 @@ public class Torus extends Animation {
 				float z = minorRadius * (float) sin(b);
 
 				// First point
-				vertex.texture.st(m3dDiv(i, numMajor), m3dDiv(j, numMinor));
-				vertex.normal.xyz(x0 * c, y0 * c, z / minorRadius);
+				vertex = verts.make();
+				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j, numMinor));
+				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
+				vertex.position.xyz(x0 * r, y0 * r, z);
+
+				// Second point
+				vertex = verts.make();
+				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j, numMinor));
+				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
+				vertex.position.xyz(x1 * r, y1 * r, z);
+
+				// Next one over
+				b = (j + 1) * minorStep;
+				c = (float) cos(b);
+				r = minorRadius * c + majorRadius;
+				z = minorRadius * (float) sin(b);
+
+				// 3rd point
+				vertex = verts.make();
+				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j + 1, numMinor));
+				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
+				vertex.position.xyz(x0 * r, y0 * r, z);
+
+				// 4th point
+				vertex = verts.make();
+				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j + 1, numMinor));
+				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
+				vertex.position.xyz(x1 * r, y1 * r, z);
+				
 
 			}
 

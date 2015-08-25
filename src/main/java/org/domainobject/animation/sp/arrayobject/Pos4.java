@@ -10,17 +10,27 @@ import org.domainobject.animation.sp.util.Array;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4 extends Vertex implements _Pos4 {
+public final class Pos4 extends ArrayObject implements _Pos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
+	private static final AOFactory<Pos4> factory = new AOFactory<Pos4>() {
+		public Pos4 construct(float[] raw, int offset)
+		{
+			return new Pos4(raw, offset);
+		}
+		public Pos4[] array(int length)
+		{
+			return new Pos4[length];
+		}
+	};
+
 	public static NonIndexedMemory<Pos4> allocate(int maxNumObjects)
 	{
-		return new NonIndexedMemory<Pos4>(new Pos4[maxNumObjects], COMPONENT_COUNT) {
-			@Override
-			Pos4 construct(float[] raw, int offset)
+		return new NonIndexedMemory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
+			AOFactory<Pos4> getFactory()
 			{
-				return new Pos4(raw, offset);
+				return factory;
 			}
 		};
 	}
@@ -49,11 +59,11 @@ public final class Pos4 extends Vertex implements _Pos4 {
 	}
 
 	/**
-	 * Set the x, y, z and w coordinates and return it.
+	 * Sets the coordinates of this instance.
 	 * 
 	 * @return This instance
 	 */
-	public Pos4 xyzw(float x, float y, float z, float w)
+	public Pos4 set(float x, float y, float z, float w)
 	{
 		Array.set4(components, offset, x, y, z, w);
 		return this;
@@ -61,7 +71,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the x, y, z and w coordinates and return it.
+	 * Sets the coordinates of this instance.
 	 * 
 	 * @param coordinates
 	 * A {@code float} array containing at least 4 elements
@@ -69,7 +79,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 	 * @throws ArrayIndexOutOfBoundsException
 	 * If the specified array contains less than 4 elements
 	 */
-	public Pos4 xyzw(float[] coordinates)
+	public Pos4 set(float[] coordinates)
 	{
 		memcpy4(components, offset, coordinates, 0);
 		return this;
@@ -77,11 +87,12 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Copies the coordinates of the specified instance to this instance.
+	 * Copies the coordinates of the specified {@link _Pos4} instance to this
+	 * instance.
 	 * 
 	 * @param other
 	 */
-	public Pos4 xyzw(_Pos4 other)
+	public Pos4 set(_Pos4 other)
 	{
 		memcpy4(components, offset, other.position().components, other.position().offset);
 		return this;
@@ -89,21 +100,21 @@ public final class Pos4 extends Vertex implements _Pos4 {
 
 
 	/**
-	 * Set the x, y, and z coordinates to the specified values and the w
-	 * coordinate to {@link Vertex#globalW globalW}.
+	 * Set the x, y, and z coordinates to the specified values while the w
+	 * coordinate is set to {@link Vertex#globalW globalW}.
 	 * 
 	 * @return This instance
 	 */
 	public Pos4 xyz(float x, float y, float z)
 	{
-		Array.set4(components, offset, x, y, z, globalW);
+		Array.set4(components, offset, x, y, z, Vertex.globalW);
 		return this;
 	}
 
 
 	/**
-	 * Set the x, y, and z coordinates as specified by the array argument and
-	 * the w coordinate to {@link Vertex#globalW globalW}.
+	 * Set the x, y, and z coordinates as specified by the array argument while
+	 * the w coordinate is set to {@link Vertex#globalW globalW}.
 	 * 
 	 * @param coordinates
 	 * A {@code float} array containing at least 3 elements
@@ -116,7 +127,7 @@ public final class Pos4 extends Vertex implements _Pos4 {
 	public Pos4 xyz(float[] coordinates)
 	{
 		memcpy3(components, offset, coordinates, 0);
-		return this;
+		return w(Vertex.globalW);
 	}
 
 

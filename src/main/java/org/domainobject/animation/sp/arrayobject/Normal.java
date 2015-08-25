@@ -12,17 +12,6 @@ public final class Normal extends ArrayObject implements _Normal {
 	public static final int COMPONENT_COUNT = 3;
 
 
-	public static NonIndexedMemory<Normal> allocate(int maxNumObjects)
-	{
-		return new NonIndexedMemory<Normal>(new Normal[maxNumObjects], COMPONENT_COUNT) {
-			@Override
-			Normal construct(float[] raw, int offset)
-			{
-				return new Normal(raw, offset);
-			}
-		};
-	}
-
 	public Normal()
 	{
 		super();
@@ -60,19 +49,19 @@ public final class Normal extends ArrayObject implements _Normal {
 		return COMPONENT_COUNT;
 	}
 
-	public Normal xyz(float x, float y, float z)
+	public Normal set(float x, float y, float z)
 	{
 		Array.set3(components, offset, x, y, z);
 		return this;
 	}
 
-	public Normal xyz(float[] xyz)
+	public Normal set(float[] xyz)
 	{
 		memcpy3(components, offset, xyz, 0);
 		return this;
 	}
 
-	public Normal xyz(_Normal other)
+	public Normal set(_Normal other)
 	{
 		memcpy3(components, offset, other.normal().components, other.normal().offset);
 		return this;

@@ -15,17 +15,6 @@ public class Color4 extends ArrayObject implements _Color4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	public static NonIndexedMemory<Color4> allocate(int maxNumObjects)
-	{
-		return new NonIndexedMemory<Color4>(new Color4[maxNumObjects], COMPONENT_COUNT) {
-			@Override
-			Color4 construct(float[] raw, int offset)
-			{
-				return new Color4(raw, offset);
-			}
-		};
-	}
-
 	public Color4()
 	{
 		super();

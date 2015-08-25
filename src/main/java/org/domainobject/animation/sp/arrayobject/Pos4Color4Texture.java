@@ -14,17 +14,6 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4Color4Texture extends ArrayObject implements _Pos4, _Color4, _Texture {
 
-	public static NonIndexedMemory<Pos4Color4Texture> allocate(int maxNumObjects)
-	{
-		return new NonIndexedMemory<Pos4Color4Texture>(new Pos4Color4Texture[maxNumObjects], SIZE) {
-			@Override
-			Pos4Color4Texture construct(float[] raw, int offset)
-			{
-				return new Pos4Color4Texture(raw, offset);
-			}
-		};
-	}
-
 	/**
 	 * The number of elements of the internal array (10).
 	 */

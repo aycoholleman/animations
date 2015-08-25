@@ -1223,7 +1223,7 @@ public class Math3D {
 		return m3dGetDistanceSquared3(v3PointOnRay, v3PointInSpace);
 	}
 
-	public static float m3dDiv(int i, int j)
+	public static float m3ddiv(int i, int j)
 	{
 		return ((float) i / (float) j);
 	}

@@ -15,17 +15,6 @@ public class Pos3Color3 extends ArrayObject implements _Pos3, _Color3 {
 
 	public static final int COMPONENT_COUNT = 6;
 
-	public static NonIndexedMemory<Pos3Color3> allocate(int maxNumObjects)
-	{
-		return new NonIndexedMemory<Pos3Color3>(new Pos3Color3[maxNumObjects], COMPONENT_COUNT) {
-			@Override
-			Pos3Color3 construct(float[] raw, int offset)
-			{
-				return new Pos3Color3(raw, offset);
-			}
-		};
-	}
-
 	public final Pos3 position;
 	public final Color3 color;
 

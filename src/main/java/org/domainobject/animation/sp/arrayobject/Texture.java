@@ -34,13 +34,13 @@ public final class Texture extends ArrayObject implements _Texture {
 		return COMPONENT_COUNT;
 	}
 
-	public Texture st(float s, float t)
+	public Texture set(float s, float t)
 	{
 		Array.set2(components, offset, s, t);
 		return this;
 	}
 
-	public Texture st(float[] st)
+	public Texture set(float[] st)
 	{
 		memcpy2(components, offset, st, 0);
 		return this;

@@ -40,17 +40,11 @@ public interface _Memory<T extends ArrayObject> extends Iterable<T> {
 
 	/**
 	 * Creates a new array object of type T. The new array object will occupy a
-	 * small portion of this memory object's backing array. Thus, you will
-	 * receive a new instance of type T, but no array creation or array copying
-	 * takes places. With the "fast" implementations of {@code _Memory} you
-	 * <b>must</b> call {@link ArrayObject#commit()} on the array objects
-	 * created through {@code newInstance()}. Otherwise they will not be visible
-	 * to the burn process. Also, the memory's object counter (reflected by the
-	 * {@link #size()} method) will not be updated until you call
-	 * {@code ArrayObject.commit()}. When using the "lazy" or "non-indexed"
-	 * implementations of {@code _Memory} you don't need to call
-	 * {@code ArrayObject.commit()}. It's a no-op in that case (as is
-	 * {@link ArrayObject#discard()}).
+	 * small portion of this memory object's backing array. Thus, although you
+	 * get a new instance of type T, but no array creation or copying takes
+	 * places. With the "fast" implementations of {@code _Memory} you <b>must</b>
+	 * call {@link ArrayObject#commit()} on the array objects created this way.
+	 * Otherwise they will not be visible to the burn process.
 	 * 
 	 * @return A new array object of type T
 	 * 

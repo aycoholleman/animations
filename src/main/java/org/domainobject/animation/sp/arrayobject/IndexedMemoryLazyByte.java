@@ -14,11 +14,11 @@ abstract class IndexedMemoryLazyByte<T extends ArrayObject> extends IndexedMemor
 	private final byte[] indices;
 	private final ByteBuffer idxBuf;
 
-	IndexedMemoryLazyByte(T[] objects, int objSize)
+	IndexedMemoryLazyByte(int maxNumObjects, int objSize)
 	{
-		super(objects, objSize);
-		indices = new byte[objects.length];
-		idxBuf = createByteBuffer(objects.length * Byte.BYTES);
+		super(maxNumObjects, objSize);
+		indices = new byte[maxNumObjects];
+		idxBuf = createByteBuffer(maxNumObjects * Byte.BYTES);
 	}
 
 	@Override

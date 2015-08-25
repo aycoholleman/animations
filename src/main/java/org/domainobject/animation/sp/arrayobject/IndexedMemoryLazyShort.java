@@ -14,11 +14,11 @@ abstract class IndexedMemoryLazyShort<T extends ArrayObject> extends IndexedMemo
 	private final short[] indices;
 	private final ByteBuffer idxBuf;
 
-	IndexedMemoryLazyShort(T[] objects, int objSize)
+	IndexedMemoryLazyShort(int maxNumObjects, int objSize)
 	{
-		super(objects, objSize);
-		indices = new short[objects.length];
-		idxBuf = createByteBuffer(objects.length * Short.BYTES);
+		super(maxNumObjects, objSize);
+		indices = new short[maxNumObjects];
+		idxBuf = createByteBuffer(maxNumObjects * Short.BYTES);
 	}
 
 	@Override

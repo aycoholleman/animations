@@ -16,17 +16,6 @@ public class Pos3 extends ArrayObject implements _Pos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
-	public static NonIndexedMemory<Pos3> allocate(int maxNumObjects)
-	{
-		return new NonIndexedMemory<Pos3>(new Pos3[maxNumObjects], COMPONENT_COUNT) {
-			@Override
-			Pos3 construct(float[] raw, int offset)
-			{
-				return new Pos3(raw, offset);
-			}
-		};
-	}
-
 	public Pos3()
 	{
 		super();

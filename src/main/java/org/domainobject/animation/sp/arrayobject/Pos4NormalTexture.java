@@ -13,13 +13,23 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Normal, _Texture {
 
+	private static final AOFactory<Pos4NormalTexture> factory = new AOFactory<Pos4NormalTexture>() {
+		public Pos4NormalTexture construct(float[] raw, int offset)
+		{
+			return new Pos4NormalTexture(raw, offset);
+		}
+		public Pos4NormalTexture[] array(int length)
+		{
+			return new Pos4NormalTexture[length];
+		}
+	};
+
 	public static NonIndexedMemory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
-		return new NonIndexedMemory<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects], NUM_COMPONENTS) {
-			@Override
-			Pos4NormalTexture construct(float[] raw, int offset)
+		return new NonIndexedMemory<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+			AOFactory<Pos4NormalTexture> getFactory()
 			{
-				return new Pos4NormalTexture(raw, offset);
+				return factory;
 			}
 		};
 	}
@@ -27,31 +37,25 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	public static _IndexedMemoryLazy<Pos4NormalTexture> indexLazy(int maxNumObjects, boolean useIntIndices)
 	{
 		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
-			return new IndexedMemoryLazyInt<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
-					NUM_COMPONENTS) {
-				@Override
-				Pos4NormalTexture construct(float[] raw, int offset)
+			return new IndexedMemoryLazyInt<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+				AOFactory<Pos4NormalTexture> getFactory()
 				{
-					return new Pos4NormalTexture(raw, offset);
+					return factory;
 				}
 			};
 		}
 		if (maxNumObjects > Byte.MAX_VALUE) {
-			return new IndexedMemoryLazyShort<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
-					NUM_COMPONENTS) {
-				@Override
-				Pos4NormalTexture construct(float[] raw, int offset)
+			return new IndexedMemoryLazyShort<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+				AOFactory<Pos4NormalTexture> getFactory()
 				{
-					return new Pos4NormalTexture(raw, offset);
+					return factory;
 				}
 			};
 		}
-		return new IndexedMemoryLazyByte<Pos4NormalTexture>(new Pos4NormalTexture[maxNumObjects],
-				NUM_COMPONENTS) {
-			@Override
-			Pos4NormalTexture construct(float[] raw, int offset)
+		return new IndexedMemoryLazyByte<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+			AOFactory<Pos4NormalTexture> getFactory()
 			{
-				return new Pos4NormalTexture(raw, offset);
+				return factory;
 			}
 		};
 	}
@@ -59,28 +63,25 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	public static _IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjects, boolean useIntIndices)
 	{
 		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
-			return new IndexedMemoryFastInt<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
-				@Override
-				Pos4NormalTexture construct(float[] raw, int offset)
+			return new IndexedMemoryFastInt<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+				AOFactory<Pos4NormalTexture> getFactory()
 				{
-					return new Pos4NormalTexture(raw, offset);
+					return factory;
 				}
 			};
 		}
 		if (maxNumObjects > Byte.MAX_VALUE) {
-			return new IndexedMemoryFastShort<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
-				@Override
-				Pos4NormalTexture construct(float[] raw, int offset)
+			return new IndexedMemoryFastShort<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+				AOFactory<Pos4NormalTexture> getFactory()
 				{
-					return new Pos4NormalTexture(raw, offset);
+					return factory;
 				}
 			};
 		}
-		return new IndexedMemoryFastByte<Pos4NormalTexture>(maxNumObjects, NUM_COMPONENTS) {
-			@Override
-			Pos4NormalTexture construct(float[] raw, int offset)
+		return new IndexedMemoryFastByte<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+			AOFactory<Pos4NormalTexture> getFactory()
 			{
-				return new Pos4NormalTexture(raw, offset);
+				return factory;
 			}
 		};
 	}
@@ -88,11 +89,11 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	/**
 	 * The number of elements of the internal array (9).
 	 */
-	public static final int NUM_COMPONENTS = 9;
+	public static final int OBJ_SIZE = 9;
 	/**
 	 * The number of bytes occupied by the internal array.
 	 */
-	public static final int BYTE_SIZE = NUM_COMPONENTS * SIZE_OF_FLOAT;
+	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
 	/**
 	 * The byte offsets of the component groups within the array.
 	 */
@@ -123,7 +124,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	@Override
 	int objSize()
 	{
-		return NUM_COMPONENTS;
+		return OBJ_SIZE;
 	}
 
 
@@ -131,9 +132,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
 	 * {@link Vertex#globalW} and the alpha channel is set to
-	 * {@link Vertex#globalAlpha}. Note that until you call this method or one
-	 * of the other setters, the internal state of a new instance is undefined,
-	 * both in theory and in practice!
+	 * {@link Vertex#globalAlpha}. Note that until you call this method or one of
+	 * the other setters, the internal state of a new instance is undefined, both
+	 * in theory and in practice!
 	 */
 	public void init()
 	{

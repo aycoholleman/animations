@@ -18,6 +18,8 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
+	private final AOFactory<T> factory;
+
 	private final int[] indices;
 	private final ByteBuffer idxBuf;
 
@@ -28,6 +30,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 
 	IndexedMemoryFastInt(int maxNumObjects, int objSize)
 	{
+		this.factory = getFactory();
 		this.objSize = objSize;
 		objs = new LinkedHashMap<>(maxNumObjects, 1.0f);
 		raw = new float[maxNumObjects * objSize];
@@ -44,7 +47,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 	}
 
 
-	abstract T construct(float[] raw, int offset);
+	abstract AOFactory<T> getFactory();
 
 
 	@Override
@@ -52,7 +55,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 	{
 		Integer idx = objs.get(arrayObject);
 		if (idx == null) {
-			T copy = construct(raw, numElems);
+			T copy = factory.construct(raw, numElems);
 			arrayObject.copyTo(copy);
 			objs.put(copy, (indices[numObjs] = numObjs));
 			numElems += objSize;
@@ -66,7 +69,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 	@Override
 	public void addUnique(T arrayObject)
 	{
-		T copy = construct(raw, numElems);
+		T copy = factory.construct(raw, numElems);
 		arrayObject.copyTo(copy);
 		objs.put(copy, (indices[numObjs] = numObjs));
 		numElems += objSize;
@@ -76,7 +79,7 @@ abstract class IndexedMemoryFastInt<T extends ArrayObject> implements _IndexedMe
 	@Override
 	public T make()
 	{
-		pending = construct(raw, numElems);
+		pending = factory.construct(raw, numElems);
 		pending.commitable = new _Commitable() {
 			public void commit(ArrayObject caller)
 			{

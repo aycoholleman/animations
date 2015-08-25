@@ -15,33 +15,36 @@ public abstract class NonIndexedMemory<T extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
+	private final AOFactory<T> factory;
+
 	private int numObjs;
 	private int numElems;
 
 
-	NonIndexedMemory(T[] objects, int objSize)
+	NonIndexedMemory(int maxNumObjects, int objSize)
 	{
-		this.objs = objects;
+		this.factory = getFactory();
+		this.objs = factory.array(maxNumObjects);
 		this.objSize = objSize;
-		raw = new float[objects.length * objSize];
+		raw = new float[maxNumObjects * objSize];
 		objBuf = createFloatBuffer(raw.length);
 	}
 
 	public T make()
 	{
-		T object = construct(raw, numElems);
+		T object = factory.construct(raw, numElems);
 		objs[numObjs++] = object;
 		numElems += objSize;
 		return object;
 	}
 
-	abstract T construct(float[] raw, int offset);
+	abstract AOFactory<T> getFactory();
 
 	/**
 	 * Burns the vertex data to a {@code FloatBuffer} and then clears the
 	 * {@code VertexArray}. The {@code FloatBuffer} is flipped before being
-	 * returned to the caller. You cannot burn an empty {@code VertexArray}
-	 * (i.e. when {@link #getSize()} returns 0). Doing so triggers a
+	 * returned to the caller. You cannot burn an empty {@code VertexArray} (i.e.
+	 * when {@link #getSize()} returns 0). Doing so triggers a
 	 * {@link MemoryException}. Since burning implicitly clears the
 	 * {@code VertexArray}, this means you cannot burn a {@code VertexArray}
 	 * twice without adding some vertex data in between.
@@ -64,11 +67,11 @@ public abstract class NonIndexedMemory<T extends ArrayObject> {
 		objBuf.flip();
 		return new ShaderInput(objBuf);
 	}
-	
+
 	public void clear()
 	{
 		numElems = 0;
 		numObjs = 0;
 	}
-	
+
 }
