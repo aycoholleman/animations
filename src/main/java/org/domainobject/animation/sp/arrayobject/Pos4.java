@@ -14,8 +14,8 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	private static final AOFactory<Pos4> factory = new AOFactory<Pos4>() {
-		public Pos4 construct(float[] raw, int offset)
+	private static final _Constructor<Pos4> constructor = new _Constructor<Pos4>() {
+		public Pos4 make(float[] raw, int offset)
 		{
 			return new Pos4(raw, offset);
 		}
@@ -25,12 +25,12 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		}
 	};
 
-	public static NonIndexedMemory<Pos4> allocate(int maxNumObjects)
+	public static Memory<Pos4> allocate(int maxNumObjects)
 	{
-		return new NonIndexedMemory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
-			AOFactory<Pos4> getFactory()
+		return new Memory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
+			_Constructor<Pos4> getConstructor()
 			{
-				return factory;
+				return constructor;
 			}
 		};
 	}

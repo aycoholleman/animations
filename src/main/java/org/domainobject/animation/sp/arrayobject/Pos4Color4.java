@@ -13,8 +13,8 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	
-	private static final AOFactory<Pos4Color4> factory = new AOFactory<Pos4Color4>() {
-		public Pos4Color4 construct(float[] raw, int offset)
+	private static final _Constructor<Pos4Color4> constructor = new _Constructor<Pos4Color4>() {
+		public Pos4Color4 make(float[] raw, int offset)
 		{
 			return new Pos4Color4(raw, offset);
 		}
@@ -24,12 +24,12 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		}
 	};
 
-	public static NonIndexedMemory<Pos4Color4> allocate(int maxNumObjects)
+	public static Memory<Pos4Color4> allocate(int maxNumObjects)
 	{
-		return new NonIndexedMemory<Pos4Color4>(maxNumObjects, COMPONENT_COUNT) {
-			AOFactory<Pos4Color4> getFactory()
+		return new Memory<Pos4Color4>(maxNumObjects, COMPONENT_COUNT) {
+			_Constructor<Pos4Color4> getConstructor()
 			{
-				return factory;
+				return constructor;
 			}
 		};
 	}

@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.NonIndexedMemory;
+import org.domainobject.animation.sp.arrayobject.Memory;
 import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
@@ -37,7 +37,7 @@ public class QuadColoredWithPos4Color4 extends Animation {
 	private int indicesCount = 0;
 
 	private Program program;
-	NonIndexedMemory<Pos4Color4> vertices;
+	Memory<Pos4Color4> vertices;
 
 	public QuadColoredWithPos4Color4()
 	{

@@ -8,23 +8,23 @@ import java.nio.FloatBuffer;
  * @author Ayco Holleman
  *
  */
-public abstract class NonIndexedMemory<T extends ArrayObject> {
+public abstract class Memory<T extends ArrayObject> {
 
 	private final T[] objs;
 	private final float[] raw;
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
-	private final AOFactory<T> factory;
+	private final _Constructor<T> constructor;
 
 	private int numObjs;
 	private int numElems;
 
 
-	NonIndexedMemory(int maxNumObjects, int objSize)
+	Memory(int maxNumObjects, int objSize)
 	{
-		this.factory = getFactory();
-		this.objs = factory.array(maxNumObjects);
+		this.constructor = getConstructor();
+		this.objs = constructor.array(maxNumObjects);
 		this.objSize = objSize;
 		raw = new float[maxNumObjects * objSize];
 		objBuf = createFloatBuffer(raw.length);
@@ -32,13 +32,13 @@ public abstract class NonIndexedMemory<T extends ArrayObject> {
 
 	public T make()
 	{
-		T object = factory.construct(raw, numElems);
+		T object = constructor.make(raw, numElems);
 		objs[numObjs++] = object;
 		numElems += objSize;
 		return object;
 	}
 
-	abstract AOFactory<T> getFactory();
+	abstract _Constructor<T> getConstructor();
 
 	/**
 	 * Burns the vertex data to a {@code FloatBuffer} and then clears the

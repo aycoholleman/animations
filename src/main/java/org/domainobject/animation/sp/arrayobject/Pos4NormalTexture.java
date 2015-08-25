@@ -13,8 +13,8 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  */
 public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Normal, _Texture {
 
-	private static final AOFactory<Pos4NormalTexture> factory = new AOFactory<Pos4NormalTexture>() {
-		public Pos4NormalTexture construct(float[] raw, int offset)
+	private static final _Constructor<Pos4NormalTexture> constructor = new _Constructor<Pos4NormalTexture>() {
+		public Pos4NormalTexture make(float[] raw, int offset)
 		{
 			return new Pos4NormalTexture(raw, offset);
 		}
@@ -24,12 +24,12 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		}
 	};
 
-	public static NonIndexedMemory<Pos4NormalTexture> allocate(int maxNumObjects)
+	public static Memory<Pos4NormalTexture> allocate(int maxNumObjects)
 	{
-		return new NonIndexedMemory<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-			AOFactory<Pos4NormalTexture> getFactory()
+		return new Memory<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
+			_Constructor<Pos4NormalTexture> getConstructor()
 			{
-				return factory;
+				return constructor;
 			}
 		};
 	}
@@ -38,24 +38,24 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
 			return new IndexedMemoryLazyInt<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-				AOFactory<Pos4NormalTexture> getFactory()
+				_Constructor<Pos4NormalTexture> getConstructor()
 				{
-					return factory;
+					return constructor;
 				}
 			};
 		}
 		if (maxNumObjects > Byte.MAX_VALUE) {
 			return new IndexedMemoryLazyShort<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-				AOFactory<Pos4NormalTexture> getFactory()
+				_Constructor<Pos4NormalTexture> getConstructor()
 				{
-					return factory;
+					return constructor;
 				}
 			};
 		}
 		return new IndexedMemoryLazyByte<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-			AOFactory<Pos4NormalTexture> getFactory()
+			_Constructor<Pos4NormalTexture> getConstructor()
 			{
-				return factory;
+				return constructor;
 			}
 		};
 	}
@@ -64,24 +64,24 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		if (useIntIndices || maxNumObjects > Short.MAX_VALUE) {
 			return new IndexedMemoryFastInt<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-				AOFactory<Pos4NormalTexture> getFactory()
+				_Constructor<Pos4NormalTexture> getConstructor()
 				{
-					return factory;
+					return constructor;
 				}
 			};
 		}
 		if (maxNumObjects > Byte.MAX_VALUE) {
 			return new IndexedMemoryFastShort<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-				AOFactory<Pos4NormalTexture> getFactory()
+				_Constructor<Pos4NormalTexture> getConstructor()
 				{
-					return factory;
+					return constructor;
 				}
 			};
 		}
 		return new IndexedMemoryFastByte<Pos4NormalTexture>(maxNumObjects, OBJ_SIZE) {
-			AOFactory<Pos4NormalTexture> getFactory()
+			_Constructor<Pos4NormalTexture> getConstructor()
 			{
-				return factory;
+				return constructor;
 			}
 		};
 	}

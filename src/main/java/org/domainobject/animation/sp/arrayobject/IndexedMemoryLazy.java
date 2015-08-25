@@ -17,23 +17,23 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 	protected int numObjs;
 	protected int numElems;
 
-	private final AOFactory<T> factory;
+	private final _Constructor<T> constructor;
 
 	public IndexedMemoryLazy(int maxNumObjects, int objSize)
 	{
-		factory = getFactory();
-		this.objs = factory.array(maxNumObjects);
+		constructor = getConstructor();
+		this.objs = constructor.array(maxNumObjects);
 		this.objSize = objSize;
 		raw = new float[maxNumObjects * objSize];
 		objBuf = createFloatBuffer(raw.length);
 	}
 
-	abstract AOFactory<T> getFactory();
+	abstract _Constructor<T> getConstructor();
 
 	@Override
 	public void add(T arrayObject)
 	{
-		T copy = factory.construct(raw, numElems);
+		T copy = constructor.make(raw, numElems);
 		arrayObject.copyTo(copy);
 		numElems += objSize;
 		numObjs++;
@@ -42,7 +42,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 	@Override
 	public T make()
 	{
-		T obj = factory.construct(raw, numElems);
+		T obj = constructor.make(raw, numElems);
 		objs[numObjs++] = obj;
 		numElems += objSize;
 		return obj;
@@ -50,7 +50,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 
 	public T[] make(int howMany)
 	{
-		T[] objs = factory.array(howMany);
+		T[] objs = constructor.array(howMany);
 		for (int i = 0; i < howMany; ++i) {
 			objs[i] = make();
 		}
