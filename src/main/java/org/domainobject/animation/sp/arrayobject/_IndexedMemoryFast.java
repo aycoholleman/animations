@@ -39,7 +39,7 @@ public interface _IndexedMemoryFast<T extends ArrayObject> extends _IndexedMemor
 	 * 
 	 * @see #add(ArrayObject)
 	 */
-	void addUnique(T arrayObject);
+	void addUnchecked(T arrayObject);
 
 	/**
 	 * Returns {@code true} if this memory object contains the specified array

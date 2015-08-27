@@ -67,7 +67,7 @@ abstract class IndexedMemoryFastByte<T extends ArrayObject> implements _IndexedM
 	}
 
 	@Override
-	public void addUnique(T arrayObject)
+	public void addUnchecked(T arrayObject)
 	{
 		T copy = constructor.make(raw, numElems);
 		arrayObject.copyTo(copy);

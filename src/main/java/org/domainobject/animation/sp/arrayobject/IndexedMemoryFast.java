@@ -5,10 +5,9 @@ import static org.lwjgl.BufferUtils.*;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 
-public abstract class IndexedMemoryFast<T extends ArrayObject, U> implements _IndexedMemoryFast<T> {
+public abstract class IndexedMemoryFast<T extends ArrayObject> implements _IndexedMemoryFast<T> {
 
 	private class Commitable implements _Commitable {
 		public void commit(ArrayObject caller)
@@ -18,82 +17,80 @@ public abstract class IndexedMemoryFast<T extends ArrayObject, U> implements _In
 				MemoryException.commitWindowClosed();
 			for (int i = 0; i < p.length; i++) {
 				if (p[i] == caller) {
-					index(p[i]);
+					if (indexer.isNew(p[i])) {
+						indexer.assignIndexTo(p[i]);
+					}
 					p[i] = null;
-					break;
+					return;
 				}
 			}
 			MemoryException.alreadyCommitted();
 		}
 	}
 
-	// Maps array objects to the index at which they are stored in
-	// the array of indices (maintained by the sublasses). When an array object
-	// is added or committed to memory, its uniqueness is first checked through a
-	// lookup on this map. If it is not unique, it is discarded and only the
-	// index of the array object of which it is a duplicate is added to the array
-	// of indices.
-	private final LinkedHashMap<T, U> objs;
 	// The raw array of float elements functioning as the backbone of the
 	// individual array objects.
 	private final float[] raw;
-	// The thing that becomes the GL_ARRAY_BUFFER
+	// The GL_ELEMENT_ARRAY_BUFFER
+	private final ByteBuffer idxBuf;
+	// The GL_ARRAY_BUFFER
 	private final FloatBuffer objBuf;
-	// The number of elements per array object of type T
+	// The number of elements in T's internal array
 	private final int objSize;
-	// Allows us to construct objects of type T without reflection.
+	// Allows us to construct objects of type T without reflection
 	private final _Constructor<T> constructor;
 	// Passed on to array objects created through make(), so they can commit
 	// themselves to this memory object.
 	private final Commitable commitable = new Commitable();
 
-	// The number of array objects. Equal to the number of elements in the array
-	// of indices.
-	private int numObjs;
+	private final _Indexer<T> indexer;
+
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
 
-	IndexedMemoryFast(int maxNumObjects, int objSize)
+	IndexedMemoryFast(int maxNumObjects, int objSize, boolean forceIntIndices)
 	{
-		this.constructor = getConstructor();
 		this.objSize = objSize;
-		objs = new LinkedHashMap<>(maxNumObjects, 1.0f);
 		raw = new float[maxNumObjects * objSize];
+		idxBuf = createByteBuffer(maxNumObjects);
 		objBuf = createFloatBuffer(raw.length);
+		constructor = getConstructor();
+		if (forceIntIndices || maxNumObjects > Short.MAX_VALUE) {
+			indexer = null;
+		}
+		else if (maxNumObjects > Byte.MAX_VALUE) {
+			indexer = new ShortIndexer<>(maxNumObjects);
+		}
+		else {
+			indexer = null;
+		}
 	}
-
 
 	@Override
 	public int size()
 	{
-		return numObjs;
+		return indexer.countObjects();
 	}
 
 	@Override
-	public void add(T obj)
+	public void add(T object)
 	{
 		pending = null;
-		U idx = objs.get(obj);
-		if (idx == null) {
-			T copy = constructor.make(raw, numObjs * objSize);
-			obj.copyTo(copy);
-			addNewArrayObject(objs, copy, numObjs);
+		if (indexer.isNew(object)) {
+			T copy = allocate();
+			object.copyTo(copy);
+			indexer.assignIndexTo(copy);
 		}
-		else {
-			indexDuplicate(numObjs, idx);
-		}
-		numObjs++;
 	}
 
 	@Override
-	public void addUnique(T obj)
+	public void addUnchecked(T object)
 	{
 		pending = null;
-		T copy = constructor.make(raw, numObjs * objSize);
-		obj.copyTo(copy);
-		addNewArrayObject(objs, copy, numObjs);
-		numObjs++;
+		T copy = allocate();
+		object.copyTo(copy);
+		indexer.assignIndexTo(copy);
 	}
 
 	@Override
@@ -106,7 +103,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject, U> implements _In
 	{
 		pending = constructor.array(howmany);
 		for (int i = 0; i < howmany; i++) {
-			pending[i] = constructor.make(raw, ((numObjs + i) * objSize));
+			pending[i] = trespass(i);
 			pending[i].commitable = commitable;
 		}
 		return pending;
@@ -117,65 +114,56 @@ public abstract class IndexedMemoryFast<T extends ArrayObject, U> implements _In
 		T[] tmp = pending;
 		pending = null;
 		for (int i = 0; i < tmp.length; i++) {
-			if (tmp[i] != null) {
-				index(tmp[i]);
-			}
+			if (tmp[i] != null && indexer.isNew(tmp[i]))
+				indexer.assignIndexTo(tmp[i]);
 		}
 	}
 
 	@Override
 	public boolean contains(T arrayObject)
 	{
-		return objs.keySet().contains(arrayObject);
+		return indexer.contains(arrayObject);
 	}
 
 	@Override
 	public ShaderInput burn()
 	{
 		pending = null;
-		if (numObjs == 0)
+		if (indexer.countObjects() == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		objBuf.clear();
-		objBuf.put(raw, 0, numObjs * objSize);
+		objBuf.put(raw, 0, indexer.countObjects() * objSize);
 		objBuf.flip();
-		return new ShaderInput(objBuf, bufferIndices(numObjs));
+		idxBuf.clear();
+		indexer.write(idxBuf);
+		idxBuf.flip();
+		return new ShaderInput(objBuf, idxBuf);
 	}
 
 	@Override
 	public void clear()
 	{
-		numObjs = 0;
-		objs.clear();
 		pending = null;
+		idxBuf.clear();
+		objBuf.clear();
+		indexer.clear();
 	}
 
 	@Override
 	public Iterator<T> iterator()
 	{
-		return objs.keySet().iterator();
+		return indexer.iterator();
 	}
 
-	private void index(T obj)
+	private T allocate()
 	{
-		U idx = objs.get(obj);
-		if (idx == null) {
-			addNewArrayObject(objs, obj, numObjs);
-		}
-		else {
-			indexDuplicate(numObjs, idx);
-		}
-		numObjs++;
+		return constructor.make(raw, indexer.countObjects() * objSize);
+	}
+
+	private T trespass(int offset)
+	{
+		return constructor.make(raw, (indexer.countObjects() + offset) * objSize);
 	}
 
 	abstract _Constructor<T> getConstructor();
-
-
-	abstract void addNewArrayObject(LinkedHashMap<T, U> objs, T obj, int numObjs);
-
-	abstract void indexDuplicate(int numObjs, U index);
-
-	abstract ByteBuffer bufferIndices(int numIndices);
-	
-	abstract void clearIndicesBuffer();
 
 }
