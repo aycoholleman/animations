@@ -17,9 +17,8 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 				MemoryException.commitWindowClosed();
 			for (int i = 0; i < p.length; i++) {
 				if (p[i] == caller) {
-					if (indexer.isNew(p[i])) {
-						indexer.assignIndexTo(p[i]);
-					}
+					if (!indexer.index(p[i]))
+						indexer.add(p[i]);
 					p[i] = null;
 					return;
 				}
@@ -77,10 +76,10 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	public void add(T object)
 	{
 		pending = null;
-		if (indexer.isNew(object)) {
+		if (!indexer.index(object)) {
 			T copy = allocate();
 			object.copyTo(copy);
-			indexer.assignIndexTo(copy);
+			indexer.add(copy);
 		}
 	}
 
@@ -90,7 +89,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		pending = null;
 		T copy = allocate();
 		object.copyTo(copy);
-		indexer.assignIndexTo(copy);
+		indexer.add(copy);
 	}
 
 	@Override
@@ -114,8 +113,8 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		T[] tmp = pending;
 		pending = null;
 		for (int i = 0; i < tmp.length; i++) {
-			if (tmp[i] != null && indexer.isNew(tmp[i]))
-				indexer.assignIndexTo(tmp[i]);
+			if (tmp[i] != null && !indexer.index(tmp[i]))
+				indexer.add(tmp[i]);
 		}
 	}
 
