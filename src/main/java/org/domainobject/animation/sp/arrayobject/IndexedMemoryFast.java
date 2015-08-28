@@ -34,36 +34,41 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	private final ByteBuffer idxBuf;
 	// The GL_ARRAY_BUFFER
 	private final FloatBuffer objBuf;
-	// The number of elements in T's internal array
+	// The number of elements in array objects of type T
 	private final int objSize;
 	// Allows us to construct objects of type T without reflection
 	private final _Constructor<T> constructor;
 	// Passed on to array objects created through make(), so they can commit
 	// themselves to this memory object.
 	private final Commitable commitable = new Commitable();
-
 	private final _Indexer<T> indexer;
-
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
 
-	IndexedMemoryFast(int maxNumObjects, int objSize, boolean forceIntIndices)
+	IndexedMemoryFast(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
 		this.objSize = objSize;
-		raw = new float[maxNumObjects * objSize];
-		idxBuf = createByteBuffer(maxNumObjects);
+		raw = new float[maxNumObjs * objSize];
 		objBuf = createFloatBuffer(raw.length);
 		constructor = getConstructor();
-		if (forceIntIndices || maxNumObjects > Short.MAX_VALUE) {
-			indexer = null;
+		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE) {
+			idxBuf = createByteBuffer(maxNumObjs * Integer.BYTES);
+			indexer = new IntIndexer<>(maxNumObjs);
 		}
-		else if (maxNumObjects > Byte.MAX_VALUE) {
-			indexer = new ShortIndexer<>(maxNumObjects);
+		else if (maxNumObjs > Byte.MAX_VALUE) {
+			idxBuf = createByteBuffer(maxNumObjs * Short.BYTES);
+			indexer = new ShortIndexer<>(maxNumObjs);
 		}
 		else {
-			indexer = null;
+			idxBuf = createByteBuffer(maxNumObjs * Byte.BYTES);
+			indexer = new ByteIndexer<>(maxNumObjs);
 		}
+	}
+
+	public Class<?> getIndexType()
+	{
+		return indexer.getIndexType();
 	}
 
 	@Override

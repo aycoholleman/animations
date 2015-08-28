@@ -4,13 +4,13 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-class ShortIndexer<T> implements _Indexer<T> {
+class ByteIndexer<T> implements _Indexer<T> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
-	private final short[] indices;
+	private final byte[] indices;
 	private final int maxNumObjs;
 
 	/*
@@ -20,27 +20,27 @@ class ShortIndexer<T> implements _Indexer<T> {
 	 * this map. If it is not unique, it is discarded and only the index of the
 	 * array object of which it is a duplicate is appended to the indices array.
 	 */
-	private LinkedHashMap<T, Short> objs;
+	private LinkedHashMap<T, Byte> objs;
 
-	private short numObjs;
+	private byte numObjs;
 
-	public ShortIndexer(int maxNumObjs)
+	public ByteIndexer(int maxNumObjs)
 	{
 		this.maxNumObjs = maxNumObjs;
-		indices = new short[maxNumObjs];
+		indices = new byte[maxNumObjs];
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
 	@Override
 	public Class<?> getIndexType()
 	{
-		return short.class;
+		return byte.class;
 	}
 
 	@Override
 	public boolean index(T object)
 	{
-		Short idx = objs.get(object);
+		Byte idx = objs.get(object);
 		if (idx == null)
 			return false;
 		indices[numObjs++] = idx;
@@ -64,7 +64,7 @@ class ShortIndexer<T> implements _Indexer<T> {
 	@Override
 	public void write(ByteBuffer idxBuf)
 	{
-		idxBuf.asShortBuffer().put(indices, 0, numObjs);
+		idxBuf.put(indices, 0, numObjs);
 	}
 
 	@Override
