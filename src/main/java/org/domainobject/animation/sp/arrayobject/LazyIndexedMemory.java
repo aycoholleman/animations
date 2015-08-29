@@ -23,18 +23,17 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	// The number of array elements per array object
 	private final int objSize;
-	private final _Constructor<T> constructor;
+	private final _Constructor<T> constr;
 	private final _LazyIndexer indexer;
 
 	private boolean destructive;
 	private int numObjs;
-	private int numElems;
 
 	public LazyIndexedMemory(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
 		this.objSize = objSize;
-		this.constructor = getConstructor();
-		this.objs = constructor.array(maxNumObjs);
+		this.constr = getConstructor();
+		this.objs = constr.array(maxNumObjs);
 		this.raw = new float[maxNumObjs * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
 		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE)
@@ -48,27 +47,26 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 
 	public void add(T arrayObject)
 	{
-		T copy = constructor.make(raw, numElems);
+		T copy = constr.make(raw, numObjs * objSize);
 		arrayObject.copyTo(copy);
-		numElems += objSize;
 		numObjs++;
 	}
 
 	public T make()
 	{
-		T obj = constructor.make(raw, numElems);
+		T obj = constr.make(raw, numObjs * objSize);
 		objs[numObjs++] = obj;
-		numElems += objSize;
 		return obj;
 	}
 
 	public T[] make(int howMany)
 	{
-		T[] objs = constructor.array(howMany);
+		T[] sandbox = constr.array(howMany);
 		for (int i = 0; i < howMany; ++i) {
-			objs[i] = make();
+			T obj = constr.make(raw, numObjs * objSize);
+			objs[numObjs++] = sandbox[i] = obj;
 		}
-		return objs;
+		return sandbox;
 	}
 
 	public int size()
@@ -108,6 +106,12 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 		else
 			burnNonDestructive();
 		return new ShaderInput(objBuf, idxBuf);
+	}
+
+	public ShaderInput burnUnchecked()
+	{
+		// TODO
+		return null;
 	}
 
 	private void burnDestructive()
