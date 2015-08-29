@@ -4,7 +4,7 @@ import static java.lang.Math.*;
 import static org.domainobject.animation.sp.util.Math3D.*;
 
 import org.domainobject.animation.sp.Animation;
-import org.domainobject.animation.sp.arrayobject.IndexedMemoryLazy;
+import org.domainobject.animation.sp.arrayobject.LazyIndexedMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4NormalTexture;
 
 
@@ -15,11 +15,11 @@ public class Torus extends Animation {
 		new Torus().start();
 	}
 
-	private final IndexedMemoryLazy<Pos4NormalTexture> vertices = Pos4NormalTexture.indexLazy(1000, false);
+	private final LazyIndexedMemory<Pos4NormalTexture> vertices = Pos4NormalTexture.indexLazy(1000, false);
 
 	private void createTorus(float majorRadius, float minorRadius, int numMajor, int numMinor)
 	{
-		IndexedMemoryLazy<Pos4NormalTexture> verts = vertices;
+		LazyIndexedMemory<Pos4NormalTexture> verts = vertices;
 
 		double majorStep = 2.0f * M3D_PI / numMajor;
 		double minorStep = 2.0f * M3D_PI / numMinor;

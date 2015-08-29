@@ -7,7 +7,7 @@ import java.nio.FloatBuffer;
 import java.util.Iterator;
 
 
-public abstract class IndexedMemoryFast<T extends ArrayObject> implements _IndexedMemoryFast<T> {
+public abstract class FastIndexedMemory<T extends ArrayObject> {
 
 	private class Commitable implements _Commitable {
 		public void commit(ArrayObject caller)
@@ -41,12 +41,12 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	// themselves to this memory object.
 	private final Commitable commitable = new Commitable();
 	private final _FastIndexer<T> indexer;
-	
+
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
 
-	IndexedMemoryFast(int maxNumObjs, int objSize, boolean forceIntIndices)
+	FastIndexedMemory(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
@@ -66,13 +66,11 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		return indexer.getIndexType();
 	}
 
-	@Override
 	public int size()
 	{
 		return indexer.countObjects();
 	}
 
-	@Override
 	public void add(T object)
 	{
 		pending = null;
@@ -83,7 +81,6 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		}
 	}
 
-	@Override
 	public void addUnchecked(T object)
 	{
 		pending = null;
@@ -92,7 +89,6 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		indexer.add(copy);
 	}
 
-	@Override
 	public T make()
 	{
 		return make(1)[0];
@@ -118,13 +114,11 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		}
 	}
 
-	@Override
 	public boolean contains(T arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
 
-	@Override
 	public ShaderInput burn()
 	{
 		pending = null;
@@ -138,7 +132,6 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
-	@Override
 	public void clear()
 	{
 		pending = null;
@@ -147,7 +140,6 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		indexer.clear();
 	}
 
-	@Override
 	public Iterator<T> iterator()
 	{
 		return indexer.iterator();
@@ -164,6 +156,5 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	{
 		return constructor.make(raw, (indexer.countObjects() + offset) * objSize);
 	}
-
 
 }

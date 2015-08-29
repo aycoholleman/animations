@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
 
-public abstract class IndexedMemoryLazy<T extends ArrayObject> {
+public abstract class LazyIndexedMemory<T extends ArrayObject> {
 
 	// The array objects
 	private final T[] objs;
@@ -30,7 +30,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 	private int numObjs;
 	private int numElems;
 
-	public IndexedMemoryLazy(int maxNumObjs, int objSize, boolean forceIntIndices)
+	public LazyIndexedMemory(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
