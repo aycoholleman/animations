@@ -12,10 +12,10 @@ package org.domainobject.animation.sp.arrayobject;
 public interface _IndexedMemoryLazy<T extends ArrayObject> extends _IndexedMemory<T> {
 
 	/**
-	 * Whether or not the burn process is allowed to delete and move around
-	 * array objects in the staging area when indexing them (see {@link _Memory}
-	 * for an explanation of what a staging area is). If destructive burning is
-	 * not allowed, a new array is created with only unique array objects in the
+	 * Whether or not the burn process is allowed to delete and move around array
+	 * objects in the staging area when indexing them (see {@link _Memory} for an
+	 * explanation of what a staging area is). If destructive burning is not
+	 * allowed, a new array is created with only unique array objects in the
 	 * proper order (as specified by the index), and that is the array that is
 	 * burnt to the OpenGL buffer. The staging area remains exactly as it was
 	 * before burning, duplicates and all. When destructive burning is allowed,
@@ -41,10 +41,10 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _IndexedMemor
 	void setDestructive(boolean b);
 
 	/**
-	 * Purge duplicates from the staging area and pack the remaining array
-	 * objects. Always destructive of course.
+	 * Purges duplicate array objects from the staging area and packs the
+	 * remaining array objects.
 	 */
-	void pack();
+	void purge();
 
 	/**
 	 * Burn this memory object to OpenGL buffers under the assumption that all

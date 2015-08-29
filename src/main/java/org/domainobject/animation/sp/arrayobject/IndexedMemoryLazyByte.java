@@ -28,7 +28,7 @@ abstract class IndexedMemoryLazyByte<T extends ArrayObject> extends IndexedMemor
 	}
 
 	@Override
-	public void pack()
+	public void purge()
 	{
 		// Skip 1st object because it will never evaporate or relocate
 		int uniqObjs = createIndex();
