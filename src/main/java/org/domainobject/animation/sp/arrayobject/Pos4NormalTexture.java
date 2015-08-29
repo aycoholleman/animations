@@ -34,33 +34,18 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		};
 	}
 
-	public static _IndexedMemoryLazy<Pos4NormalTexture> indexLazy(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryLazy<Pos4NormalTexture> indexLazy(int maxNumObjs, boolean useIntIndices)
 	{
-		if (useIntIndices || maxNumObjs > Short.MAX_VALUE) {
-			return new IndexedMemoryLazyInt<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE) {
-				_Constructor<Pos4NormalTexture> getConstructor()
-				{
-					return constructor;
-				}
-			};
-		}
-		if (maxNumObjs > Byte.MAX_VALUE) {
-			return new IndexedMemoryLazyShort<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE) {
-				_Constructor<Pos4NormalTexture> getConstructor()
-				{
-					return constructor;
-				}
-			};
-		}
-		return new IndexedMemoryLazyByte<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE) {
+		return new IndexedMemoryLazy<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
 			_Constructor<Pos4NormalTexture> getConstructor()
 			{
 				return constructor;
 			}
 		};
 	}
-
-	public static _IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjs, boolean useIntIndices)
+	
+	public static IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjs, boolean useIntIndices)
 	{
 		return new IndexedMemoryFast<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
@@ -174,7 +159,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		return hash9(components, offset);
 	}
-	
+
 	@Override
 	void copyTo(ArrayObject other)
 	{

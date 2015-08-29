@@ -3,9 +3,11 @@ package org.domainobject.animation.sp.arrayobject;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
-interface _Indexer<T> {
+interface _FastIndexer<T> {
 
 	Class<?> getIndexType();
+	
+	ByteBuffer createIndicesBuffer();
 	
 	boolean contains(T object);
 	
@@ -15,7 +17,7 @@ interface _Indexer<T> {
 	
 	int countObjects();
 
-	void write(ByteBuffer idxBuf);
+	void burnIndices(ByteBuffer idxBuf);
 	
 	void clear();
 	

@@ -27,8 +27,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		}
 	}
 
-	// The raw array of float elements functioning as the backbone of the
-	// individual array objects.
+	// The array objects' backbone
 	private final float[] raw;
 	// The GL_ELEMENT_ARRAY_BUFFER
 	private final ByteBuffer idxBuf;
@@ -36,12 +35,13 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	private final FloatBuffer objBuf;
 	// The number of elements in array objects of type T
 	private final int objSize;
-	// Allows us to construct objects of type T without reflection
+	// Reflectionless constructor of T instances
 	private final _Constructor<T> constructor;
 	// Passed on to array objects created through make(), so they can commit
 	// themselves to this memory object.
 	private final Commitable commitable = new Commitable();
-	private final _Indexer<T> indexer;
+	private final _FastIndexer<T> indexer;
+	
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
@@ -49,21 +49,16 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 	IndexedMemoryFast(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
 		this.objSize = objSize;
-		raw = new float[maxNumObjs * objSize];
-		objBuf = createFloatBuffer(raw.length);
-		constructor = getConstructor();
-		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE) {
-			idxBuf = createByteBuffer(maxNumObjs * Integer.BYTES);
-			indexer = new IntIndexer<>(maxNumObjs);
-		}
-		else if (maxNumObjs > Byte.MAX_VALUE) {
-			idxBuf = createByteBuffer(maxNumObjs * Short.BYTES);
-			indexer = new ShortIndexer<>(maxNumObjs);
-		}
-		else {
-			idxBuf = createByteBuffer(maxNumObjs * Byte.BYTES);
-			indexer = new ByteIndexer<>(maxNumObjs);
-		}
+		this.constructor = getConstructor();
+		this.raw = new float[maxNumObjs * objSize];
+		this.objBuf = createFloatBuffer(raw.length);
+		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE)
+			indexer = new FastIntIndexer<>(maxNumObjs);
+		else if (maxNumObjs > Byte.MAX_VALUE)
+			indexer = new FastShortIndexer<>(maxNumObjs);
+		else
+			indexer = new FastByteIndexer<>(maxNumObjs);
+		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
 	public Class<?> getIndexType()
@@ -138,7 +133,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		objBuf.put(raw, 0, indexer.countObjects() * objSize);
 		objBuf.flip();
 		idxBuf.clear();
-		indexer.write(idxBuf);
+		indexer.burnIndices(idxBuf);
 		idxBuf.flip();
 		return new ShaderInput(objBuf, idxBuf);
 	}
@@ -158,6 +153,8 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		return indexer.iterator();
 	}
 
+	abstract _Constructor<T> getConstructor();
+
 	private T allocate()
 	{
 		return constructor.make(raw, indexer.countObjects() * objSize);
@@ -168,6 +165,5 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> implements _Index
 		return constructor.make(raw, (indexer.countObjects() + offset) * objSize);
 	}
 
-	abstract _Constructor<T> getConstructor();
 
 }

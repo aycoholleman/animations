@@ -11,34 +11,41 @@ import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
 
-public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _IndexedMemoryLazy<T> {
+public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 
-	protected final T[] objs;
-	protected final float[] raw;
-	protected final FloatBuffer objBuf;
-	protected final int objSize;
-
-	protected boolean destructive;
-	protected int numObjs;
-	protected int numElems;
-
+	// The array objects
+	private final T[] objs;
+	// The array objects' backbone
+	private final float[] raw;
+	// The GL_ELEMENT_ARRAY_BUFFER
+	private final ByteBuffer idxBuf;
+	// The GL_ARRAY_BUFFER
+	private final FloatBuffer objBuf;
+	// The number of array elements per array object
+	private final int objSize;
 	private final _Constructor<T> constructor;
+	private final _LazyIndexer indexer;
 
-	private ByteBuffer idxBuf;
-	_LazyIndexer indexer;
+	private boolean destructive;
+	private int numObjs;
+	private int numElems;
 
-	public IndexedMemoryLazy(int maxNumObjects, int objSize)
+	public IndexedMemoryLazy(int maxNumObjs, int objSize, boolean forceIntIndices)
 	{
-		constructor = getConstructor();
-		this.objs = constructor.array(maxNumObjects);
 		this.objSize = objSize;
-		raw = new float[maxNumObjects * objSize];
-		objBuf = createFloatBuffer(raw.length);
+		this.constructor = getConstructor();
+		this.objs = constructor.array(maxNumObjs);
+		this.raw = new float[maxNumObjs * objSize];
+		this.objBuf = createFloatBuffer(raw.length);
+		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE)
+			indexer = new LazyIntIndexer(maxNumObjs);
+		else if (maxNumObjs > Byte.MAX_VALUE)
+			indexer = new LazyShortIndexer(maxNumObjs);
+		else
+			indexer = new LazyByteIndexer(maxNumObjs);
+		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
-	abstract _Constructor<T> getConstructor();
-
-	@Override
 	public void add(T arrayObject)
 	{
 		T copy = constructor.make(raw, numElems);
@@ -47,7 +54,6 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 		numObjs++;
 	}
 
-	@Override
 	public T make()
 	{
 		T obj = constructor.make(raw, numElems);
@@ -65,25 +71,21 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 		return objs;
 	}
 
-	@Override
 	public int size()
 	{
 		return numObjs;
 	}
 
-	@Override
 	public boolean isDestructive()
 	{
 		return destructive;
 	}
 
-	@Override
 	public void setDestructive(boolean destructive)
 	{
 		this.destructive = destructive;
 	}
 
-	@Override
 	public void purge()
 	{
 		LinkedHashSet<T> purged = new LinkedHashSet<>(Arrays.asList(objs));
@@ -101,7 +103,6 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 
 	public ShaderInput burn()
 	{
-		indexer.clear();
 		if (destructive)
 			burnDestructive();
 		else
@@ -156,13 +157,13 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 		indexer.burnIndices(idxBuf, numObjs);
 	}
 
-	@Override
 	public void clear()
 	{
 		numObjs = 0;
+		idxBuf.clear();
+		objBuf.clear();
 	}
 
-	@Override
 	public Iterator<T> iterator()
 	{
 		return new Iterator<T>() {
@@ -177,5 +178,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> implements _Index
 			}
 		};
 	}
+
+	abstract _Constructor<T> getConstructor();
 
 }

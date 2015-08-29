@@ -53,6 +53,6 @@ public interface _IndexedMemoryLazy<T extends ArrayObject> extends _IndexedMemor
 	 * 
 	 * @return
 	 */
-	ShaderInput burnUnique();
+	ShaderInput burnUnchecked();
 
 }

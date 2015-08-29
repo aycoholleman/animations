@@ -1,16 +1,18 @@
 package org.domainobject.animation.sp.arrayobject;
 
+import static org.lwjgl.BufferUtils.*;
+
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-class IntIndexer<T> implements _Indexer<T> {
+class FastByteIndexer<T> implements _FastIndexer<T> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
-	private final int[] indices;
+	private final byte[] indices;
 	private final int maxNumObjs;
 
 	/*
@@ -20,27 +22,33 @@ class IntIndexer<T> implements _Indexer<T> {
 	 * this map. If it is not unique, it is discarded and only the index of the
 	 * array object of which it is a duplicate is appended to the indices array.
 	 */
-	private LinkedHashMap<T, Integer> objs;
+	private LinkedHashMap<T, Byte> objs;
 
-	private int numObjs;
+	private byte numObjs;
 
-	public IntIndexer(int maxNumObjs)
+	public FastByteIndexer(int maxNumObjs)
 	{
 		this.maxNumObjs = maxNumObjs;
-		indices = new int[maxNumObjs];
+		indices = new byte[maxNumObjs];
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
 	@Override
 	public Class<?> getIndexType()
 	{
-		return int.class;
+		return byte.class;
+	}
+
+	@Override
+	public ByteBuffer createIndicesBuffer()
+	{
+		return createByteBuffer(indices.length * Byte.BYTES);
 	}
 
 	@Override
 	public boolean index(T object)
 	{
-		Integer idx = objs.get(object);
+		Byte idx = objs.get(object);
 		if (idx == null)
 			return false;
 		indices[numObjs++] = idx;
@@ -62,9 +70,9 @@ class IntIndexer<T> implements _Indexer<T> {
 	}
 
 	@Override
-	public void write(ByteBuffer idxBuf)
+	public void burnIndices(ByteBuffer idxBuf)
 	{
-		idxBuf.asIntBuffer().put(indices, 0, numObjs);
+		idxBuf.put(indices, 0, numObjs);
 	}
 
 	@Override

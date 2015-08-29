@@ -3,6 +3,10 @@ package org.domainobject.animation.sp.arrayobject;
 import java.nio.ByteBuffer;
 
 interface _LazyIndexer {
+	
+	Class<?> getIndexType();
+	
+	ByteBuffer createIndicesBuffer();
 
 	void assignIndex(int objNum, Integer index);
 
@@ -10,6 +14,4 @@ interface _LazyIndexer {
 
 	void burnIndices(ByteBuffer idxBuf, int numObjs);
 	
-	void clear();
-
 }
