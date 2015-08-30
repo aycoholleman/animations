@@ -25,13 +25,13 @@ class LazyIntIndexer implements _LazyIndexer {
 		return createByteBuffer(indices.length * Integer.BYTES);
 	}
 	@Override
-	public void assignIndex(int objNum, Integer index)
+	public void index(int objNum, Integer index)
 	{
 		indices[objNum] = index.intValue();
 	}
 
 	@Override
-	public void assignIndex(int objNum, int index)
+	public void index(int objNum, int index)
 	{
 		indices[objNum] = index;
 	}

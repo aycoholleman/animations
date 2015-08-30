@@ -8,9 +8,9 @@ interface _LazyIndexer {
 	
 	ByteBuffer createIndicesBuffer();
 
-	void assignIndex(int objNum, Integer index);
+	void index(int objNum, Integer index);
 
-	void assignIndex(int objNum, int index);
+	void index(int objNum, int index);
 
 	void burnIndices(ByteBuffer idxBuf, int numObjs);
 	

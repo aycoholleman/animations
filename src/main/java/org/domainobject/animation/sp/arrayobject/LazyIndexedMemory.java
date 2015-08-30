@@ -1,17 +1,22 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.*;
+import static org.lwjgl.BufferUtils.createFloatBuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Map.Entry;
+
+import org.domainobject.animation.sp.Global;
 
 
 public abstract class LazyIndexedMemory<T extends ArrayObject> {
+
+	public static enum BurnMethod
+	{
+		MANY_DUPLICATES, FEW_DUPLICATES, UNCHECKED, DESTRUCTIVE
+	}
 
 	// The array objects
 	private final T[] objs;
@@ -21,12 +26,12 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 	private final ByteBuffer idxBuf;
 	// The GL_ARRAY_BUFFER
 	private final FloatBuffer objBuf;
-	// The number of array elements per array object
+	// Number of array elements per array object
 	private final int objSize;
 	private final _Constructor<T> constr;
 	private final _LazyIndexer indexer;
 
-	private boolean destructive;
+	private BurnMethod burnMethod = Global.burnMethod;
 	private int numObjs;
 
 	public LazyIndexedMemory(int maxNumObjs, int objSize, boolean forceIntIndices)
@@ -74,88 +79,125 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 		return numObjs;
 	}
 
-	public boolean isDestructive()
+	public BurnMethod getBurnMethod()
 	{
-		return destructive;
+		return burnMethod;
 	}
 
-	public void setDestructive(boolean destructive)
+	public void setBurnMethod(BurnMethod burnMethod)
 	{
-		this.destructive = destructive;
+		this.burnMethod = burnMethod;
 	}
 
 	public void purge()
 	{
-		LinkedHashSet<T> purged = new LinkedHashSet<>(Arrays.asList(objs));
+		T[] objs = this.objs;
+		LinkedHashSet<T> purged = new LinkedHashSet<>(objs.length);
+		for (int i = 0; i < objs.length; ++i)
+			purged.add(objs[i]);
 		if (purged.size() != numObjs) {
-			numObjs = 0;
+			int uniqObjs = 0;
 			for (T obj : purged) {
-				if (obj != objs[numObjs]) {
-					objs[numObjs] = obj;
-					obj.copyTo(raw, numObjs * objSize);
+				if (obj != objs[uniqObjs]) {
+					objs[uniqObjs] = obj;
+					obj.copyTo(raw, uniqObjs * objSize);
 				}
-				numObjs++;
+				uniqObjs++;
 			}
+			numObjs = uniqObjs;
 		}
 	}
 
 	public ShaderInput burn()
 	{
-		if (destructive)
-			burnDestructive();
-		else
-			burnNonDestructive();
+		switch (burnMethod) {
+			case MANY_DUPLICATES:
+				burnManyDuplicates();
+			case FEW_DUPLICATES:
+				burnFewDuplicates();
+			case DESTRUCTIVE:
+				burnDestructive();
+			case UNCHECKED:
+				burnUnchecked();
+		}
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
-	public ShaderInput burnUnchecked()
+	private void burnUnchecked()
 	{
 		// TODO
-		return null;
 	}
 
 	private void burnDestructive()
 	{
 		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
-		int count = 0;
+		int uniqObjs = 0;
 		for (int i = 0; i < numObjs; ++i) {
 			T obj = objs[i];
-			Integer index = tbl.get(obj);
-			if (index == null) {
-				indexer.assignIndex(i, i);
-				tbl.put(obj, i);
-				if (count != i) {
-					objs[count] = obj;
-					obj.copyTo(raw, count * objSize);
+			Integer idx = tbl.get(obj);
+			if (idx == null) {
+				if (uniqObjs != i) {
+					// We have had some duplicates so we need to compact our objs
+					// array
+					objs[uniqObjs] = obj;
+					obj.copyTo(raw, uniqObjs * objSize);
 				}
-				count++;
+				indexer.index(i, uniqObjs);
+				tbl.put(obj, uniqObjs);
+				uniqObjs++;
 			}
 			else {
-				indexer.assignIndex(i, index);
+				/*
+				 * A duplicate! Give it the index of the array object of which it is
+				 * a duplicate
+				 */
+				indexer.index(i, idx);
 			}
 		}
-		objBuf.put(raw, 0, count * objSize);
+		objBuf.put(raw, 0, uniqObjs * objSize);
 		indexer.burnIndices(idxBuf, numObjs);
-		numObjs = count;
+		numObjs = uniqObjs;
 	}
 
-	private void burnNonDestructive()
+	private void burnManyDuplicates()
 	{
 		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
-		for (int i = 0; i < numObjs; ++i) {
-			Integer index = tbl.get(objs[i]);
-			if (index == null) {
-				indexer.assignIndex(i, i);
+		int i;
+		for (i = 0; i < numObjs; i++) {
+			Integer idx = tbl.get(objs[i]);
+			if (idx == null) {
+				indexer.index(i, i);
 				tbl.put(objs[i], i);
 			}
 			else {
-				indexer.assignIndex(i, index);
+				indexer.index(i, idx);
 			}
 		}
 		float[] data = new float[tbl.size() * objSize];
-		int count = 0;
-		for (Entry<T, Integer> entry : tbl.entrySet()) {
-			objs[entry.getValue()].copyTo(data, count++ * objSize);
+		i = 0;
+		for (Integer idx : tbl.values()) {
+			objs[idx].copyTo(data, i++ * objSize);
+		}
+		objBuf.put(data);
+		indexer.burnIndices(idxBuf, numObjs);
+	}
+
+	private void burnFewDuplicates()
+	{
+		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
+		float[] data = new float[raw.length];
+		int c = 0;
+		for (int i = 0; i < numObjs; i++) {
+			T obj = objs[i];
+			Integer idx = tbl.get(obj);
+			if (idx == null) {
+				indexer.index(i, i);
+				tbl.put(obj, i);
+				obj.copyTo(data, c++ * objSize);
+			}
+			else {
+				indexer.index(i, idx);
+			}
 		}
 		objBuf.put(data);
 		indexer.burnIndices(idxBuf, numObjs);
@@ -171,10 +213,11 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 	public Iterator<T> iterator()
 	{
 		return new Iterator<T>() {
+			final int len = LazyIndexedMemory.this.numObjs;
 			int i = 0;
 			public boolean hasNext()
 			{
-				return i < numObjs;
+				return i < len;
 			}
 			public T next()
 			{

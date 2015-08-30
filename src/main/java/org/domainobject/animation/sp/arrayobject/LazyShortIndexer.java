@@ -26,13 +26,13 @@ class LazyShortIndexer implements _LazyIndexer {
 	}
 
 	@Override
-	public void assignIndex(int objNum, Integer index)
+	public void index(int objNum, Integer index)
 	{
 		indices[objNum] = index.shortValue();
 	}
 
 	@Override
-	public void assignIndex(int objNum, int index)
+	public void index(int objNum, int index)
 	{
 		indices[objNum] = (short) index;
 	}

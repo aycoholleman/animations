@@ -26,13 +26,13 @@ class LazyByteIndexer implements _LazyIndexer {
 	}
 
 	@Override
-	public void assignIndex(int objNum, Integer index)
+	public void index(int objNum, Integer index)
 	{
 		indices[objNum] = index.byteValue();
 	}
 
 	@Override
-	public void assignIndex(int objNum, int index)
+	public void index(int objNum, int index)
 	{
 		indices[objNum] = (byte) index;
 	}

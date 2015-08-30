@@ -18,24 +18,31 @@ public abstract class Memory<T extends ArrayObject> {
 	private final _Constructor<T> constructor;
 
 	private int numObjs;
-	private int numElems;
 
-
-	Memory(int maxNumObjects, int objSize)
+	Memory(int maxNumObjs, int objSize)
 	{
-		this.constructor = getConstructor();
-		this.objs = constructor.array(maxNumObjects);
 		this.objSize = objSize;
-		raw = new float[maxNumObjects * objSize];
-		objBuf = createFloatBuffer(raw.length);
+		this.constructor = getConstructor();
+		this.objs = constructor.array(maxNumObjs);
+		this.raw = new float[maxNumObjs * objSize];
+		this.objBuf = createFloatBuffer(raw.length);
 	}
 
 	public T make()
 	{
-		T object = constructor.make(raw, numElems);
+		T object = constructor.make(raw, numObjs * objSize);
 		objs[numObjs++] = object;
-		numElems += objSize;
 		return object;
+	}
+
+	public T[] make(int howmany)
+	{
+		T[] sandbox = constructor.array(howmany);
+		for (int i = 0; i < howmany; ++i) {
+			T obj = constructor.make(raw, numObjs * objSize);
+			objs[numObjs++] = sandbox[i] = obj;
+		}
+		return sandbox;
 	}
 
 	abstract _Constructor<T> getConstructor();
@@ -59,18 +66,17 @@ public abstract class Memory<T extends ArrayObject> {
 	 */
 	public ShaderInput burn()
 	{
-		if (numElems == 0) {
+		if (numObjs == 0) {
 			MemoryException.cannotBurnWhenEmpty();
 		}
 		objBuf.clear();
-		objBuf.put(raw, 0, numElems);
+		objBuf.put(raw, 0, numObjs * objSize);
 		objBuf.flip();
 		return new ShaderInput(objBuf);
 	}
 
 	public void clear()
 	{
-		numElems = 0;
 		numObjs = 0;
 	}
 
