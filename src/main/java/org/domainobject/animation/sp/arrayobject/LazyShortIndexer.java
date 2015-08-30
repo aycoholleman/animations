@@ -1,6 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.*;
+import static org.lwjgl.BufferUtils.createByteBuffer;
 
 import java.nio.ByteBuffer;
 
@@ -43,4 +43,12 @@ class LazyShortIndexer implements _LazyIndexer {
 		idxBuf.asShortBuffer().put(indices, 0, numObjs);
 	}
 
+
+	@Override
+	public void burnDummy(ByteBuffer idxBuf, int numObjs)
+	{
+		for (int i = 0; i < numObjs; i++)
+			indices[i] = (short) i;
+		idxBuf.asShortBuffer().put(indices, 0, numObjs);
+	}
 }

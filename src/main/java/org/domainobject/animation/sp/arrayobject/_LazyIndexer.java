@@ -13,5 +13,7 @@ interface _LazyIndexer {
 	void index(int objNum, int index);
 
 	void burnIndices(ByteBuffer idxBuf, int numObjs);
+
+	void burnDummy(ByteBuffer idxBuf, int numObjs);
 	
 }

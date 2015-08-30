@@ -42,4 +42,11 @@ class LazyIntIndexer implements _LazyIndexer {
 		idxBuf.asIntBuffer().put(indices, 0, numObjs);
 	}
 
+	@Override
+	public void burnDummy(ByteBuffer idxBuf, int numObjs)
+	{
+		for (int i = 0; i < numObjs; i++)
+			indices[i] = i;
+		idxBuf.asIntBuffer().put(indices, 0, numObjs);
+	}
 }

@@ -113,50 +113,18 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 		switch (burnMethod) {
 			case MANY_DUPLICATES:
 				burnManyDuplicates();
+				break;
 			case FEW_DUPLICATES:
 				burnFewDuplicates();
+				break;
 			case DESTRUCTIVE:
 				burnDestructive();
+				break;
 			case UNCHECKED:
 				burnUnchecked();
+				break;
 		}
 		return new ShaderInput(objBuf, idxBuf);
-	}
-
-	private void burnUnchecked()
-	{
-		// TODO
-	}
-
-	private void burnDestructive()
-	{
-		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
-		int uniqObjs = 0;
-		for (int i = 0; i < numObjs; ++i) {
-			T obj = objs[i];
-			Integer idx = tbl.get(obj);
-			if (idx == null) {
-				if (uniqObjs != i) {
-					// We have had some duplicates so we need to compact our objs
-					// array
-					objs[uniqObjs] = obj;
-					obj.copyTo(raw, uniqObjs * objSize);
-				}
-				indexer.index(i, uniqObjs);
-				tbl.put(obj, uniqObjs);
-				uniqObjs++;
-			}
-			else {
-				/*
-				 * A duplicate! Give it the index of the array object of which it is
-				 * a duplicate
-				 */
-				indexer.index(i, idx);
-			}
-		}
-		objBuf.put(raw, 0, uniqObjs * objSize);
-		indexer.burnIndices(idxBuf, numObjs);
-		numObjs = uniqObjs;
 	}
 
 	private void burnManyDuplicates()
@@ -201,6 +169,43 @@ public abstract class LazyIndexedMemory<T extends ArrayObject> {
 		}
 		objBuf.put(data);
 		indexer.burnIndices(idxBuf, numObjs);
+	}
+
+	private void burnDestructive()
+	{
+		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
+		int uniqObjs = 0;
+		for (int i = 0; i < numObjs; ++i) {
+			T obj = objs[i];
+			Integer idx = tbl.get(obj);
+			if (idx == null) {
+				if (uniqObjs != i) {
+					// We have had some duplicates so we need to compact our objs
+					// array
+					objs[uniqObjs] = obj;
+					obj.copyTo(raw, uniqObjs * objSize);
+				}
+				indexer.index(i, uniqObjs);
+				tbl.put(obj, uniqObjs);
+				uniqObjs++;
+			}
+			else {
+				/*
+				 * A duplicate. Give it the index of the array object of which it is
+				 * a duplicate
+				 */
+				indexer.index(i, idx);
+			}
+		}
+		objBuf.put(raw, 0, uniqObjs * objSize);
+		indexer.burnIndices(idxBuf, numObjs);
+		numObjs = uniqObjs;
+	}
+
+	private void burnUnchecked()
+	{
+		objBuf.put(raw, 0, numObjs * objSize);
+		indexer.burnDummy(idxBuf, numObjs);
 	}
 
 	public void clear()
