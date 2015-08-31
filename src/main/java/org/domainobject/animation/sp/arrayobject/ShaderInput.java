@@ -28,4 +28,9 @@ public final class ShaderInput {
 		return arrayBuffer;
 	}
 
+	public ByteBuffer getElementArrayBuffer()
+	{
+		return elementArrayBuffer;
+	}
+
 }

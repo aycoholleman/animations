@@ -26,7 +26,29 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 
 	public static Memory<Pos4Color4> allocate(int maxNumObjects)
 	{
-		return new Memory<Pos4Color4>(maxNumObjects, COMPONENT_COUNT) {
+		return new Memory<Pos4Color4>(maxNumObjects, OBJ_SIZE) {
+			_Constructor<Pos4Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static LazyIndexedMemory<Pos4Color4> indexLazy(int maxNumObjs, boolean useIntIndices)
+	{
+		return new LazyIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
+			_Constructor<Pos4Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static FastIndexedMemory<Pos4Color4> indexFast(int maxNumObjs, boolean useIntIndices)
+	{
+		return new FastIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
 			_Constructor<Pos4Color4> getConstructor()
 			{
 				return constructor;
@@ -34,8 +56,8 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		};
 	}
 
-	public static final int COMPONENT_COUNT = 8;
-	public static final int BYTE_SIZE = COMPONENT_COUNT * SIZE_OF_FLOAT;
+	public static final int OBJ_SIZE = 8;
+	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
 	public static final int[] strides = new int[] { 0, sizeof(4) };
 
 	public final Pos4 position;
@@ -59,7 +81,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	@Override
 	int objSize()
 	{
-		return COMPONENT_COUNT;
+		return OBJ_SIZE;
 	}
 
 	/**
