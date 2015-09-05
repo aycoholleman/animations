@@ -109,8 +109,9 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		T[] tmp = pending;
 		pending = null;
 		for (int i = 0; i < tmp.length; i++) {
-			if (tmp[i] != null && !indexer.index(tmp[i]))
+			if (tmp[i] != null && !indexer.index(tmp[i])) {
 				indexer.add(tmp[i]);
+			}
 		}
 	}
 

@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL45.glCreateBuffers;
 import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
+import java.io.PrintWriter;
+
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
@@ -16,6 +18,7 @@ import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.arrayobject.ShaderInput;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
+import org.domainobject.util.debug.BeanPrinter;
 
 /**
  * @see http://wiki.lwjgl.org/wiki/The_Quad_colored
@@ -94,16 +97,22 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 	private void setupQuad()
 	{
 		
-		FastIndexedMemory<Pos4Color4> vertices = Pos4Color4.indexFast(30, false);
-		vertices.make().position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
-		vertices.make().position(-0.5f, -0.5f, 0f, 1f).color(0f, 1f, 0f, 1f);//1
-		vertices.make().position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
-		vertices.make().position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
-		vertices.make().position(0.5f, 0.5f, 0f, 1f).color(1f, 1f, 1f, 1f);//3
-		vertices.make().position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
-		vertices.commit();
+		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.indexFast(8, false);
+		Pos4Color4[] vertices = memory.make(6);
+		vertices[0].position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
+		vertices[1].position(-0.5f, -0.5f, 0f, 1f).color(0f, 1f, 0f, 1f);//1
+		vertices[2].position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
+		vertices[3].position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
+		vertices[4].position(0.5f, 0.5f, 0f, 1f).color(1f, 1f, 1f, 1f);//3
+		vertices[5].position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
+		memory.commit();
 		
-		ShaderInput si = vertices.burn();
+		BeanPrinter bp = new BeanPrinter(new PrintWriter(System.out));
+		bp.dump(memory);
+		
+
+				
+		ShaderInput si = memory.burn();
 
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
