@@ -23,4 +23,6 @@ interface _FastIndexer<T> {
 	
 	Iterator<T> iterator();
 
+	int countIndices();
+
 }

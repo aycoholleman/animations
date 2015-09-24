@@ -12,7 +12,7 @@ public abstract class ArrayObject {
 	final float[] components;
 	final int offset;
 
-	_Commitable commitable;
+	_Committable memory;
 
 	ArrayObject()
 	{
@@ -55,19 +55,19 @@ public abstract class ArrayObject {
 	public abstract void copyTo(float[] target, int offset);
 
 	/**
-	 * When you obtained this instance through the {@link _Memory#make()
+	 * When you obtained this instance through the {@link _Memory#alloc()
 	 * newInstance} method of a {@link _IndexedMemoryFast "fast"} type of
 	 * memory, you <b>must</b> call {@code commit} to commit the array object to
 	 * memory. Otherwise it will not be visible to the burn process. For the
 	 * other types of memory this method is a no-op. This method will throw a
 	 * {@link MemoryException} if you call it on an instance that has meanwhile
 	 * been overwritten in memory because subsequent calls to
-	 * {@link _Memory#make() newInstance}.
+	 * {@link _Memory#alloc() newInstance}.
 	 */
 	public void commit()
 	{
-		if (commitable != null)
-			commitable.commit(this);
+		if (memory != null)
+			memory.commit(this);
 	}
 
 	/**

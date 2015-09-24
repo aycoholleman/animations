@@ -13,7 +13,7 @@ public final class Comparators {
 	 * distinguishable. If the difference between the numbers is less than
 	 * {@code distinguishable} they are taken to be the same.
 	 */
-	public static float distinguishable = 0.001f;
+	public static float distinguishable = 0.000001f;
 
 
 	private Comparators()

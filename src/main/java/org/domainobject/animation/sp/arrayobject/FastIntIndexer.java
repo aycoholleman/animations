@@ -94,5 +94,12 @@ class FastIntIndexer<T> implements _FastIndexer<T> {
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
+	@Override
+	public int countIndices()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

@@ -15,20 +15,24 @@ public class Color4 extends ArrayObject implements _Color4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
+
 	public Color4()
 	{
 		super();
 	}
+
 
 	Color4(float[] components, int offset)
 	{
 		super(components, offset);
 	}
 
+
 	Color4(ArrayObject embedder, int offset)
 	{
 		super(embedder, offset);
 	}
+
 
 	@Override
 	int objSize()
@@ -36,11 +40,13 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return COMPONENT_COUNT;
 	}
 
+
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
 		Array.set4(components, offset, red, green, blue, alpha);
 		return this;
 	}
+
 
 	public Color4 rgba(float[] rgba)
 	{
@@ -48,11 +54,13 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return this;
 	}
 
+
 	public Color4 rgba(_Color4 other)
 	{
 		memcpy4(components, offset, other.color().components, other.color().offset);
 		return this;
 	}
+
 
 	public Color4 rgb(float r, float g, float b)
 	{
@@ -60,11 +68,13 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return this;
 	}
 
+
 	public Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
 		return a(Vertex.globalAlpha);
 	}
+
 
 	/**
 	 * Set red channel.
@@ -77,6 +87,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return this;
 	}
 
+
 	/**
 	 * Set green channel.
 	 * 
@@ -87,6 +98,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		components[offset + 1] = g;
 		return this;
 	}
+
 
 	/**
 	 * Set blue channel.
@@ -99,6 +111,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return this;
 	}
 
+
 	/**
 	 * Set alpha channel.
 	 * 
@@ -110,6 +123,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return this;
 	}
 
+
 	/**
 	 * Get red, green, blue and alpha channel
 	 */
@@ -120,6 +134,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return result;
 	}
 
+
 	/**
 	 * Get red channel.
 	 */
@@ -127,6 +142,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	{
 		return components[offset + 0];
 	}
+
 
 	/**
 	 * Get green channel.
@@ -136,6 +152,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return components[offset + 1];
 	}
 
+
 	/**
 	 * Get blue channel.
 	 */
@@ -143,6 +160,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	{
 		return components[offset + 2];
 	}
+
 
 	/**
 	 * Get alpha channel.
@@ -152,20 +170,26 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return components[offset + 3];
 	}
 
+
 	@Override
 	public Color4 color()
 	{
 		return this;
 	}
 
+
 	@Override
 	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		Color4 other = ((_Color4) obj).color();
-		return same4(components, offset, other.components, other.offset);
+		if (obj.getClass() == Color4.class) {
+			Color4 other = (Color4) obj;
+			return same4(components, offset, other.components, other.offset);
+		}
+		return false;
 	}
+
 
 	@Override
 	public int hashCode()
@@ -173,11 +197,13 @@ public class Color4 extends ArrayObject implements _Color4 {
 		return hash4(components, offset);
 	}
 
+
 	@Override
 	public void copyTo(float[] target, int offset)
 	{
 		memcpy4(target, offset, components, this.offset);
 	}
+
 
 	@Override
 	void copyTo(ArrayObject other)

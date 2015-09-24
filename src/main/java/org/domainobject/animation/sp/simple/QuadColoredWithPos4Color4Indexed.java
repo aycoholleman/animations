@@ -1,7 +1,16 @@
 package org.domainobject.animation.sp.simple;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -97,23 +106,26 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 	private void setupQuad()
 	{
 		
-		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.indexFast(8, false);
-		Pos4Color4[] vertices = memory.make(6);
-		vertices[0].position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
-		vertices[1].position(-0.5f, -0.5f, 0f, 1f).color(0f, 1f, 0f, 1f);//1
-		vertices[2].position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
-		vertices[3].position(0.5f, -0.5f, 0f, 1f).color(0f, 0f, 1f, 1f);//2
-		vertices[4].position(0.5f, 0.5f, 0f, 1f).color(1f, 1f, 1f, 1f);//3
-		vertices[5].position(-0.5f, 0.5f, 0f, 1f).color(1f, 0f, 0f, 1f);//0
+		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.reserveFast(6, false);
+		Pos4Color4[] vertices = memory.alloc(6);
+		vertices[0].xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);//0
+		vertices[1].xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f);//1
+		vertices[2].xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f);//2
+		vertices[3].xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f);//2
+		vertices[4].xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f);//3
+		vertices[5].xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);//0
 		memory.commit();
 		
-		BeanPrinter bp = new BeanPrinter(new PrintWriter(System.out));
-		bp.dump(memory);
 		
 
 				
 		ShaderInput si = memory.burn();
 
+//		BeanPrinter bp = new BeanPrinter(new PrintWriter(System.out));
+//		bp.setShowSimpleClassNames(true);
+//		bp.dump(memory);
+		
+		
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 

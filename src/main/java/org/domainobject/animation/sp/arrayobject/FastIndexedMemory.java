@@ -1,15 +1,26 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.*;
+import static org.lwjgl.BufferUtils.createFloatBuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Iterator;
 
-
+/**
+ * Fast indexed memory indexes an array object as soon as it is added rather
+ * than just before the memory object is burnt to an OpenGL array buffer
+ * (GL_ARRAY_BUFFER) and an element array buffer (GL_ELEMENT_ARRAY_BUFFER).
+ * 
+ * @author Ayco
+ *
+ * @param <T>
+ *            The type of array object hosted by this memory object.
+ * 
+ * @see LazyIndexedMemory
+ */
 public abstract class FastIndexedMemory<T extends ArrayObject> {
 
-	private class Commitable implements _Commitable {
+	private class Committable implements _Committable {
 		public void commit(ArrayObject caller)
 		{
 			T[] p;
@@ -27,19 +38,21 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		}
 	}
 
-	// The array objects' backbone
+	/* Backbone of the array objects in this memory object */
 	private final float[] raw;
-	// The GL_ELEMENT_ARRAY_BUFFER
+	/* The GL_ELEMENT_ARRAY_BUFFER */
 	private final ByteBuffer idxBuf;
-	// The GL_ARRAY_BUFFER
+	/* The GL_ARRAY_BUFFER */
 	private final FloatBuffer objBuf;
-	// The number of elements in array objects of type T
+	/* Number of elements per array object */
 	private final int objSize;
-	// Reflectionless constructor of T instances
+	/* Reflectionless constructor of T instances */
 	private final _Constructor<T> constructor;
-	// Passed on to array objects created through make(), so they can commit
-	// themselves to this memory object.
-	private final Commitable commitable = new Commitable();
+	/*
+	 * Passed on to array objects, so they can commit themselves to this memory
+	 * object
+	 */
+	private final Committable committable = new Committable();
 	private final _FastIndexer<T> indexer;
 
 	// Contains the uncommitted array objects created through make().
@@ -61,15 +74,18 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
+
 	public Class<?> getIndexType()
 	{
 		return indexer.getIndexType();
 	}
 
+
 	public int size()
 	{
 		return indexer.countObjects();
 	}
+
 
 	public void add(T object)
 	{
@@ -81,6 +97,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		}
 	}
 
+
 	public void addUnchecked(T object)
 	{
 		pending = null;
@@ -89,36 +106,43 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer.add(copy);
 	}
 
-	public T make()
+
+	public T alloc()
 	{
-		return make(1)[0];
+		return alloc(1)[0];
 	}
 
-	public T[] make(int howmany)
+
+	public T[] alloc(int howmany)
 	{
+		float[] tmp = new float[howmany * objSize];
 		pending = constructor.array(howmany);
 		for (int i = 0; i < howmany; i++) {
-			pending[i] = trespass(i);
-			pending[i].commitable = commitable;
+			pending[i] = constructor.make(tmp, i * objSize);
+			pending[i].memory = committable;
 		}
 		return pending;
 	}
 
-	public void commit()
+
+	public void commit(int... which)
 	{
 		T[] tmp = pending;
 		pending = null;
-		for (int i = 0; i < tmp.length; i++) {
-			if (tmp[i] != null && !indexer.index(tmp[i])) {
-				indexer.add(tmp[i]);
-			}
-		}
+		if (which.length == 0)
+			for (T t : tmp)
+				add(t);
+		else
+			for (int i : which)
+				add(tmp[i]);
 	}
+
 
 	public boolean contains(T arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
+
 
 	public ShaderInput burn()
 	{
@@ -133,6 +157,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
+
 	public void clear()
 	{
 		pending = null;
@@ -141,21 +166,19 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer.clear();
 	}
 
+
 	public Iterator<T> iterator()
 	{
 		return indexer.iterator();
 	}
 
+
 	abstract _Constructor<T> getConstructor();
+
 
 	private T allocate()
 	{
 		return constructor.make(raw, indexer.countObjects() * objSize);
-	}
-
-	private T trespass(int offset)
-	{
-		return constructor.make(raw, (indexer.countObjects() + offset) * objSize);
 	}
 
 }

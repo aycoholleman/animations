@@ -24,7 +24,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		}
 	};
 
-	public static Memory<Pos4Color4> allocate(int maxNumObjects)
+	public static Memory<Pos4Color4> reserve(int maxNumObjects)
 	{
 		return new Memory<Pos4Color4>(maxNumObjects, OBJ_SIZE) {
 			_Constructor<Pos4Color4> getConstructor()
@@ -34,7 +34,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		};
 	}
 	
-	public static LazyIndexedMemory<Pos4Color4> indexLazy(int maxNumObjs, boolean useIntIndices)
+	public static LazyIndexedMemory<Pos4Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
 		return new LazyIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
@@ -45,7 +45,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		};
 	}
 	
-	public static FastIndexedMemory<Pos4Color4> indexFast(int maxNumObjs, boolean useIntIndices)
+	public static FastIndexedMemory<Pos4Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
 	{
 		return new FastIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
@@ -60,20 +60,20 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
 	public static final int[] strides = new int[] { 0, sizeof(4) };
 
-	public final Pos4 position;
+	public final Pos4 pos;
 	public final Color4 color;
 
 	public Pos4Color4()
 	{
 		super();
-		position = new Pos4(this, 0);
+		pos = new Pos4(this, 0);
 		color = new Color4(this, 4);
 	}
 
 	private Pos4Color4(float[] components, int offset)
 	{
 		super(components, offset);
-		position = new Pos4(this, 0);
+		pos = new Pos4(this, 0);
 		color = new Color4(this, 4);
 	}
 
@@ -103,13 +103,13 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		components[offset + 7] = Vertex.globalAlpha;
 	}
 
-	public Pos4Color4 position(float x, float y, float z, float w)
+	public Pos4Color4 xyzw(float x, float y, float z, float w)
 	{
-		position.set(x, y, z, w);
+		pos.set(x, y, z, w);
 		return this;
 	}
 
-	public Pos4Color4 color(float r, float g, float b, float a)
+	public Pos4Color4 rgba(float r, float g, float b, float a)
 	{
 		color.rgba(r, g, b, a);
 		return this;
@@ -118,7 +118,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	@Override
 	public Pos4 position()
 	{
-		return position;
+		return pos;
 	}
 
 	@Override

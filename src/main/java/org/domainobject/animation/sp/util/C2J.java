@@ -2,8 +2,10 @@ package org.domainobject.animation.sp.util;
 
 /**
  * Utility class with C-ish methods. Where applicable, methods of this class
- * expect/return single-precision floating point numbers. The memcpy family of
- * is particularly efficient at copying data between small arrays.
+ * expect/return single-precision floating point numbers. The memcpy methods are
+ * very fast at copying data between small arrays since they avoid using
+ * {@code for} loops and {@link System#arraycopy(Object, int, Object, int, int)
+ * System.arraycopy}, neither of which perform very well for small arrays.
  * 
  * @author Ayco Holleman
  *
@@ -37,7 +39,7 @@ public class C2J {
 	 * Get size in bytes of the specified array
 	 * 
 	 * @param array
-	 *            The array whose size in bytes to measure
+	 *           The array whose size in bytes to measure
 	 * @return
 	 */
 	public static int sizeof(float[] array)
@@ -51,7 +53,7 @@ public class C2J {
 	 * rows have the same length.
 	 * 
 	 * @param array
-	 *            The array whose size in bytes to measure
+	 *           The array whose size in bytes to measure
 	 * @return
 	 */
 	public static int sizeof(float[][] array)
@@ -67,16 +69,16 @@ public class C2J {
 	 * Copy two array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy2(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -89,12 +91,12 @@ public class C2J {
 	 * Copy first two array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            The destination (write-to) array
+	 *           The destination (write-to) array
 	 * @param src
-	 *            The source (read-from) array
+	 *           The source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy2(float[] dst, float[] src)
 	{
@@ -107,16 +109,16 @@ public class C2J {
 	 * Copy three array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy3(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -130,12 +132,12 @@ public class C2J {
 	 * Copy first three array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy3(float[] dst, float[] src)
 	{
@@ -147,16 +149,16 @@ public class C2J {
 	 * Copy four array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy4(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -171,12 +173,12 @@ public class C2J {
 	 * Copy first four array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy4(float[] dst, float[] src)
 	{
@@ -188,16 +190,16 @@ public class C2J {
 	 * Copy six array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy5(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -213,12 +215,12 @@ public class C2J {
 	 * Copy first six array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy5(float[] dst, float[] src)
 	{
@@ -230,16 +232,16 @@ public class C2J {
 	 * Copy six array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy6(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -256,12 +258,12 @@ public class C2J {
 	 * Copy first six array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy6(float[] dst, float[] src)
 	{
@@ -273,16 +275,16 @@ public class C2J {
 	 * Copy eight array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy7(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -300,32 +302,33 @@ public class C2J {
 	 * Copy first eight array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy7(float[] dst, float[] src)
 	{
 		memcpy8(dst, 0, src, 0);
 	}
 
+
 	/**
 	 * Copy eight array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy8(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -344,12 +347,12 @@ public class C2J {
 	 * Copy first eight array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy8(float[] dst, float[] src)
 	{
@@ -361,16 +364,16 @@ public class C2J {
 	 * Copy eight array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy9(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -390,12 +393,12 @@ public class C2J {
 	 * Copy first nine array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy9(float[] dst, float[] src)
 	{
@@ -407,16 +410,16 @@ public class C2J {
 	 * Copy 10 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy10(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -437,12 +440,12 @@ public class C2J {
 	 * Copy first 10 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy10(float[] dst, float[] src)
 	{
@@ -454,16 +457,16 @@ public class C2J {
 	 * Copy 11 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy11(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -485,12 +488,12 @@ public class C2J {
 	 * Copy first 11 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy11(float[] dst, float[] src)
 	{
@@ -502,16 +505,16 @@ public class C2J {
 	 * Copy 12 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy12(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -534,12 +537,12 @@ public class C2J {
 	 * Copy first 12 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy12(float[] dst, float[] src)
 	{
@@ -551,16 +554,16 @@ public class C2J {
 	 * Copy 16 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param dstPos
-	 *            Index from which to insert into destination array
+	 *           Index from which to insert into destination array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * @param srcPos
-	 *            Index from which the read the source array
+	 *           Index from which the read the source array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy16(float[] dst, int dstPos, float[] src, int srcPos)
 	{
@@ -587,12 +590,12 @@ public class C2J {
 	 * Copy first 16 array elements from {@code src} to {@code dst}.
 	 * 
 	 * @param dst
-	 *            Destination (write-to) array
+	 *           Destination (write-to) array
 	 * @param src
-	 *            Source (read-from) array
+	 *           Source (read-from) array
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             This method does not perform array index checking!
+	 *            This method does not perform array index checking!
 	 */
 	public static void memcpy16(float[] dst, float[] src)
 	{
