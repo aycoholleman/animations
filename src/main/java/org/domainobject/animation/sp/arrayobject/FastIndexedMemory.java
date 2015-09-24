@@ -129,12 +129,16 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	{
 		T[] tmp = pending;
 		pending = null;
-		if (which.length == 0)
+		if (which.length == 0) {
 			for (T t : tmp)
-				add(t);
-		else
+				if (t != null)
+					add(t);
+		}
+		else {
 			for (int i : which)
-				add(tmp[i]);
+				if (tmp[i] != null)
+					add(tmp[i]);
+		}
 	}
 
 
