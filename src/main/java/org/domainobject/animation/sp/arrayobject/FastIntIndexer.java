@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-class FastIntIndexer<T> implements _FastIndexer<T> {
+class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
@@ -64,7 +64,7 @@ class FastIntIndexer<T> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public int countObjects()
+	public int numObjs()
 	{
 		return numObjs;
 	}
@@ -95,7 +95,7 @@ class FastIntIndexer<T> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public int countIndices()
+	public int numIndices()
 	{
 		// TODO Auto-generated method stub
 		return 0;
