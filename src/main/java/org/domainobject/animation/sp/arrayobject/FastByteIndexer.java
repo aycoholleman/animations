@@ -1,15 +1,12 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.*;
+import static org.lwjgl.BufferUtils.createByteBuffer;
 
-import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.domainobject.util.debug.BeanPrinter;
-
-class FastByteIndexer<T> implements _FastIndexer<T> {
+class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
@@ -30,7 +27,6 @@ class FastByteIndexer<T> implements _FastIndexer<T> {
 	private byte numObjs;
 	private byte numIndices;
 
-
 	public FastByteIndexer(int maxNumObjs)
 	{
 		this.maxNumObjs = maxNumObjs;
@@ -38,13 +34,11 @@ class FastByteIndexer<T> implements _FastIndexer<T> {
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
-
 	@Override
 	public Class<?> getIndexType()
 	{
 		return byte.class;
 	}
-
 
 	@Override
 	public ByteBuffer createIndicesBuffer()
@@ -52,42 +46,36 @@ class FastByteIndexer<T> implements _FastIndexer<T> {
 		return createByteBuffer(indices.length * Byte.BYTES);
 	}
 
-
 	@Override
 	public boolean index(T object)
 	{
 		Byte idx = objs.get(object);
 		if (idx == null)
 			return false;
-		System.out.println("[index] object " + numIndices + " hash index " + idx);
 		indices[numIndices++] = idx;
 		return true;
 	}
-
 
 	@Override
 	public void add(T newObject)
 	{
 		indices[numIndices] = numObjs;
 		objs.put(newObject, numObjs);
-		System.out.println("[add]   object " + numIndices + " hash index " + numObjs);
 		numIndices++;
 		numObjs++;
 	}
 
-
 	@Override
-	public int countObjects()
+	public int numObjs()
 	{
 		return numObjs;
 	}
 
 	@Override
-	public int countIndices()
+	public int numIndices()
 	{
 		return numIndices;
 	}
-
 
 	@Override
 	public void burnIndices(ByteBuffer idxBuf)
@@ -95,13 +83,11 @@ class FastByteIndexer<T> implements _FastIndexer<T> {
 		idxBuf.put(indices, 0, numIndices);
 	}
 
-
 	@Override
 	public Iterator<T> iterator()
 	{
 		return objs.keySet().iterator();
 	}
-
 
 	@Override
 	public boolean contains(T object)
@@ -109,11 +95,11 @@ class FastByteIndexer<T> implements _FastIndexer<T> {
 		return objs.containsKey(object);
 	}
 
-
 	@Override
 	public void clear()
 	{
 		numObjs = 0;
+		numIndices = 0;
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 

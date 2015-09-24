@@ -59,13 +59,13 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	private T[] pending;
 
 
-	FastIndexedMemory(int maxNumObjs, int objSize, boolean forceIntIndices)
+	FastIndexedMemory(int maxNumObjs, int objSize, boolean useIntIndices)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
 		this.raw = new float[maxNumObjs * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
-		if (forceIntIndices || maxNumObjs > Short.MAX_VALUE)
+		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
 			indexer = new FastIntIndexer<>(maxNumObjs);
 		else if (maxNumObjs > Byte.MAX_VALUE)
 			indexer = new FastShortIndexer<>(maxNumObjs);
@@ -83,7 +83,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 
 	public int size()
 	{
-		return indexer.countObjects();
+		return indexer.numObjs();
 	}
 
 
@@ -151,9 +151,9 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	public ShaderInput burn()
 	{
 		pending = null;
-		if (indexer.countObjects() == 0)
+		if (indexer.numObjs() == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		objBuf.put(raw, 0, indexer.countObjects() * objSize);
+		objBuf.put(raw, 0, indexer.numObjs() * objSize);
 		objBuf.flip();
 		idxBuf.clear();
 		indexer.burnIndices(idxBuf);
@@ -182,7 +182,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 
 	private T allocate()
 	{
-		return constructor.make(raw, indexer.countObjects() * objSize);
+		return constructor.make(raw, indexer.numObjs() * objSize);
 	}
 
 }
