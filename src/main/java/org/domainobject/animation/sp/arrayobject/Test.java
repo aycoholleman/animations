@@ -10,11 +10,18 @@ public class Test {
 
 	public static void main(String[] args)
 	{
-		int size = 1000 * 1000 * 100;
-		int repeats = 100;
+		int size = 1000 * 100;
+		int repeats = 10000;
+
+		test0(size, repeats);
+		test0(size, repeats);
+		test0(size, repeats);
+		test0(size, repeats);
+		test0(size, repeats);
+		test0(size, repeats);
+		test0(size, repeats);
 		test0(size, repeats);
 	}
-
 
 	private static void test0(int size, int repeats)
 	{
@@ -22,20 +29,24 @@ public class Test {
 		Random r = new Random();
 
 		float[] source0 = new float[size];
-		float[] source1 = new float[size];
 		for (int i = 0; i < size; ++i) {
 			source0[i] = r.nextFloat();
-			source1[i] = r.nextFloat();
 		}
 
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(size);
 		float[] array = new float[size];
 
+		System.gc();
+
 		long start1 = System.currentTimeMillis();
 		for (int j = 0; j < repeats; ++j) {
+			source0[j] = (float) System.currentTimeMillis();
 			buffer.clear();
 			for (int i = 0; i < size; ++i) {
-				array[i] = (i + start1) % 2 == 0 ? source0[i] : source1[i];
+				if ((source0[i] + start1) % 64 == 0) {
+					source0[i] = System.currentTimeMillis();
+				}
+				array[i] = source0[i];
 			}
 			buffer.put(array);
 			buffer.flip();
@@ -47,9 +58,13 @@ public class Test {
 
 		long start2 = System.currentTimeMillis();
 		for (int j = 0; j < repeats; ++j) {
+			source0[j] = (float) System.currentTimeMillis();
 			buffer.clear();
 			for (int i = 0; i < size; ++i) {
-				buffer.put((i + start2) % 2 == 0 ? source0[i] : source1[i]);
+				if ((source0[i] + start1) % 64 == 0) {
+					source0[i] = System.currentTimeMillis();
+				}
+				buffer.put(source0[i]);
 			}
 			buffer.flip();
 		}
