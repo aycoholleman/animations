@@ -80,7 +80,7 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	@Override
 	public void burnIndices(ByteBuffer idxBuf)
 	{
-		idxBuf.put(indices, 0, numIndices);
+		idxBuf.put(indices, 0, numObjs);
 	}
 
 	@Override

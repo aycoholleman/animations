@@ -8,8 +8,7 @@ import java.util.Iterator;
 
 /**
  * Fast indexed memory indexes an array object as soon as it is added rather
- * than just before the memory object is burnt to an OpenGL array buffer
- * (GL_ARRAY_BUFFER) and an element array buffer (GL_ELEMENT_ARRAY_BUFFER).
+ * than just before the memory object is burnt to an OpenGL buffer.
  * 
  * @author Ayco
  *
@@ -21,6 +20,7 @@ import java.util.Iterator;
 public abstract class FastIndexedMemory<T extends ArrayObject> {
 
 	private class Committable implements _Committable {
+
 		public void commit(ArrayObject caller)
 		{
 			T[] p;
@@ -38,7 +38,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		}
 	}
 
-	/* Backbone of the array objects in this memory object */
+	/* Backbone for the array objects managed by this memory object */
 	private final float[] raw;
 	/* The GL_ELEMENT_ARRAY_BUFFER */
 	private final ByteBuffer idxBuf;
@@ -58,7 +58,6 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
-
 	FastIndexedMemory(int maxNumObjs, int objSize, boolean useIntIndices)
 	{
 		this.objSize = objSize;
@@ -74,18 +73,15 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
-
 	public Class<?> getIndexType()
 	{
 		return indexer.getIndexType();
 	}
 
-
 	public int size()
 	{
 		return indexer.numObjs();
 	}
-
 
 	public void add(T object)
 	{
@@ -97,7 +93,6 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		}
 	}
 
-
 	public void addUnchecked(T object)
 	{
 		pending = null;
@@ -106,12 +101,10 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer.add(copy);
 	}
 
-
 	public T alloc()
 	{
 		return alloc(1)[0];
 	}
-
 
 	public T[] alloc(int howmany)
 	{
@@ -124,29 +117,28 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		return pending;
 	}
 
-
 	public void commit(int... which)
 	{
 		T[] tmp = pending;
 		pending = null;
 		if (which.length == 0) {
-			for (T t : tmp)
+			for (T t : tmp) {
 				if (t != null)
 					add(t);
+			}
 		}
 		else {
-			for (int i : which)
+			for (int i : which) {
 				if (tmp[i] != null)
 					add(tmp[i]);
+			}
 		}
 	}
-
 
 	public boolean contains(T arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
-
 
 	public ShaderInput burn()
 	{
@@ -161,7 +153,6 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		return new ShaderInput(objBuf, idxBuf);
 	}
 
-
 	public void clear()
 	{
 		pending = null;
@@ -170,15 +161,12 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer.clear();
 	}
 
-
 	public Iterator<T> iterator()
 	{
 		return indexer.iterator();
 	}
 
-
 	abstract _Constructor<T> getConstructor();
-
 
 	private T allocate()
 	{

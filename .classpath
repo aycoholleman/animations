@@ -8,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/LWJGL3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.domainobject.util"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=org.domainobject.animation&amp;ivyXmlPath=ivy.xml&amp;confs=*"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

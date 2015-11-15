@@ -20,6 +20,7 @@ import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
 import java.io.PrintWriter;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
@@ -33,7 +34,6 @@ import org.domainobject.util.debug.BeanPrinter;
  * @see http://wiki.lwjgl.org/wiki/The_Quad_colored
  * 
  * @author Ayco Holleman
- * @created Jul 17, 2015
  *
  */
 public class QuadColoredWithPos4Color4Indexed extends Animation {
@@ -51,12 +51,10 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 
 	private Program program;
 
-
 	public QuadColoredWithPos4Color4Indexed()
 	{
 		super();
 	}
-
 
 	@Override
 	protected void init()
@@ -64,7 +62,6 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 		setupShaders();
 		setupQuad();
 	}
-
 
 	@Override
 	protected void update(double time)
@@ -94,7 +91,6 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 
 	}
 
-
 	@Override
 	protected void dispose()
 	{
@@ -102,11 +98,10 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 		Program.deactivate();
 	}
 
-
 	private void setupQuad()
 	{
-		
-		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.reserveFast(6, false);
+
+		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.reserveFast(6, true);
 		Pos4Color4[] vertices = memory.alloc(6);
 		vertices[0].xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);//0
 		vertices[1].xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f);//1
@@ -115,17 +110,12 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 		vertices[4].xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f);//3
 		vertices[5].xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);//0
 		memory.commit();
-		
-		
-
-				
 		ShaderInput si = memory.burn();
 
-//		BeanPrinter bp = new BeanPrinter(new PrintWriter(System.out));
-//		bp.setShowSimpleClassNames(true);
-//		bp.dump(memory);
-		
-		
+		//		BeanPrinter bp = new BeanPrinter(new PrintWriter(System.out));
+		//		bp.setShowSimpleClassNames(true);
+		//		bp.dump(memory);
+
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 
@@ -148,9 +138,7 @@ public class QuadColoredWithPos4Color4Indexed extends Animation {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, si.getElementArrayBuffer(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		
 	}
-
 
 	private void setupShaders()
 	{
