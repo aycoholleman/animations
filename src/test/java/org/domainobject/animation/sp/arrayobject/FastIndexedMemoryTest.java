@@ -65,12 +65,15 @@ public class FastIndexedMemoryTest {
 		assertEquals(6, r2.getInt("numIndices"));
 		float[] raw = (float[]) r.get("raw");
 		int i;
-		for (i = 0; i < objects.length; i++) 
+		for (i = 0; i < objects.length; i++)
 			assertEquals(objects[i], raw[i], 0);
 		while (i < raw.length)
 			assertEquals(raw[i++], 0, 0);
 		byte[] actualIndices = (byte[]) r2.get("indices");
 		assertArrayEquals(indices, actualIndices);
+		ShaderInput si = memory.burn();
+		assertEquals(32, si.arrayBuffer.limit());
+		assertEquals(6, si.elementArrayBuffer.limit());
 	}
 
 	@Test

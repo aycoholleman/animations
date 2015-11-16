@@ -2,15 +2,18 @@ package org.domainobject.animation.sp.arrayobject;
 
 import static org.lwjgl.BufferUtils.createFloatBuffer;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Iterator;
 
 /**
- * Fast indexed memory indexes an array object as soon as it is added rather
- * than just before the memory object is burnt to an OpenGL buffer.
+ * Fast indexed memory indexes an array object as soon as it is committed to
+ * memory. In other words, as soon as the array object is committed, a check is
+ * done whether an equivalent array object already exists in memory. If so, the
+ * array object itself is discarded and the commit action will only result in
+ * the addition of a new index pointing to the array object that is already in
+ * memory.
  * 
- * @author Ayco
+ * @author Ayco Holleman
  *
  * @param <T>
  *            The type of array object hosted by this memory object.
@@ -40,8 +43,6 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 
 	/* Backbone for the array objects managed by this memory object */
 	private final float[] raw;
-	/* The GL_ELEMENT_ARRAY_BUFFER */
-	private final ByteBuffer idxBuf;
 	/* The GL_ARRAY_BUFFER */
 	private final FloatBuffer objBuf;
 	/* Number of elements per array object */
@@ -70,7 +71,6 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 			indexer = new FastShortIndexer<>(maxNumObjs);
 		else
 			indexer = new FastByteIndexer<>(maxNumObjs);
-		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
 	public Class<?> getIndexType()
@@ -145,18 +145,15 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		pending = null;
 		if (indexer.numObjs() == 0)
 			MemoryException.cannotBurnWhenEmpty();
+		objBuf.clear();
 		objBuf.put(raw, 0, indexer.numObjs() * objSize);
 		objBuf.flip();
-		idxBuf.clear();
-		indexer.burnIndices(idxBuf);
-		idxBuf.flip();
-		return new ShaderInput(objBuf, idxBuf);
+		return new ShaderInput(objBuf, indexer.burnIndices());
 	}
 
 	public void clear()
 	{
 		pending = null;
-		idxBuf.clear();
 		objBuf.clear();
 		indexer.clear();
 	}

@@ -15,8 +15,6 @@ interface _FastIndexer<T extends ArrayObject> {
 	 */
 	Class<?> getIndexType();
 
-	ByteBuffer createIndicesBuffer();
-
 	boolean contains(T object);
 
 	boolean index(T object);
@@ -49,7 +47,7 @@ interface _FastIndexer<T extends ArrayObject> {
 	 */
 	int numIndices();
 
-	void burnIndices(ByteBuffer idxBuf);
+	ByteBuffer burnIndices();
 
 	void clear();
 

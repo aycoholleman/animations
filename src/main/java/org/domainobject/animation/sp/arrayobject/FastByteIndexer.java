@@ -13,6 +13,7 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
 	private final byte[] indices;
+	private ByteBuffer idxBuf;
 	private final int maxNumObjs;
 
 	/*
@@ -31,6 +32,7 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	{
 		this.maxNumObjs = maxNumObjs;
 		indices = new byte[maxNumObjs];
+		idxBuf = createByteBuffer(indices.length * Byte.BYTES);
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
@@ -38,12 +40,6 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	public Class<?> getIndexType()
 	{
 		return byte.class;
-	}
-
-	@Override
-	public ByteBuffer createIndicesBuffer()
-	{
-		return createByteBuffer(indices.length * Byte.BYTES);
 	}
 
 	@Override
@@ -78,9 +74,12 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public void burnIndices(ByteBuffer idxBuf)
+	public ByteBuffer burnIndices()
 	{
-		idxBuf.put(indices, 0, numObjs);
+		idxBuf.clear();
+		idxBuf.put(indices, 0, numIndices);
+		idxBuf.flip();
+		return idxBuf;
 	}
 
 	@Override
