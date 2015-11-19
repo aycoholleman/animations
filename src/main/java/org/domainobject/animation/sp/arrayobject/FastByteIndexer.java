@@ -13,7 +13,7 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
 	private final byte[] indices;
-	private ByteBuffer idxBuf;
+	private final ByteBuffer idxBuf;
 	private final int maxNumObjs;
 
 	/*

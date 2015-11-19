@@ -18,9 +18,6 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL45.glCreateBuffers;
 import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
-import java.io.PrintWriter;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
@@ -28,7 +25,6 @@ import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.arrayobject.ShaderInput;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
-import org.domainobject.util.debug.BeanPrinter;
 
 /**
  * @see http://wiki.lwjgl.org/wiki/The_Quad_colored

@@ -13,6 +13,7 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
 	private final int[] indices;
+	private final ByteBuffer idxBuf;
 	private final int maxNumObjs;
 
 	/*
@@ -25,11 +26,13 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	private LinkedHashMap<T, Integer> objs;
 
 	private int numObjs;
+	private int numIndices;
 
 	public FastIntIndexer(int maxNumObjs)
 	{
 		this.maxNumObjs = maxNumObjs;
 		indices = new int[maxNumObjs];
+		idxBuf = createByteBuffer(indices.length * Integer.BYTES);
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
@@ -40,26 +43,21 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public ByteBuffer createIndicesBuffer()
-	{
-		return createByteBuffer(indices.length * Integer.BYTES);
-	}
-
-	@Override
 	public boolean index(T object)
 	{
 		Integer idx = objs.get(object);
 		if (idx == null)
 			return false;
-		indices[numObjs++] = idx;
+		indices[numIndices++] = idx;
 		return true;
 	}
 
 	@Override
 	public void add(T newObject)
 	{
-		indices[numObjs] = numObjs;
+		indices[numIndices] = numObjs;
 		objs.put(newObject, numObjs);
+		numIndices++;
 		numObjs++;
 	}
 
@@ -70,9 +68,18 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public void burnIndices(ByteBuffer idxBuf)
+	public int numIndices()
 	{
-		idxBuf.asIntBuffer().put(indices, 0, numObjs);
+		return numIndices;
+	}
+	
+	@Override
+	public ByteBuffer burnIndices()
+	{
+		idxBuf.clear();
+		idxBuf.asIntBuffer().put(indices, 0, numIndices);
+		idxBuf.flip();
+		return idxBuf;
 	}
 
 	@Override
@@ -91,15 +98,10 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	public void clear()
 	{
 		numObjs = 0;
+		numIndices = 0;
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
-	@Override
-	public int numIndices()
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 }
