@@ -78,9 +78,27 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		return indexer.getIndexType();
 	}
 
-	public int size()
+	/**
+	 * Returns the number of <i>unique</i> array objects in memory.
+	 * 
+	 * @return
+	 */
+	public int countObjects()
 	{
 		return indexer.numObjs();
+	}
+
+	/**
+	 * Returns the number of array objects submitted to memory. Every submission
+	 * using {@link #add(ArrayObject) add} or {@link #commit(int...) commit}
+	 * results in a new index for the element array buffer, but only
+	 * <i>unique</i> array objects are actually stored in memory.
+	 * 
+	 * @return
+	 */
+	public int countIndices()
+	{
+		return indexer.numIndices();
 	}
 
 	public void add(T object)

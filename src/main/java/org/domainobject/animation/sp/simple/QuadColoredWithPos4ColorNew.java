@@ -103,7 +103,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 
 		// Draw the vertices
-		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_BYTE, 0);
+		glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
 
 		// Put everything back to default (deselect)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -130,22 +130,22 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 		vertices = Pos4Color4.reserveFast(30, false);
 		
 		// OpenGL expects to draw vertices in counter clockwise order by default
-		byte[] indices = { 0, 1, 2, 2, 3, 0 };
-		indicesCount = indices.length;
-		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
-		indicesBuffer.put(indices);
-		indicesBuffer.flip();
+//		byte[] indices = { 0, 1, 2, 2, 3, 0 };
+//		indicesCount = indices.length;
+//		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
+//		indicesBuffer.put(indices);
+//		indicesBuffer.flip();
 
 		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 		vboId = glCreateBuffers();
-
 		// Create a new VBO for the indices and select it (bind) - INDICES
 		vboiId = glCreateBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
+//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
+//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 
