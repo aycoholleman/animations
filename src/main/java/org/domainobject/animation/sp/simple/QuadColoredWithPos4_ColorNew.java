@@ -1,17 +1,29 @@
 package org.domainobject.animation.sp.simple;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL45.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL45.glCreateBuffers;
+import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
 import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
+import org.domainobject.animation.sp.arrayobject.Color4;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
-import org.domainobject.animation.sp.arrayobject.Memory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
@@ -103,11 +115,12 @@ public class QuadColoredWithPos4_ColorNew extends Animation {
 		mem.add(new Pos4().set(0.5f, 0.5f, 0f, 1f));
 
 		
-		RawMemory colors = new RawMemory(30);
-		colors.add(1f, 0f, 0f, 1f);
-		colors.add(0f, 1f, 0f, 1f);
-		colors.add(0f, 0f, 1f, 1f);
-		colors.add(1f, 1f, 1f, 1f);
+		//RawMemory colors = new RawMemory(30);
+		FastIndexedMemory<Color4> colors = Color4.reserveFast(10, false);
+		colors.add(new Color4().rgba(1f, 0f, 0f, 1f));
+		colors.add(new Color4().rgba(0f, 1f, 0f, 1f));
+		colors.add(new Color4().rgba(0f, 0f, 1f, 1f));
+		colors.add(new Color4().rgba(1f, 1f, 1f, 1f));
 
 		// OpenGL expects to draw vertices in counter clockwise order by default
 		byte[] indices = { 0, 1, 2, 2, 3, 0 };
@@ -130,7 +143,7 @@ public class QuadColoredWithPos4_ColorNew extends Animation {
 		// Create a new VBO for the indices and select it (bind) - COLORS
 		vbocId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vbocId);
-		glBufferData(GL_ARRAY_BUFFER, colors.burn(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, colors.burn().getArrayBuffer(), GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
