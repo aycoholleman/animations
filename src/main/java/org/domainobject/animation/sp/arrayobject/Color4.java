@@ -15,6 +15,63 @@ public class Color4 extends ArrayObject implements _Color4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
+	private static final _Constructor<Color4> constructor = new _Constructor<Color4>() {
+		public Color4 make(float[] raw, int offset)
+		{
+			return new Color4(raw, offset);
+		}
+		public Color4[] array(int length)
+		{
+			return new Color4[length];
+		}
+	};
+
+	public static Memory<Color4> reserve(int maxNumObjects)
+	{
+		return new Memory<Color4>(maxNumObjects, OBJ_SIZE) {
+			_Constructor<Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static LazyIndexedMemory<Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
+	{
+		return new LazyIndexedMemory<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
+			_Constructor<Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static FastIndexedMemory<Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	{
+		return new FastIndexedMemory<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
+			_Constructor<Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+
+	public static final int OBJ_SIZE = 4;
+	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
+	public static final int[] strides = new int[] { 0 };
+
+	public static Memory<Color4> allocate(int maxNumObjects)
+	{
+		return new Memory<Color4>(maxNumObjects, COMPONENT_COUNT) {
+			_Constructor<Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+
 
 	public Color4()
 	{

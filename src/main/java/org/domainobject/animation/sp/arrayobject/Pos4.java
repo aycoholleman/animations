@@ -25,6 +25,42 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		}
 	};
 
+	public static Memory<Pos4> reserve(int maxNumObjects)
+	{
+		return new Memory<Pos4>(maxNumObjects, OBJ_SIZE) {
+			_Constructor<Pos4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static LazyIndexedMemory<Pos4> reserveLazy(int maxNumObjs, boolean useIntIndices)
+	{
+		return new LazyIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
+			_Constructor<Pos4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+	
+	public static FastIndexedMemory<Pos4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	{
+		return new FastIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+			@Override
+			_Constructor<Pos4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+
+	public static final int OBJ_SIZE = 4;
+	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
+	public static final int[] strides = new int[] { 0 };
+
 	public static Memory<Pos4> allocate(int maxNumObjects)
 	{
 		return new Memory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
