@@ -15,10 +15,12 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	public static final int COMPONENT_COUNT = 4;
 
 	private static final _Constructor<Pos4> constructor = new _Constructor<Pos4>() {
+
 		public Pos4 make(float[] raw, int offset)
 		{
 			return new Pos4(raw, offset);
 		}
+
 		public Pos4[] array(int length)
 		{
 			return new Pos4[length];
@@ -28,16 +30,18 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	public static Memory<Pos4> reserve(int maxNumObjects)
 	{
 		return new Memory<Pos4>(maxNumObjects, OBJ_SIZE) {
+
 			_Constructor<Pos4> getConstructor()
 			{
 				return constructor;
 			}
 		};
 	}
-	
+
 	public static LazyIndexedMemory<Pos4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
 		return new LazyIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+
 			@Override
 			_Constructor<Pos4> getConstructor()
 			{
@@ -45,10 +49,11 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 			}
 		};
 	}
-	
+
 	public static FastIndexedMemory<Pos4> reserveFast(int maxNumObjs, boolean useIntIndices)
 	{
 		return new FastIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+
 			@Override
 			_Constructor<Pos4> getConstructor()
 			{
@@ -64,6 +69,7 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	public static Memory<Pos4> allocate(int maxNumObjects)
 	{
 		return new Memory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
+
 			_Constructor<Pos4> getConstructor()
 			{
 				return constructor;
@@ -76,12 +82,10 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		super();
 	}
 
-
 	Pos4(float[] components, int offset)
 	{
 		super(components, offset);
 	}
-
 
 	Pos4(ArrayObject embedder, int offset)
 	{
@@ -99,28 +103,38 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	 * 
 	 * @return This instance
 	 */
-	public Pos4 set(float x, float y, float z, float w)
+	public Pos4 xyzw(float x, float y, float z, float w)
 	{
 		Array.set4(components, offset, x, y, z, w);
 		return this;
 	}
 
-
+	/**
+	 * Set the x, y, and z coordinates to the specified values while the w
+	 * coordinate is set to the {@link Vertex#globalW global w coordinate}.
+	 * 
+	 * @return This instance
+	 */
+	public Pos4 xyzw(float x, float y, float z)
+	{
+		Array.set4(components, offset, x, y, z, Vertex.globalW);
+		return this;
+	}
+	
 	/**
 	 * Sets the coordinates of this instance.
 	 * 
 	 * @param coordinates
-	 * A {@code float} array containing at least 4 elements
+	 *            A {@code float} array containing at least 4 elements
 	 * @return This instance
 	 * @throws ArrayIndexOutOfBoundsException
-	 * If the specified array contains less than 4 elements
+	 *             If the specified array contains less than 4 elements
 	 */
 	public Pos4 set(float[] coordinates)
 	{
 		memcpy4(components, offset, coordinates, 0);
 		return this;
 	}
-
 
 	/**
 	 * Copies the coordinates of the specified {@link _Pos4} instance to this
@@ -136,36 +150,22 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 
 
 	/**
-	 * Set the x, y, and z coordinates to the specified values while the w
-	 * coordinate is set to {@link Vertex#globalW globalW}.
-	 * 
-	 * @return This instance
-	 */
-	public Pos4 xyz(float x, float y, float z)
-	{
-		Array.set4(components, offset, x, y, z, Vertex.globalW);
-		return this;
-	}
-
-
-	/**
 	 * Set the x, y, and z coordinates as specified by the array argument while
 	 * the w coordinate is set to {@link Vertex#globalW globalW}.
 	 * 
 	 * @param coordinates
-	 * A {@code float} array containing at least 3 elements
+	 *            A {@code float} array containing at least 3 elements
 	 * 
 	 * @return This instance
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
-	 * If the specified array contains less than 3 elements
+	 *             If the specified array contains less than 3 elements
 	 */
 	public Pos4 xyz(float[] coordinates)
 	{
 		memcpy3(components, offset, coordinates, 0);
 		return w(Vertex.globalW);
 	}
-
 
 	/**
 	 * Set x coordinate.
@@ -178,7 +178,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return this;
 	}
 
-
 	/**
 	 * Set y coordinate.
 	 * 
@@ -189,7 +188,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		components[offset + 1] = y;
 		return this;
 	}
-
 
 	/**
 	 * Set z coordinate.
@@ -202,7 +200,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return this;
 	}
 
-
 	/**
 	 * Set w coordinate.
 	 * 
@@ -214,7 +211,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return this;
 	}
 
-
 	/**
 	 * Get the x, y, z and w coordinates.
 	 */
@@ -224,7 +220,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		memcpy4(result, 0, components, offset);
 		return result;
 	}
-
 
 	/**
 	 * Get the x, y and z coordinates.
@@ -236,7 +231,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return result;
 	}
 
-
 	/**
 	 * Get the x coordinate.
 	 */
@@ -244,7 +238,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	{
 		return components[offset + 0];
 	}
-
 
 	/**
 	 * Get the y coordinate.
@@ -254,7 +247,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return components[offset + 1];
 	}
 
-
 	/**
 	 * Get the z coordinate.
 	 */
@@ -263,7 +255,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return components[offset + 2];
 	}
 
-
 	/**
 	 * Get the w coordinate.
 	 */
@@ -271,7 +262,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	{
 		return components[offset + 3];
 	}
-
 
 	@Override
 	public Pos4 position()
@@ -299,7 +289,6 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	{
 		memcpy4(array, offset, components, this.offset);
 	}
-
 
 	@Override
 	void copyTo(ArrayObject other)

@@ -45,13 +45,13 @@ public class Torus extends Animation {
 				vertex = verts.make();
 				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j, numMinor));
 				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
-				vertex.position.xyz(x0 * r, y0 * r, z);
+				vertex.position.xyzw(x0 * r, y0 * r, z);
 
 				// Second point
 				vertex = verts.make();
 				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j, numMinor));
 				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
-				vertex.position.xyz(x1 * r, y1 * r, z);
+				vertex.position.xyzw(x1 * r, y1 * r, z);
 
 				// Next one over
 				b = (j + 1) * minorStep;
@@ -63,13 +63,13 @@ public class Torus extends Animation {
 				vertex = verts.make();
 				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j + 1, numMinor));
 				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
-				vertex.position.xyz(x0 * r, y0 * r, z);
+				vertex.position.xyzw(x0 * r, y0 * r, z);
 
 				// 4th point
 				vertex = verts.make();
 				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j + 1, numMinor));
 				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
-				vertex.position.xyz(x1 * r, y1 * r, z);
+				vertex.position.xyzw(x1 * r, y1 * r, z);
 				
 
 			}

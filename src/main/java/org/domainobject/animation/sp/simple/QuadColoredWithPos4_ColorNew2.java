@@ -22,7 +22,8 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.Memory;
+import org.domainobject.animation.sp.arrayobject.Color4;
+import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
@@ -36,11 +37,11 @@ import org.lwjgl.BufferUtils;
  * @created Jul 17, 2015
  *
  */
-public class QuadColoredWithPos4_Color4 extends Animation {
+public class QuadColoredWithPos4_ColorNew2 extends Animation {
 
 	public static void main(String[] args)
 	{
-		new QuadColoredWithPos4_Color4().start();
+		new QuadColoredWithPos4_ColorNew2().start();
 	}
 
 	// Quad variables
@@ -53,7 +54,7 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 	private Program program;
 
 
-	public QuadColoredWithPos4_Color4()
+	public QuadColoredWithPos4_ColorNew2()
 	{
 		super();
 	}
@@ -107,17 +108,19 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 	private void setupQuad()
 	{
 		
-		Memory<Pos4> vertices = Pos4.allocate(30);
-		vertices.make().xyzw(-0.5f, 0.5f, 0f, 1f);
-		vertices.make().xyzw(-0.5f, -0.5f, 0f, 1f);
-		vertices.make().xyzw(0.5f, -0.5f, 0f, 1f);
-		vertices.make().xyzw(0.5f, 0.5f, 0f, 1f);
+		FastIndexedMemory<Pos4> mem = Pos4.reserveFast(10, false);
+		mem.add(new Pos4().xyzw(-0.5f, 0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(-0.5f, -0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(0.5f, -0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(0.5f, 0.5f, 0f, 1f));
+
 		
-		RawMemory colors = new RawMemory(30);
-		colors.add(1f, 0f, 0f, 1f);
-		colors.add(0f, 1f, 0f, 1f);
-		colors.add(0f, 0f, 1f, 1f);
-		colors.add(1f, 1f, 1f, 1f);
+		//RawMemory colors = new RawMemory(30);
+		FastIndexedMemory<Color4> colors = Color4.reserveFast(10, false);
+		colors.add(new Color4().rgba(1f, 0f, 0f, 1f));
+		colors.add(new Color4().rgba(0f, 1f, 0f, 1f));
+		colors.add(new Color4().rgba(0f, 0f, 1f, 1f));
+		colors.add(new Color4().rgba(1f, 1f, 1f, 1f));
 
 		// OpenGL expects to draw vertices in counter clockwise order by default
 		byte[] indices = { 0, 1, 2, 2, 3, 0 };
@@ -133,14 +136,14 @@ public class QuadColoredWithPos4_Color4 extends Animation {
 		// Create a new Array Buffer Object in memory and select it (bind) - VERTICES
 		vboId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		glBufferData(GL_ARRAY_BUFFER, vertices.burn().getArrayBuffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mem.burn().getArrayBuffer(), GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Create a new VBO for the indices and select it (bind) - COLORS
 		vbocId = glCreateBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vbocId);
-		glBufferData(GL_ARRAY_BUFFER, colors.burn(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, colors.burn().getArrayBuffer(), GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 4, GL_FLOAT, false, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 

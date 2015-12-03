@@ -105,7 +105,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 
 	public Pos4Color4 xyzw(float x, float y, float z, float w)
 	{
-		pos.set(x, y, z, w);
+		pos.xyzw(x, y, z, w);
 		return this;
 	}
 

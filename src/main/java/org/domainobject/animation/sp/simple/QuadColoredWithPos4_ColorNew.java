@@ -25,7 +25,6 @@ import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.Color4;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
-import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
 import org.lwjgl.BufferUtils;
@@ -109,10 +108,10 @@ public class QuadColoredWithPos4_ColorNew extends Animation {
 	{
 		
 		FastIndexedMemory<Pos4> mem = Pos4.reserveFast(10, false);
-		mem.add(new Pos4().set(-0.5f, 0.5f, 0f, 1f));
-		mem.add(new Pos4().set(-0.5f, -0.5f, 0f, 1f));
-		mem.add(new Pos4().set(0.5f, -0.5f, 0f, 1f));
-		mem.add(new Pos4().set(0.5f, 0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(-0.5f, 0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(-0.5f, -0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(0.5f, -0.5f, 0f, 1f));
+		mem.add(new Pos4().xyzw(0.5f, 0.5f, 0f, 1f));
 
 		
 		//RawMemory colors = new RawMemory(30);
