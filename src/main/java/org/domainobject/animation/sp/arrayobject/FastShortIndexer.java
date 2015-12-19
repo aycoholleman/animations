@@ -2,11 +2,11 @@ package org.domainobject.animation.sp.arrayobject;
 
 import static org.lwjgl.BufferUtils.createShortBuffer;
 
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
+class FastShortIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Short> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
@@ -14,26 +14,14 @@ class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 */
 	private final short[] indices;
 	private final ShortBuffer idxBuf;
-	private final int maxNumObjs;
-
-	/*
-	 * A reverse lookup table that allows us to quickly find the index of an
-	 * array object in the indices array. When an array object is added or
-	 * committed to memory, its uniqueness is first checked through a lookup on
-	 * this map. If it is not unique, it is discarded and only the index of the
-	 * array object of which it is a duplicate is appended to the indices array.
-	 */
-	private LinkedHashMap<T, Short> objs;
-
+	
 	private short numObjs;
-	private int numIndices;
-
-	public FastShortIndexer(int maxNumObjs)
+	
+	FastShortIndexer(int maxNumObjs)
 	{
-		this.maxNumObjs = maxNumObjs;
+		super(maxNumObjs);
 		indices = new short[maxNumObjs];
-		idxBuf = createShortBuffer(indices.length);
-		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
+		idxBuf = createShortBuffer(maxNumObjs);
 	}
 
 	@Override
@@ -43,7 +31,7 @@ class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public boolean index(T object)
+	public boolean index(ARRAY_OBJECT object)
 	{
 		Short idx = objs.get(object);
 		if (idx == null)
@@ -53,7 +41,7 @@ class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public void add(T newObject)
+	public void add(ARRAY_OBJECT newObject)
 	{
 		indices[numIndices] = numObjs;
 		objs.put(newObject, numObjs);
@@ -68,30 +56,12 @@ class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public int numIndices()
-	{
-		return numIndices;
-	}
-
-	@Override
-	public ShortBuffer burnIndices()
+	public Buffer burnIndices()
 	{
 		idxBuf.clear();
 		idxBuf.put(indices, 0, numIndices);
 		idxBuf.flip();
 		return idxBuf;
-	}
-
-	@Override
-	public Iterator<T> iterator()
-	{
-		return objs.keySet().iterator();
-	}
-
-	@Override
-	public boolean contains(T object)
-	{
-		return objs.containsKey(object);
 	}
 
 	@Override
@@ -101,5 +71,4 @@ class FastShortIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 		numIndices = 0;
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
-
 }

@@ -65,9 +65,9 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		this.constructor = getConstructor();
 		this.raw = new float[maxNumObjs * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
-		//indexer = new FastIntIndexer<>(maxNumObjs);
+		indexer = new FastIntIndexer<>(maxNumObjs);
 		//indexer = new FastShortIndexer<>(maxNumObjs);
-		indexer = new FastByteIndexer<>(maxNumObjs);
+		//indexer = new FastByteIndexer<>(maxNumObjs);
 //		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
 //			indexer = new FastIntIndexer<>(maxNumObjs);
 //		else if (maxNumObjs > Byte.MAX_VALUE)

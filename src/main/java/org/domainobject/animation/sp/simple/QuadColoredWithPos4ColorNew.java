@@ -116,13 +116,13 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 		// Bind to the index VBO that has all the information about the order of the vertices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer) shaderInput.getElementArrayBuffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) shaderInput.getElementArrayBuffer(), GL_STATIC_DRAW);
 
 
 		// Draw the vertices
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_SHORT, 0);
-		glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
+		glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_INT, 0);
 	
 		// Put everything back to default (deselect)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

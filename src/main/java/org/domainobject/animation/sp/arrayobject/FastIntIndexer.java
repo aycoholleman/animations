@@ -4,10 +4,9 @@ import static org.lwjgl.BufferUtils.createIntBuffer;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
+class FastIntIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Integer> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
@@ -15,26 +14,14 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 */
 	private final int[] indices;
 	private final IntBuffer idxBuf;
-	private final int maxNumObjs;
-
-	/*
-	 * A reverse lookup table that allows us to quickly find the index of an
-	 * array object in the indices array. When an array object is added or
-	 * committed to memory, its uniqueness is first checked through a lookup on
-	 * this map. If it is not unique, it is discarded and only the index of the
-	 * array object of which it is a duplicate is appended to the indices array.
-	 */
-	private LinkedHashMap<T, Integer> objs;
-
+	
 	private int numObjs;
-	private int numIndices;
-
-	public FastIntIndexer(int maxNumObjs)
+	
+	FastIntIndexer(int maxNumObjs)
 	{
-		this.maxNumObjs = maxNumObjs;
+		super(maxNumObjs);
 		indices = new int[maxNumObjs];
-		idxBuf = createIntBuffer(indices.length);
-		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
+		idxBuf = createIntBuffer(maxNumObjs);
 	}
 
 	@Override
@@ -44,7 +31,7 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public boolean index(T object)
+	public boolean index(ARRAY_OBJECT object)
 	{
 		Integer idx = objs.get(object);
 		if (idx == null)
@@ -54,7 +41,7 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public void add(T newObject)
+	public void add(ARRAY_OBJECT newObject)
 	{
 		indices[numIndices] = numObjs;
 		objs.put(newObject, numObjs);
@@ -69,12 +56,6 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public int numIndices()
-	{
-		return numIndices;
-	}
-
-	@Override
 	public Buffer burnIndices()
 	{
 		idxBuf.clear();
@@ -84,23 +65,10 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator()
-	{
-		return objs.keySet().iterator();
-	}
-
-	@Override
-	public boolean contains(T object)
-	{
-		return objs.containsKey(object);
-	}
-
-	@Override
 	public void clear()
 	{
 		numObjs = 0;
 		numIndices = 0;
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
-
 }

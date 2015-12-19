@@ -59,7 +59,7 @@ public class FastIndexedMemoryTest {
 		assertEquals(8, (int) r.getInt("objSize"));
 		_FastIndexer indexer = (_FastIndexer) r.get("indexer");
 		assertTrue(indexer.getClass() == FastByteIndexer.class);
-		FastByteIndexer fbi = (FastByteIndexer) indexer;
+		FastIndexer<T> fbi = (FastIndexer<T>) indexer;
 		Reflection r2 = new Reflection(fbi);
 		assertEquals(4, r2.getInt("numObjs"));
 		assertEquals(6, r2.getInt("numIndices"));
