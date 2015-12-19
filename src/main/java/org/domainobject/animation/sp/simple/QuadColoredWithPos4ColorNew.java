@@ -19,8 +19,6 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL45.glCreateBuffers;
 import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
-import java.nio.ByteBuffer;
-
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
@@ -28,7 +26,6 @@ import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.arrayobject.ShaderInput;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
-import org.lwjgl.BufferUtils;
 
 /**
  * @see http://wiki.lwjgl.org/wiki/The_Quad_colored
@@ -48,7 +45,6 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 	private int vaoId = 0;
 	private int vboId = 0;
 	private int vboiId = 0;
-	private int indicesCount = 0;
 
 	private Program program;
 	FastIndexedMemory<Pos4Color4> vertices;
@@ -125,27 +121,14 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 
 	private void setupQuad()
-	{
-		
-		vertices = Pos4Color4.reserveFast(30, false);
-		
-		// OpenGL expects to draw vertices in counter clockwise order by default
-//		byte[] indices = { 0, 1, 2, 2, 3, 0 };
-//		indicesCount = indices.length;
-//		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
-//		indicesBuffer.put(indices);
-//		indicesBuffer.flip();
-
+	{		
+		vertices = Pos4Color4.reserveFast(30, false);		
 		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
 		vboId = glCreateBuffers();
 		// Create a new VBO for the indices and select it (bind) - INDICES
 		vboiId = glCreateBuffers();
-		
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
-//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 

@@ -25,7 +25,6 @@ import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.Color4;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
 import org.domainobject.animation.sp.arrayobject.Pos4;
-import org.domainobject.animation.sp.arrayobject.old.RawMemory;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
 import org.lwjgl.BufferUtils;
