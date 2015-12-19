@@ -19,6 +19,29 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL45.glCreateBuffers;
 import static org.lwjgl.opengl.GL45.glCreateVertexArrays;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL21.*;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL32.*;
+import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.opengl.GL40.*;
+import static org.lwjgl.opengl.GL41.*;
+import static org.lwjgl.opengl.GL42.*;
+import static org.lwjgl.opengl.GL43.*;
+import static org.lwjgl.opengl.GL44.*;
+import static org.lwjgl.opengl.GL45.*;
+
+
+import java.nio.ShortBuffer;
+import java.nio.IntBuffer;
+import java.nio.ByteBuffer;
+
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
@@ -93,14 +116,14 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 		// Bind to the index VBO that has all the information about the order of the vertices
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, shaderInput.getElementArrayBuffer(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer) shaderInput.getElementArrayBuffer(), GL_STATIC_DRAW);
 
 
 		// Draw the vertices
+		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
+		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_SHORT, 0);
 		glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
-
+	
 		// Put everything back to default (deselect)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableVertexAttribArray(0);

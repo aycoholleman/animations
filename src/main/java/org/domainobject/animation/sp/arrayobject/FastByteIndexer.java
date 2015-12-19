@@ -2,6 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -26,13 +27,13 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	private LinkedHashMap<T, Byte> objs;
 
 	private byte numObjs;
-	private byte numIndices;
+	private int numIndices;
 
 	public FastByteIndexer(int maxNumObjs)
 	{
 		this.maxNumObjs = maxNumObjs;
 		indices = new byte[maxNumObjs];
-		idxBuf = createByteBuffer(indices.length * Byte.BYTES);
+		idxBuf = createByteBuffer(indices.length);
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
@@ -74,7 +75,7 @@ class FastByteIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	}
 
 	@Override
-	public ByteBuffer burnIndices()
+	public Buffer burnIndices()
 	{
 		idxBuf.clear();
 		idxBuf.put(indices, 0, numIndices);

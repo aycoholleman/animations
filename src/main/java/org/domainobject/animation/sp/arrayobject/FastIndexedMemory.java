@@ -47,7 +47,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	/* Number of elements per array object */
 	private final int objSize;
-	/* Reflectionless constructor of T instances */
+	/* Reflectionless constructor of various types of array objects */
 	private final _Constructor<T> constructor;
 	/*
 	 * Passed on to array objects, so they can commit themselves to this memory
@@ -65,12 +65,15 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		this.constructor = getConstructor();
 		this.raw = new float[maxNumObjs * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
-		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
-			indexer = new FastIntIndexer<>(maxNumObjs);
-		else if (maxNumObjs > Byte.MAX_VALUE)
-			indexer = new FastShortIndexer<>(maxNumObjs);
-		else
-			indexer = new FastByteIndexer<>(maxNumObjs);
+		//indexer = new FastIntIndexer<>(maxNumObjs);
+		//indexer = new FastShortIndexer<>(maxNumObjs);
+		indexer = new FastByteIndexer<>(maxNumObjs);
+//		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
+//			indexer = new FastIntIndexer<>(maxNumObjs);
+//		else if (maxNumObjs > Byte.MAX_VALUE)
+//			indexer = new FastShortIndexer<>(maxNumObjs);
+//		else
+//			indexer = new FastByteIndexer<>(maxNumObjs);
 	}
 
 	public Class<?> getIndexType()

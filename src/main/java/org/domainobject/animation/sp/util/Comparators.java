@@ -13,7 +13,7 @@ public final class Comparators {
 	 * count as distinct. If the difference between the numbers is less than
 	 * {@code distinguishable} they are taken to be the same.
 	 */
-	public static float distinguishable = 0.000001f;
+	public static float delta = 0.000001f;
 
 	private Comparators()
 	{
@@ -21,7 +21,7 @@ public final class Comparators {
 
 	/**
 	 * Returns {@code true} if the absolute difference between a and b is less
-	 * than {@link #distinguishable}, {@code false} otherwise.
+	 * than {@link #delta}, {@code false} otherwise.
 	 * 
 	 * @param a
 	 * @param b
@@ -29,7 +29,7 @@ public final class Comparators {
 	 */
 	public static boolean same(float a, float b)
 	{
-		return abs(a - b) < distinguishable;
+		return abs(a - b) < delta;
 	}
 
 	/**
@@ -38,18 +38,18 @@ public final class Comparators {
 	 * 
 	 * @param a
 	 * @param b
-	 * @param distinguishable
+	 * @param delta
 	 * @return
 	 */
-	public static boolean same(float a, float b, float distinguishable)
+	public static boolean same(float a, float b, float delta)
 	{
-		return abs(a - b) < distinguishable;
+		return abs(a - b) < delta;
 	}
 
 	/**
 	 * Returns {@code true} if all elements of a and b are, pair-wise,
 	 * indistinguishable, {@code false otherwise}. The treshold for
-	 * distinguishability is set by {@link #distinguishable}.
+	 * distinguishability is set by {@link #delta}.
 	 * 
 	 * @param a
 	 * @param b
@@ -57,7 +57,7 @@ public final class Comparators {
 	 */
 	public static boolean same(float[] a, float[] b)
 	{
-		return same(a, b, distinguishable);
+		return same(a, b, delta);
 	}
 
 	/**
@@ -66,18 +66,18 @@ public final class Comparators {
 	 * 
 	 * @param a
 	 * @param b
-	 * @param distinguishable
+	 * @param delta
 	 * @return
 	 */
-	public static boolean same(float[] a, float[] b, float distinguishable)
+	public static boolean same(float[] a, float[] b, float delta)
 	{
-		return same(a, 0, b, 0, a.length, distinguishable);
+		return same(a, 0, b, 0, a.length, delta);
 	}
 
 	/**
 	 * Returns {@code true} if the specified elements of a and b are, pair-wise,
 	 * indistinguishable, {@code false otherwise}. The treshold for
-	 * distinguishability is set by {@link #distinguishable}.
+	 * distinguishability is set by {@link #delta}.
 	 * 
 	 * @param a
 	 *            The first array
@@ -93,7 +93,7 @@ public final class Comparators {
 	 */
 	public static boolean same(float[] a, int aOffset, float[] b, int bOffset, int length)
 	{
-		return same(a, aOffset, b, bOffset, length, distinguishable);
+		return same(a, aOffset, b, bOffset, length, delta);
 	}
 
 	/**
@@ -110,86 +110,83 @@ public final class Comparators {
 	 *            The offset into the second array
 	 * @param length
 	 *            The number of array elements to compare
-	 * @param distinguishable
+	 * @param delta
 	 *            The treshold for distinguishability
 	 * @return
 	 */
 	public static boolean same(float[] a, int aOffset, float[] b, int bOffset, int length,
-			float distinguishable)
+			float delta)
 	{
 		for (int i = 0; i < length; ++i)
-			if (!same(a[aOffset + i], b[bOffset + i], distinguishable))
+			if (!same(a[aOffset + i], b[bOffset + i], delta))
 				return false;
 		return true;
 	}
 
 	public static boolean same2(float[] a, float[] b)
 	{
-		return same2(a, b, distinguishable);
+		return same2(a, b, delta);
 	}
 
-	public static boolean same2(float[] a, float[] b, float distinguishable)
+	public static boolean same2(float[] a, float[] b, float delta)
 	{
-		return same2(a, 0, b, 0, distinguishable);
+		return same2(a, 0, b, 0, delta);
 	}
 
 	public static boolean same2(float[] a, int aOffset, float[] b, int bOffset)
 	{
-		return same2(a, aOffset, b, bOffset, distinguishable);
+		return same2(a, aOffset, b, bOffset, delta);
 	}
 
-	public static boolean same2(float[] a, int aOffset, float[] b, int bOffset,
-			float distinguishable)
+	public static boolean same2(float[] a, int aOffset, float[] b, int bOffset, float delta)
 	{
-		return same(a[aOffset + 0], b[bOffset + 0], distinguishable)
-				&& same(a[aOffset + 1], b[bOffset + 1], distinguishable);
+		return same(a[aOffset + 0], b[bOffset + 0], delta)
+				&& same(a[aOffset + 1], b[bOffset + 1], delta);
 	}
 
 	public static boolean same3(float[] a, float[] b)
 	{
-		return same3(a, b, distinguishable);
+		return same3(a, b, delta);
 	}
 
-	public static boolean same3(float[] a, float[] b, float distinguishable)
+	public static boolean same3(float[] a, float[] b, float delta)
 	{
-		return same3(a, 0, b, 0, distinguishable);
+		return same3(a, 0, b, 0, delta);
 	}
 
 	public static boolean same3(float[] a, int aOffset, float[] b, int bOffset)
 	{
-		return same3(a, aOffset, b, bOffset, distinguishable);
+		return same3(a, aOffset, b, bOffset, delta);
 	}
 
-	public static boolean same3(float[] a, int aOffset, float[] b, int bOffset,
-			float distinguishable)
+	public static boolean same3(float[] a, int aOffset, float[] b, int bOffset, float delta)
 	{
-		return same(a[aOffset + 0], b[bOffset + 0], distinguishable)
-				&& same(a[aOffset + 1], b[bOffset + 1], distinguishable)
-				&& same(a[aOffset + 2], b[bOffset + 2], distinguishable);
+		return same(a[aOffset + 0], b[bOffset + 0], delta)
+				&& same(a[aOffset + 1], b[bOffset + 1], delta)
+				&& same(a[aOffset + 2], b[bOffset + 2], delta);
 	}
 
 	public static boolean same4(float[] a, float[] b)
 	{
-		return same4(a, b, distinguishable);
+		return same4(a, b, delta);
 	}
 
-	public static boolean same4(float[] a, float[] b, float distinguishable)
+	public static boolean same4(float[] a, float[] b, float delta)
 	{
-		return same4(a, 0, b, 0, distinguishable);
+		return same4(a, 0, b, 0, delta);
 	}
 
 	public static boolean same4(float[] a, int aOffset, float[] b, int bOffset)
 	{
-		return same4(a, aOffset, b, bOffset, distinguishable);
+		return same4(a, aOffset, b, bOffset, delta);
 	}
 
-	public static boolean same4(float[] a, int aOffset, float[] b, int bOffset,
-			float distinguishable)
+	public static boolean same4(float[] a, int aOffset, float[] b, int bOffset, float delta)
 	{
-		return same(a[aOffset + 0], b[bOffset + 0], distinguishable)
-				&& same(a[aOffset + 1], b[bOffset + 1], distinguishable)
-				&& same(a[aOffset + 2], b[bOffset + 2], distinguishable)
-				&& same(a[aOffset + 3], b[bOffset + 3], distinguishable);
+		return same(a[aOffset + 0], b[bOffset + 0], delta)
+				&& same(a[aOffset + 1], b[bOffset + 1], delta)
+				&& same(a[aOffset + 2], b[bOffset + 2], delta)
+				&& same(a[aOffset + 3], b[bOffset + 3], delta);
 	}
 
 	public static int hash2(float[] a, int offset)

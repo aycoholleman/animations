@@ -1,6 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import java.nio.ByteBuffer;
+import java.nio.Buffer;
 import java.util.Iterator;
 
 import org.domainobject.animation.sp.util.Comparators;
@@ -47,7 +47,7 @@ interface _FastIndexer<T extends ArrayObject> {
 	 */
 	int numIndices();
 
-	ByteBuffer burnIndices();
+	Buffer burnIndices();
 
 	void clear();
 

@@ -8,8 +8,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * slots) and a color (last four slots).
  * 
  * @author Ayco Holleman
- * @created Jul 26, 2015
- *
+  *
  */
 public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	

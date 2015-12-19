@@ -1,8 +1,9 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.*;
+import static org.lwjgl.BufferUtils.createIntBuffer;
 
-import java.nio.ByteBuffer;
+import java.nio.Buffer;
+import java.nio.IntBuffer;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -13,7 +14,7 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	 * GL_ELEMENT_ARRAY_BUFFER.
 	 */
 	private final int[] indices;
-	private final ByteBuffer idxBuf;
+	private final IntBuffer idxBuf;
 	private final int maxNumObjs;
 
 	/*
@@ -32,7 +33,7 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	{
 		this.maxNumObjs = maxNumObjs;
 		indices = new int[maxNumObjs];
-		idxBuf = createByteBuffer(indices.length * Integer.BYTES);
+		idxBuf = createIntBuffer(indices.length);
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
@@ -72,12 +73,12 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 	{
 		return numIndices;
 	}
-	
+
 	@Override
-	public ByteBuffer burnIndices()
+	public Buffer burnIndices()
 	{
 		idxBuf.clear();
-		idxBuf.asIntBuffer().put(indices, 0, numIndices);
+		idxBuf.put(indices, 0, numIndices);
 		idxBuf.flip();
 		return idxBuf;
 	}
@@ -101,7 +102,5 @@ class FastIntIndexer<T extends ArrayObject> implements _FastIndexer<T> {
 		numIndices = 0;
 		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
-
-
 
 }

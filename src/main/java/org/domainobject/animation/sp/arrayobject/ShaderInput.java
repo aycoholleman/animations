@@ -1,5 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -10,14 +11,14 @@ import java.nio.FloatBuffer;
 public final class ShaderInput {
 
 	FloatBuffer arrayBuffer;
-	ByteBuffer elementArrayBuffer;
+	Buffer elementArrayBuffer;
 
 	ShaderInput(FloatBuffer arrayBuffer)
 	{
 		this.arrayBuffer = arrayBuffer;
 	}
 
-	ShaderInput(FloatBuffer arrayBuffer, ByteBuffer elementArrayBuffer)
+	ShaderInput(FloatBuffer arrayBuffer, Buffer elementArrayBuffer)
 	{
 		this.arrayBuffer = arrayBuffer;
 		this.elementArrayBuffer=elementArrayBuffer;
@@ -28,7 +29,7 @@ public final class ShaderInput {
 		return arrayBuffer;
 	}
 
-	public ByteBuffer getElementArrayBuffer()
+	public Buffer getElementArrayBuffer()
 	{
 		return elementArrayBuffer;
 	}
