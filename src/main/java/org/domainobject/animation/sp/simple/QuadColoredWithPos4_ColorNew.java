@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
 import org.domainobject.animation.sp.arrayobject.Color4;
-import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
+import org.domainobject.animation.sp.arrayobject.IndexedMemoryFast;
 import org.domainobject.animation.sp.arrayobject.Pos4;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
 import org.domainobject.animation.sp.shaders.PassThruVertexShader;
@@ -107,7 +107,7 @@ public class QuadColoredWithPos4_ColorNew extends Animation {
 	private void setupQuad()
 	{
 		
-		FastIndexedMemory<Pos4> mem = Pos4.reserveFast(10, false);
+		IndexedMemoryFast<Pos4> mem = Pos4.reserveFast(10, false);
 		mem.add(new Pos4().xyzw(-0.5f, 0.5f, 0f, 1f));
 		mem.add(new Pos4().xyzw(-0.5f, -0.5f, 0f, 1f));
 		mem.add(new Pos4().xyzw(0.5f, -0.5f, 0f, 1f));
@@ -115,7 +115,7 @@ public class QuadColoredWithPos4_ColorNew extends Animation {
 
 		
 		//RawMemory colors = new RawMemory(30);
-		FastIndexedMemory<Color4> colors = Color4.reserveFast(10, false);
+		IndexedMemoryFast<Color4> colors = Color4.reserveFast(10, false);
 		colors.add(new Color4().rgba(1f, 0f, 0f, 1f));
 		colors.add(new Color4().rgba(0f, 1f, 0f, 1f));
 		colors.add(new Color4().rgba(0f, 0f, 1f, 1f));

@@ -30,8 +30,8 @@ interface _FastIndexer<T extends ArrayObject> {
 	 * 
 	 * @return
 	 * 
-	 * @see FastIndexedMemory#add(ArrayObject)
-	 * @see FastIndexedMemory#commit(int...)
+	 * @see IndexedMemoryFast#add(ArrayObject)
+	 * @see IndexedMemoryFast#commit(int...)
 	 * @see Comparators#same3(float[], int, float[], int, float)
 	 * @see Comparators#same4(float[], int, float[], int, float) etc.
 	 */
@@ -39,8 +39,8 @@ interface _FastIndexer<T extends ArrayObject> {
 
 	/**
 	 * Returns the number of objects that were
-	 * {@link FastIndexedMemory#add(ArrayObject) added} or
-	 * {@link FastIndexedMemory#commit(int...) committed} to the memory object
+	 * {@link IndexedMemoryFast#add(ArrayObject) added} or
+	 * {@link IndexedMemoryFast#commit(int...) committed} to the memory object
 	 * used by this indexer.
 	 * 
 	 * @return

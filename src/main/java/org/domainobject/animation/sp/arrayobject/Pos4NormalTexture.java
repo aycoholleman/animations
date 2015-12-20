@@ -34,9 +34,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		};
 	}
 
-	public static LazyIndexedMemory<Pos4NormalTexture> indexLazy(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryLazy<Pos4NormalTexture> indexLazy(int maxNumObjs, boolean useIntIndices)
 	{
-		return new LazyIndexedMemory<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryLazy<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Pos4NormalTexture> getConstructor()
 			{
@@ -45,9 +45,9 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 		};
 	}
 	
-	public static FastIndexedMemory<Pos4NormalTexture> indexFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjs, boolean useIntIndices)
 	{
-		return new FastIndexedMemory<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryFast<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Pos4NormalTexture> getConstructor()
 			{

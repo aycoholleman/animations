@@ -36,9 +36,9 @@ public class Color4 extends ArrayObject implements _Color4 {
 		};
 	}
 	
-	public static LazyIndexedMemory<Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryLazy<Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
-		return new LazyIndexedMemory<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryLazy<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Color4> getConstructor()
 			{
@@ -47,9 +47,9 @@ public class Color4 extends ArrayObject implements _Color4 {
 		};
 	}
 	
-	public static FastIndexedMemory<Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
 	{
-		return new FastIndexedMemory<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryFast<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Color4> getConstructor()
 			{

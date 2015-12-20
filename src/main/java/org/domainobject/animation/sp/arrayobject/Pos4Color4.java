@@ -33,9 +33,9 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		};
 	}
 	
-	public static LazyIndexedMemory<Pos4Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryLazy<Pos4Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
-		return new LazyIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryLazy<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Pos4Color4> getConstructor()
 			{
@@ -44,9 +44,9 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 		};
 	}
 	
-	public static FastIndexedMemory<Pos4Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Pos4Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
 	{
-		return new FastIndexedMemory<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryFast<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
 			_Constructor<Pos4Color4> getConstructor()
 			{

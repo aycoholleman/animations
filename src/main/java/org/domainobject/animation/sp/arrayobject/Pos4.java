@@ -38,9 +38,9 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		};
 	}
 
-	public static LazyIndexedMemory<Pos4> reserveLazy(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryLazy<Pos4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
-		return new LazyIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryLazy<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 
 			@Override
 			_Constructor<Pos4> getConstructor()
@@ -50,9 +50,9 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		};
 	}
 
-	public static FastIndexedMemory<Pos4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Pos4> reserveFast(int maxNumObjs, boolean useIntIndices)
 	{
-		return new FastIndexedMemory<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		return new IndexedMemoryFast<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 
 			@Override
 			_Constructor<Pos4> getConstructor()

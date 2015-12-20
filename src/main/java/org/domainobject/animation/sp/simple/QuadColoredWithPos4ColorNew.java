@@ -44,7 +44,7 @@ import java.nio.ByteBuffer;
 
 import org.domainobject.animation.sp.Animation;
 import org.domainobject.animation.sp.Program;
-import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
+import org.domainobject.animation.sp.arrayobject.IndexedMemoryFast;
 import org.domainobject.animation.sp.arrayobject.Pos4Color4;
 import org.domainobject.animation.sp.arrayobject.ShaderInput;
 import org.domainobject.animation.sp.shaders.PassThruFragmentShader;
@@ -70,7 +70,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 	private int vboiId = 0;
 
 	private Program program;
-	FastIndexedMemory<Pos4Color4> vertices;
+	IndexedMemoryFast<Pos4Color4> vertices;
 
 	public QuadColoredWithPos4ColorNew()
 	{
@@ -122,7 +122,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 		// Draw the vertices
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_SHORT, 0);
-		glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, vertices.numIndices(), GL_UNSIGNED_INT, 0);
 	
 		// Put everything back to default (deselect)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -1,15 +1,15 @@
 package org.domainobject.animation.sp;
 
-import org.domainobject.animation.sp.arrayobject.FastIndexedMemory;
-import org.domainobject.animation.sp.arrayobject.LazyIndexedMemory;
-import org.domainobject.animation.sp.arrayobject.LazyIndexedMemory.BurnMethod;
+import org.domainobject.animation.sp.arrayobject.IndexedMemoryFast;
+import org.domainobject.animation.sp.arrayobject.IndexedMemoryLazy;
+import org.domainobject.animation.sp.arrayobject.IndexedMemoryLazy.BurnMethod;
 
 public class Global {
 
 	/**
 	 * Burn method for lazily indexed memory.
 	 * 
-	 * @see LazyIndexedMemory
+	 * @see IndexedMemoryLazy
 	 * @see BurnMethod
 	 */
 	public static BurnMethod burnMethod = BurnMethod.DESTRUCTIVE;
@@ -22,8 +22,8 @@ public class Global {
 	 * {@code short.class} if more than {@code Byte.MAX_VALUE};
 	 * {@code byte.class} otherwise).
 	 * 
-	 * @see LazyIndexedMemory
-	 * @see FastIndexedMemory
+	 * @see IndexedMemoryLazy
+	 * @see IndexedMemoryFast
 	 */
 	public static boolean forceIntIndices = false;
 

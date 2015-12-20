@@ -18,9 +18,9 @@ import java.util.Iterator;
  * @param <T>
  *            The type of array object hosted by this memory object.
  * 
- * @see LazyIndexedMemory
+ * @see IndexedMemoryLazy
  */
-public abstract class FastIndexedMemory<T extends ArrayObject> {
+public abstract class IndexedMemoryFast<T extends ArrayObject> {
 
 	private class Committable implements _Committable {
 
@@ -59,7 +59,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	// Contains the uncommitted array objects created through make().
 	private T[] pending;
 
-	FastIndexedMemory(int maxNumObjs, int objSize, boolean useIntIndices)
+	IndexedMemoryFast(int maxNumObjs, int objSize, boolean useIntIndices)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
@@ -68,12 +68,12 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer = new FastIntIndexer<>(maxNumObjs);
 		//indexer = new FastShortIndexer<>(maxNumObjs);
 		//indexer = new FastByteIndexer<>(maxNumObjs);
-//		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
-//			indexer = new FastIntIndexer<>(maxNumObjs);
-//		else if (maxNumObjs > Byte.MAX_VALUE)
-//			indexer = new FastShortIndexer<>(maxNumObjs);
-//		else
-//			indexer = new FastByteIndexer<>(maxNumObjs);
+		//		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
+		//			indexer = new FastIntIndexer<>(maxNumObjs);
+		//		else if (maxNumObjs > Byte.MAX_VALUE)
+		//			indexer = new FastShortIndexer<>(maxNumObjs);
+		//		else
+		//			indexer = new FastByteIndexer<>(maxNumObjs);
 	}
 
 	public Class<?> getIndexType()
@@ -86,7 +86,7 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	 * 
 	 * @return
 	 */
-	public int countObjects()
+	public int numObjs()
 	{
 		return indexer.numObjs();
 	}
@@ -94,12 +94,12 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 	/**
 	 * Returns the number of array objects submitted to memory. Every submission
 	 * using {@link #add(ArrayObject) add} or {@link #commit(int...) commit}
-	 * results in a new index for the element array buffer, but only
+	 * results in a new index added to the element array buffer, but only
 	 * <i>unique</i> array objects are actually stored in memory.
 	 * 
 	 * @return
 	 */
-	public int countIndices()
+	public int numIndices()
 	{
 		return indexer.numIndices();
 	}
@@ -122,11 +122,28 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		indexer.add(copy);
 	}
 
+	/**
+	 * Creates a new array object but does not yet add or commit it to this
+	 * memory instance. Calling {@link ArrayObject#commit() commit} on the array
+	 * object will, however, commit it to <i>this</i> memory instance. The
+	 * advantage of using this method over using the array object's constructor
+	 * is that no new backing array for the array object is created; it will
+	 * piggy-back on backing array of this memory instance.
+	 * 
+	 * @return
+	 */
 	public T alloc()
 	{
 		return alloc(1)[0];
 	}
 
+	/**
+	 * Creates the specified amount of array objects but does not yet add or
+	 * commit them to this memory instance. See {@link #alloc() alloc}.
+	 * 
+	 * @param howmany
+	 * @return
+	 */
 	public T[] alloc(int howmany)
 	{
 		float[] tmp = new float[howmany * objSize];
@@ -144,14 +161,16 @@ public abstract class FastIndexedMemory<T extends ArrayObject> {
 		pending = null;
 		if (which.length == 0) {
 			for (T t : tmp) {
-				if (t != null)
+				if (t != null) {
 					add(t);
+				}
 			}
 		}
 		else {
 			for (int i : which) {
-				if (tmp[i] != null)
+				if (tmp[i] != null) {
 					add(tmp[i]);
+				}
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class FastIndexedMemoryTest {
 	public final void test00_commit()
 	{
 		boolean forceIntIndexer = false;
-		FastIndexedMemory<Pos4Color4> memory = Pos4Color4.reserveFast(6, forceIntIndexer);
+		IndexedMemoryFast<Pos4Color4> memory = Pos4Color4.reserveFast(6, forceIntIndexer);
 		Pos4Color4[] vertices = memory.alloc(6);
 		// Add six vertices; two of them duplicates
 		vertices[0].xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f);//0		
@@ -59,7 +59,7 @@ public class FastIndexedMemoryTest {
 		assertEquals(8, (int) r.getInt("objSize"));
 		_FastIndexer indexer = (_FastIndexer) r.get("indexer");
 		assertTrue(indexer.getClass() == FastByteIndexer.class);
-		FastIndexer<T> fbi = (FastIndexer<T>) indexer;
+		FastByteIndexer fbi = (FastByteIndexer) indexer;
 		Reflection r2 = new Reflection(fbi);
 		assertEquals(4, r2.getInt("numObjs"));
 		assertEquals(6, r2.getInt("numIndices"));
