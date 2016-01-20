@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE>
-		implements _FastIndexer<ARRAY_OBJECT> {
+		implements IFastIndexer<ARRAY_OBJECT> {
 
 	final int maxNumObjs;
 

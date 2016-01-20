@@ -11,9 +11,9 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Normal, _Texture {
+public final class Pos4NormalTexture extends ArrayObject implements IPos4, INormal, ITexture {
 
-	private static final _Constructor<Pos4NormalTexture> constructor = new _Constructor<Pos4NormalTexture>() {
+	private static final IConstructor<Pos4NormalTexture> constructor = new IConstructor<Pos4NormalTexture>() {
 		public Pos4NormalTexture make(float[] raw, int offset)
 		{
 			return new Pos4NormalTexture(raw, offset);
@@ -27,7 +27,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	public static Memory<Pos4NormalTexture> allocate(int maxNumObjs)
 	{
 		return new Memory<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE) {
-			_Constructor<Pos4NormalTexture> getConstructor()
+			IConstructor<Pos4NormalTexture> getConstructor()
 			{
 				return constructor;
 			}
@@ -38,7 +38,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		return new IndexedMemoryLazy<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Pos4NormalTexture> getConstructor()
+			IConstructor<Pos4NormalTexture> getConstructor()
 			{
 				return constructor;
 			}
@@ -49,7 +49,7 @@ public final class Pos4NormalTexture extends ArrayObject implements _Pos4, _Norm
 	{
 		return new IndexedMemoryFast<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Pos4NormalTexture> getConstructor()
+			IConstructor<Pos4NormalTexture> getConstructor()
 			{
 				return constructor;
 			}

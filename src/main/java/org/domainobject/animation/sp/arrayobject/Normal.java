@@ -7,7 +7,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
 import org.domainobject.animation.sp.util.Array;
 import org.domainobject.animation.sp.util.Math3D;
 
-public final class Normal extends ArrayObject implements _Normal {
+public final class Normal extends ArrayObject implements INormal {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -61,7 +61,7 @@ public final class Normal extends ArrayObject implements _Normal {
 		return this;
 	}
 
-	public Normal set(_Normal other)
+	public Normal set(INormal other)
 	{
 		memcpy3(components, offset, other.normal().components, other.normal().offset);
 		return this;
@@ -151,7 +151,7 @@ public final class Normal extends ArrayObject implements _Normal {
 	{
 		if (this == obj)
 			return true;
-		Normal other = ((_Normal) obj).normal();
+		Normal other = ((INormal) obj).normal();
 		return same3(components, offset, other.components, other.offset);
 	}
 

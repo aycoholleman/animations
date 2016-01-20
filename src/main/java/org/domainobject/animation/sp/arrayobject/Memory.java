@@ -15,7 +15,7 @@ public abstract class Memory<T extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	private final int objSize;
 
-	private final _Constructor<T> constructor;
+	private final IConstructor<T> constructor;
 
 	private int numObjs;
 
@@ -45,7 +45,7 @@ public abstract class Memory<T extends ArrayObject> {
 		return sandbox;
 	}
 
-	abstract _Constructor<T> getConstructor();
+	abstract IConstructor<T> getConstructor();
 
 	/**
 	 * Burns the vertex data to a {@code FloatBuffer} and then clears the

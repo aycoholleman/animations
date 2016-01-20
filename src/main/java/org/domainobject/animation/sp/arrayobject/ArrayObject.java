@@ -12,7 +12,7 @@ public abstract class ArrayObject {
 	final float[] components;
 	final int offset;
 
-	_Committable memory;
+	ICommittable memory;
 
 	ArrayObject()
 	{

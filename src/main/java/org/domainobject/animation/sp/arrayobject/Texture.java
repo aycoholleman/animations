@@ -9,7 +9,7 @@ import org.domainobject.animation.sp.util.Array;
  * @author Ayco Holleman
  *
  */
-public final class Texture extends ArrayObject implements _Texture {
+public final class Texture extends ArrayObject implements ITexture {
 
 	public static final int COMPONENT_COUNT = 2;
 
@@ -69,7 +69,7 @@ public final class Texture extends ArrayObject implements _Texture {
 	{
 		if (this == obj)
 			return true;
-		Texture other = ((_Texture) obj).texture();
+		Texture other = ((ITexture) obj).texture();
 		return same2(components, offset, other.components, other.offset);
 	}
 

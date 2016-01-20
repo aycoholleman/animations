@@ -22,7 +22,7 @@ import java.util.Iterator;
  */
 public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 
-	private class Committable implements _Committable {
+	private class Committable implements ICommittable {
 
 		public void commit(ArrayObject caller)
 		{
@@ -48,13 +48,13 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 	/* Number of elements per array object */
 	private final int objSize;
 	/* Reflectionless constructor of various types of array objects */
-	private final _Constructor<ARRAY_OBJECT> constructor;
+	private final IConstructor<ARRAY_OBJECT> constructor;
 	/*
 	 * Passed on to array objects, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
-	private final _FastIndexer<ARRAY_OBJECT> indexer;
+	private final IFastIndexer<ARRAY_OBJECT> indexer;
 
 	// Contains the uncommitted array objects created through make().
 	private ARRAY_OBJECT[] pending;
@@ -211,7 +211,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 		return indexer.iterator();
 	}
 
-	abstract _Constructor<ARRAY_OBJECT> getConstructor();
+	abstract IConstructor<ARRAY_OBJECT> getConstructor();
 
 	private ARRAY_OBJECT newArrayObject()
 	{

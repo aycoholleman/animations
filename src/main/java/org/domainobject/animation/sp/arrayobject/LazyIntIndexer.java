@@ -4,7 +4,7 @@ import static org.lwjgl.BufferUtils.createByteBuffer;
 
 import java.nio.ByteBuffer;
 
-class LazyIntIndexer implements _LazyIndexer {
+class LazyIntIndexer implements ILazyIndexer {
 
 	private final int[] indices;
 

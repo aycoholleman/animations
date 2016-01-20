@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Pos3 extends ArrayObject implements _Pos3 {
+public class Pos3 extends ArrayObject implements IPos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -80,7 +80,7 @@ public class Pos3 extends ArrayObject implements _Pos3 {
 	 * 
 	 * @return This instance
 	 */
-	public Pos3 xyz(_Pos3 other)
+	public Pos3 xyz(IPos3 other)
 	{
 		memcpy3(components, offset, other.position().components, other.position().offset);
 		return this;

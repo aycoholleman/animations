@@ -1,6 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
-public class Triangle<T extends _Pos4> extends ArrayObject {
+public class Triangle<T extends IPos4> extends ArrayObject {
 
 	public Triangle()
 	{

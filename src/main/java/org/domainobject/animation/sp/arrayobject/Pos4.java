@@ -10,11 +10,11 @@ import org.domainobject.animation.sp.util.Array;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4 extends ArrayObject implements _Pos4 {
+public final class Pos4 extends ArrayObject implements IPos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	private static final _Constructor<Pos4> constructor = new _Constructor<Pos4>() {
+	private static final IConstructor<Pos4> constructor = new IConstructor<Pos4>() {
 
 		public Pos4 make(float[] raw, int offset)
 		{
@@ -31,7 +31,7 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	{
 		return new Memory<Pos4>(maxNumObjects, OBJ_SIZE) {
 
-			_Constructor<Pos4> getConstructor()
+			IConstructor<Pos4> getConstructor()
 			{
 				return constructor;
 			}
@@ -43,7 +43,7 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return new IndexedMemoryLazy<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 
 			@Override
-			_Constructor<Pos4> getConstructor()
+			IConstructor<Pos4> getConstructor()
 			{
 				return constructor;
 			}
@@ -55,7 +55,7 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 		return new IndexedMemoryFast<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 
 			@Override
-			_Constructor<Pos4> getConstructor()
+			IConstructor<Pos4> getConstructor()
 			{
 				return constructor;
 			}
@@ -70,7 +70,7 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	{
 		return new Memory<Pos4>(maxNumObjects, COMPONENT_COUNT) {
 
-			_Constructor<Pos4> getConstructor()
+			IConstructor<Pos4> getConstructor()
 			{
 				return constructor;
 			}
@@ -137,12 +137,12 @@ public final class Pos4 extends ArrayObject implements _Pos4 {
 	}
 
 	/**
-	 * Copies the coordinates of the specified {@link _Pos4} instance to this
+	 * Copies the coordinates of the specified {@link IPos4} instance to this
 	 * instance.
 	 * 
 	 * @param other
 	 */
-	public Pos4 set(_Pos4 other)
+	public Pos4 set(IPos4 other)
 	{
 		memcpy4(components, offset, other.position().components, other.position().offset);
 		return this;

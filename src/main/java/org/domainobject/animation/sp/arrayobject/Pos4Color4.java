@@ -10,9 +10,9 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * @author Ayco Holleman
   *
  */
-public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
+public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 	
-	private static final _Constructor<Pos4Color4> constructor = new _Constructor<Pos4Color4>() {
+	private static final IConstructor<Pos4Color4> constructor = new IConstructor<Pos4Color4>() {
 		public Pos4Color4 make(float[] raw, int offset)
 		{
 			return new Pos4Color4(raw, offset);
@@ -26,7 +26,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	public static Memory<Pos4Color4> reserve(int maxNumObjects)
 	{
 		return new Memory<Pos4Color4>(maxNumObjects, OBJ_SIZE) {
-			_Constructor<Pos4Color4> getConstructor()
+			IConstructor<Pos4Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -37,7 +37,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	{
 		return new IndexedMemoryLazy<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Pos4Color4> getConstructor()
+			IConstructor<Pos4Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -48,7 +48,7 @@ public final class Pos4Color4 extends ArrayObject implements _Pos4, _Color4 {
 	{
 		return new IndexedMemoryFast<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Pos4Color4> getConstructor()
+			IConstructor<Pos4Color4> getConstructor()
 			{
 				return constructor;
 			}

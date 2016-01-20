@@ -27,8 +27,8 @@ public abstract class IndexedMemoryLazy<ARRAY_OBJECT extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	// Number of array elements per array object
 	private final int objSize;
-	private final _Constructor<ARRAY_OBJECT> constr;
-	private final _LazyIndexer indexer;
+	private final IConstructor<ARRAY_OBJECT> constr;
+	private final ILazyIndexer indexer;
 
 	private BurnMethod burnMethod = Global.burnMethod;
 	private int numObjs;
@@ -249,6 +249,6 @@ public abstract class IndexedMemoryLazy<ARRAY_OBJECT extends ArrayObject> {
 		};
 	}
 
-	abstract _Constructor<ARRAY_OBJECT> getConstructor();
+	abstract IConstructor<ARRAY_OBJECT> getConstructor();
 
 }

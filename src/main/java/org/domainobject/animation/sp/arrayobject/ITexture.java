@@ -1,7 +1,7 @@
 package org.domainobject.animation.sp.arrayobject;
 
-interface _Committable {
+public interface ITexture {
 
-	void commit(ArrayObject caller);
+	Texture texture();
 
 }

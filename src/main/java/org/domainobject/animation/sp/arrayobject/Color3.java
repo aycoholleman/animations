@@ -13,7 +13,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Color3 extends ArrayObject implements _Color3 {
+public class Color3 extends ArrayObject implements IColor3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -51,14 +51,14 @@ public class Color3 extends ArrayObject implements _Color3 {
 	}
 
 	/**
-	 * Copies the channels of the specified {@link _Color3} instance to this
+	 * Copies the channels of the specified {@link IColor3} instance to this
 	 * instance.
 	 * 
 	 * @param other
 	 * 
 	 * @return This instance
 	 */
-	public Color3 rgb(_Color3 other)
+	public Color3 rgb(IColor3 other)
 	{
 		memcpy3(components, offset, other.color().components, other.color().offset);
 		return this;
@@ -142,7 +142,7 @@ public class Color3 extends ArrayObject implements _Color3 {
 	{
 		if (this == obj)
 			return true;
-		Color3 other = ((_Color3) obj).color();
+		Color3 other = ((IColor3) obj).color();
 		return same3(components, offset, other.components, other.offset);
 	}
 

@@ -12,7 +12,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * @created Jul 26, 2015
  *
  */
-public final class Pos4Color4Texture extends ArrayObject implements _Pos4, _Color4, _Texture {
+public final class Pos4Color4Texture extends ArrayObject implements IPos4, IColor4, ITexture {
 
 	/**
 	 * The number of elements of the internal array (10).

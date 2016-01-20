@@ -11,7 +11,7 @@ import org.domainobject.animation.sp.util.Comparators;
  *
  * @param <ARRAY_OBJECT>
  */
-interface _FastIndexer<ARRAY_OBJECT extends ArrayObject> {
+interface IFastIndexer<ARRAY_OBJECT extends ArrayObject> {
 
 	/**
 	 * Returns the type of the indices in the element array buffer. Either {code

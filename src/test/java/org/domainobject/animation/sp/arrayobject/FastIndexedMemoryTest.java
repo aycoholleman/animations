@@ -57,7 +57,7 @@ public class FastIndexedMemoryTest {
 		//@formatter:on
 		Reflection r = new Reflection(memory);
 		assertEquals(8, (int) r.getInt("objSize"));
-		_FastIndexer indexer = (_FastIndexer) r.get("indexer");
+		IFastIndexer indexer = (IFastIndexer) r.get("indexer");
 		assertTrue(indexer.getClass() == FastByteIndexer.class);
 		FastByteIndexer fbi = (FastByteIndexer) indexer;
 		Reflection r2 = new Reflection(fbi);

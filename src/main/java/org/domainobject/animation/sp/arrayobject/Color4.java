@@ -11,11 +11,11 @@ import org.domainobject.animation.sp.util.Array;
  * @author Ayco Holleman
  * @created Jul 20, 2015
  */
-public class Color4 extends ArrayObject implements _Color4 {
+public class Color4 extends ArrayObject implements IColor4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
-	private static final _Constructor<Color4> constructor = new _Constructor<Color4>() {
+	private static final IConstructor<Color4> constructor = new IConstructor<Color4>() {
 		public Color4 make(float[] raw, int offset)
 		{
 			return new Color4(raw, offset);
@@ -29,7 +29,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	public static Memory<Color4> reserve(int maxNumObjects)
 	{
 		return new Memory<Color4>(maxNumObjects, OBJ_SIZE) {
-			_Constructor<Color4> getConstructor()
+			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -40,7 +40,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	{
 		return new IndexedMemoryLazy<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Color4> getConstructor()
+			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -51,7 +51,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	{
 		return new IndexedMemoryFast<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
 			@Override
-			_Constructor<Color4> getConstructor()
+			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -65,7 +65,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	public static Memory<Color4> allocate(int maxNumObjects)
 	{
 		return new Memory<Color4>(maxNumObjects, COMPONENT_COUNT) {
-			_Constructor<Color4> getConstructor()
+			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
 			}
@@ -112,7 +112,7 @@ public class Color4 extends ArrayObject implements _Color4 {
 	}
 
 
-	public Color4 rgba(_Color4 other)
+	public Color4 rgba(IColor4 other)
 	{
 		memcpy4(components, offset, other.color().components, other.color().offset);
 		return this;
