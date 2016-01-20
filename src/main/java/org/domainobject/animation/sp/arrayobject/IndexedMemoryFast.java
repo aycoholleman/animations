@@ -15,18 +15,18 @@ import java.util.Iterator;
  * 
  * @author Ayco Holleman
  *
- * @param <T>
+ * @param <ARRAY_OBJECT>
  *            The type of array object hosted by this memory object.
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryFast<T extends ArrayObject> {
+public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 
 	private class Committable implements _Committable {
 
 		public void commit(ArrayObject caller)
 		{
-			T[] p;
+			ARRAY_OBJECT[] p;
 			if ((p = pending) == null)
 				MemoryException.commitWindowClosed();
 			for (int i = 0; i < p.length; i++) {
@@ -48,16 +48,16 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 	/* Number of elements per array object */
 	private final int objSize;
 	/* Reflectionless constructor of various types of array objects */
-	private final _Constructor<T> constructor;
+	private final _Constructor<ARRAY_OBJECT> constructor;
 	/*
 	 * Passed on to array objects, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
-	private final _FastIndexer<T> indexer;
+	private final _FastIndexer<ARRAY_OBJECT> indexer;
 
 	// Contains the uncommitted array objects created through make().
-	private T[] pending;
+	private ARRAY_OBJECT[] pending;
 
 	IndexedMemoryFast(int maxNumObjs, int objSize, boolean useIntIndices)
 	{
@@ -104,35 +104,43 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 		return indexer.numIndices();
 	}
 
-	public void add(T object)
+	/**
+	 * Submits the specified array object to this memory instance. If an
+	 * equivalent array object is already present in this memory instance, the
+	 * array object is discarded, but a new index, pointing to the array object
+	 * in memory, is added to the indices array. Otherwise, a <i>copy</i> of the
+	 * specified array object is added to this memory instance. You are free to
+	 * re-use and change the submitted array object afterwards.
+	 * 
+	 * @param obj
+	 */
+	public void add(ARRAY_OBJECT obj)
 	{
 		pending = null;
-		if (!indexer.index(object)) {
-			T copy = allocate();
-			object.copyTo(copy);
+		if (!indexer.index(obj)) {
+			ARRAY_OBJECT copy = newArrayObject();
+			obj.copyTo(copy);
 			indexer.add(copy);
 		}
 	}
 
-	public void addUnchecked(T object)
+	public void addUnchecked(ARRAY_OBJECT object)
 	{
 		pending = null;
-		T copy = allocate();
+		ARRAY_OBJECT copy = newArrayObject();
 		object.copyTo(copy);
 		indexer.add(copy);
 	}
 
 	/**
-	 * Creates a new array object but does not yet add or commit it to this
-	 * memory instance. Calling {@link ArrayObject#commit() commit} on the array
-	 * object will, however, commit it to <i>this</i> memory instance. The
-	 * advantage of using this method over using the array object's constructor
-	 * is that no new backing array for the array object is created; it will
-	 * piggy-back on backing array of this memory instance.
+	 * Creates a new array object of the type stored by this memory instance,
+	 * but does not yet add or commit it to this memory instance. Calling
+	 * {@link ArrayObject#commit() commit} on the array object will, however,
+	 * commit it to <i>this</i> memory instance.
 	 * 
 	 * @return
 	 */
-	public T alloc()
+	public ARRAY_OBJECT alloc()
 	{
 		return alloc(1)[0];
 	}
@@ -144,7 +152,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 	 * @param howmany
 	 * @return
 	 */
-	public T[] alloc(int howmany)
+	public ARRAY_OBJECT[] alloc(int howmany)
 	{
 		float[] tmp = new float[howmany * objSize];
 		pending = constructor.array(howmany);
@@ -157,10 +165,10 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 
 	public void commit(int... which)
 	{
-		T[] tmp = pending;
+		ARRAY_OBJECT[] tmp = pending;
 		pending = null;
 		if (which.length == 0) {
-			for (T t : tmp) {
+			for (ARRAY_OBJECT t : tmp) {
 				if (t != null) {
 					add(t);
 				}
@@ -175,7 +183,7 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 		}
 	}
 
-	public boolean contains(T arrayObject)
+	public boolean contains(ARRAY_OBJECT arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
@@ -198,14 +206,14 @@ public abstract class IndexedMemoryFast<T extends ArrayObject> {
 		indexer.clear();
 	}
 
-	public Iterator<T> iterator()
+	public Iterator<ARRAY_OBJECT> iterator()
 	{
 		return indexer.iterator();
 	}
 
-	abstract _Constructor<T> getConstructor();
+	abstract _Constructor<ARRAY_OBJECT> getConstructor();
 
-	private T allocate()
+	private ARRAY_OBJECT newArrayObject()
 	{
 		return constructor.make(raw, indexer.numObjs() * objSize);
 	}

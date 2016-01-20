@@ -42,13 +42,13 @@ public class Torus extends Animation {
 				float z = minorRadius * (float) sin(b);
 
 				// First point
-				vertex = verts.make();
+				vertex = verts.alloc();
 				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j, numMinor));
 				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
 				vertex.position.xyzw(x0 * r, y0 * r, z);
 
 				// Second point
-				vertex = verts.make();
+				vertex = verts.alloc();
 				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j, numMinor));
 				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
 				vertex.position.xyzw(x1 * r, y1 * r, z);
@@ -60,13 +60,13 @@ public class Torus extends Animation {
 				z = minorRadius * (float) sin(b);
 
 				// 3rd point
-				vertex = verts.make();
+				vertex = verts.alloc();
 				vertex.texture.set(m3ddiv(i, numMajor), m3ddiv(j + 1, numMinor));
 				vertex.normal.set(x0 * c, y0 * c, z / minorRadius).normalize();
 				vertex.position.xyzw(x0 * r, y0 * r, z);
 
 				// 4th point
-				vertex = verts.make();
+				vertex = verts.alloc();
 				vertex.texture.set(m3ddiv(i + 1, numMajor), m3ddiv(j + 1, numMinor));
 				vertex.normal.set(x1 * c, y1 * c, z / minorRadius).normalize();
 				vertex.position.xyzw(x1 * r, y1 * r, z);

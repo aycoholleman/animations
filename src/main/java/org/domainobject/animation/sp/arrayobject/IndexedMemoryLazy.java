@@ -10,8 +10,7 @@ import java.util.LinkedHashSet;
 
 import org.domainobject.animation.sp.Global;
 
-
-public abstract class IndexedMemoryLazy<T extends ArrayObject> {
+public abstract class IndexedMemoryLazy<ARRAY_OBJECT extends ArrayObject> {
 
 	public static enum BurnMethod
 	{
@@ -19,7 +18,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 	}
 
 	// The array objects
-	private final T[] objs;
+	private final ARRAY_OBJECT[] objs;
 	// The array objects' backbone
 	private final float[] raw;
 	// The GL_ELEMENT_ARRAY_BUFFER
@@ -28,7 +27,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 	private final FloatBuffer objBuf;
 	// Number of array elements per array object
 	private final int objSize;
-	private final _Constructor<T> constr;
+	private final _Constructor<ARRAY_OBJECT> constr;
 	private final _LazyIndexer indexer;
 
 	private BurnMethod burnMethod = Global.burnMethod;
@@ -50,25 +49,41 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 		this.idxBuf = indexer.createIndicesBuffer();
 	}
 
-	public void add(T arrayObject)
+	public void add(ARRAY_OBJECT obj)
 	{
-		T copy = constr.make(raw, numObjs * objSize);
-		arrayObject.copyTo(copy);
+		ARRAY_OBJECT copy = constr.make(raw, numObjs * objSize);
+		obj.copyTo(copy);
 		numObjs++;
 	}
 
-	public T make()
+	/**
+	 * Creates a new array object of the type stored by this memory instance.
+	 * The array object is immediately added to this memory instance. Any
+	 * changes you make to it affect this memory instance's backing array. The
+	 * advantage of calling this method over using the array object's
+	 * constructor is that no new backing array is created for the array object;
+	 * it piggy-backs on the backing array of this memory instance.
+	 * 
+	 * @return
+	 */
+	public ARRAY_OBJECT alloc()
 	{
-		T obj = constr.make(raw, numObjs * objSize);
+		ARRAY_OBJECT obj = constr.make(raw, numObjs * objSize);
 		objs[numObjs++] = obj;
 		return obj;
 	}
 
-	public T[] make(int howMany)
+	/**
+	 * Creates the specified amount of array objects.
+	 * 
+	 * @param howMany
+	 * @return
+	 */
+	public ARRAY_OBJECT[] alloc(int howMany)
 	{
-		T[] sandbox = constr.array(howMany);
+		ARRAY_OBJECT[] sandbox = constr.array(howMany);
 		for (int i = 0; i < howMany; ++i) {
-			T obj = constr.make(raw, numObjs * objSize);
+			ARRAY_OBJECT obj = constr.make(raw, numObjs * objSize);
 			objs[numObjs++] = sandbox[i] = obj;
 		}
 		return sandbox;
@@ -91,13 +106,13 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 
 	public void purge()
 	{
-		T[] objs = this.objs;
-		LinkedHashSet<T> purged = new LinkedHashSet<>(objs.length);
+		ARRAY_OBJECT[] objs = this.objs;
+		LinkedHashSet<ARRAY_OBJECT> purged = new LinkedHashSet<>(objs.length);
 		for (int i = 0; i < objs.length; ++i)
 			purged.add(objs[i]);
 		if (purged.size() != numObjs) {
 			int uniqObjs = 0;
-			for (T obj : purged) {
+			for (ARRAY_OBJECT obj : purged) {
 				if (obj != objs[uniqObjs]) {
 					objs[uniqObjs] = obj;
 					obj.copyTo(raw, uniqObjs * objSize);
@@ -129,7 +144,7 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 
 	private void burnManyDuplicates()
 	{
-		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
+		HashMap<ARRAY_OBJECT, Integer> tbl = new HashMap<>(numObjs, 1.0f);
 		int i;
 		for (i = 0; i < numObjs; i++) {
 			Integer idx = tbl.get(objs[i]);
@@ -152,11 +167,11 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 
 	private void burnFewDuplicates()
 	{
-		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
+		HashMap<ARRAY_OBJECT, Integer> tbl = new HashMap<>(numObjs, 1.0f);
 		float[] data = new float[raw.length];
 		int c = 0;
 		for (int i = 0; i < numObjs; i++) {
-			T obj = objs[i];
+			ARRAY_OBJECT obj = objs[i];
 			Integer idx = tbl.get(obj);
 			if (idx == null) {
 				indexer.index(i, i);
@@ -173,10 +188,10 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 
 	private void burnDestructive()
 	{
-		HashMap<T, Integer> tbl = new HashMap<>(numObjs, 1.0f);
+		HashMap<ARRAY_OBJECT, Integer> tbl = new HashMap<>(numObjs, 1.0f);
 		int uniqObjs = 0;
 		for (int i = 0; i < numObjs; ++i) {
-			T obj = objs[i];
+			ARRAY_OBJECT obj = objs[i];
 			Integer idx = tbl.get(obj);
 			if (idx == null) {
 				if (uniqObjs != i) {
@@ -191,8 +206,8 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 			}
 			else {
 				/*
-				 * A duplicate. Give it the index of the array object of which it is
-				 * a duplicate
+				 * A duplicate. Give it the index of the array object of which
+				 * it is a duplicate
 				 */
 				indexer.index(i, idx);
 			}
@@ -215,22 +230,25 @@ public abstract class IndexedMemoryLazy<T extends ArrayObject> {
 		objBuf.clear();
 	}
 
-	public Iterator<T> iterator()
+	public Iterator<ARRAY_OBJECT> iterator()
 	{
-		return new Iterator<T>() {
+		return new Iterator<ARRAY_OBJECT>() {
+
 			final int len = IndexedMemoryLazy.this.numObjs;
 			int i = 0;
+
 			public boolean hasNext()
 			{
 				return i < len;
 			}
-			public T next()
+
+			public ARRAY_OBJECT next()
 			{
 				return objs[i++];
 			}
 		};
 	}
 
-	abstract _Constructor<T> getConstructor();
+	abstract _Constructor<ARRAY_OBJECT> getConstructor();
 
 }

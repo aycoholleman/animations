@@ -3,10 +3,11 @@ package org.domainobject.animation.sp.arrayobject;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE> implements _FastIndexer<ARRAY_OBJECT> {
+abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE>
+		implements _FastIndexer<ARRAY_OBJECT> {
 
 	final int maxNumObjs;
-	
+
 	LinkedHashMap<ARRAY_OBJECT, INDEX_TYPE> objs;
 	int numIndices;
 
@@ -33,6 +34,5 @@ abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE> impleme
 	{
 		return objs.containsKey(object);
 	}
-
 
 }

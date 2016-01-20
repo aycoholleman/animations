@@ -5,7 +5,13 @@ import java.util.Iterator;
 
 import org.domainobject.animation.sp.util.Comparators;
 
-interface _FastIndexer<T extends ArrayObject> {
+/**
+ * 
+ * @author Ayco Holleman
+ *
+ * @param <ARRAY_OBJECT>
+ */
+interface _FastIndexer<ARRAY_OBJECT extends ArrayObject> {
 
 	/**
 	 * Returns the type of the indices in the element array buffer. Either {code
@@ -15,11 +21,11 @@ interface _FastIndexer<T extends ArrayObject> {
 	 */
 	Class<?> getIndexType();
 
-	boolean contains(T object);
+	boolean contains(ARRAY_OBJECT object);
 
-	boolean index(T object);
+	boolean index(ARRAY_OBJECT object);
 
-	void add(T object);
+	void add(ARRAY_OBJECT object);
 
 	/**
 	 * Returns the number of <b>distinct</b> array objects in memory. If a
@@ -51,6 +57,6 @@ interface _FastIndexer<T extends ArrayObject> {
 
 	void clear();
 
-	Iterator<T> iterator();
+	Iterator<ARRAY_OBJECT> iterator();
 
 }
