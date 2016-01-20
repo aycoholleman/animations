@@ -17,7 +17,6 @@ import org.lwjgl.BufferUtils;
 
 /**
  * @author Ayco Holleman
- * @created Jul 18, 2015
  *
  */
 public class QuadInterleaved extends Animation {
