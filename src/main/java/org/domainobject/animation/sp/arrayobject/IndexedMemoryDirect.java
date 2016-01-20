@@ -20,7 +20,7 @@ import java.util.Iterator;
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
+public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends ArrayObject> {
 
 	private class Committable implements ICommittable {
 
@@ -41,8 +41,6 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 		}
 	}
 
-	/* Backbone for the array objects managed by this memory object */
-	private final float[] raw;
 	/* The GL_ARRAY_BUFFER */
 	private final FloatBuffer objBuf;
 	/* Number of elements per array object */
@@ -59,12 +57,11 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 	// Contains the uncommitted array objects created through make().
 	private ARRAY_OBJECT[] pending;
 
-	IndexedMemoryFast(int maxNumObjs, int objSize, boolean useIntIndices)
+	IndexedMemoryDirect(int maxNumObjs, int objSize, boolean useIntIndices)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
-		this.raw = new float[maxNumObjs * objSize];
-		this.objBuf = createFloatBuffer(raw.length);
+		this.objBuf = createFloatBuffer(maxNumObjs * objSize);
 		indexer = new FastIntIndexer<>(maxNumObjs);
 		//indexer = new FastShortIndexer<>(maxNumObjs);
 		//indexer = new FastByteIndexer<>(maxNumObjs);
@@ -108,9 +105,12 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 	 * Submits the specified array object to this memory instance. If an
 	 * equivalent array object is already present in this memory instance, the
 	 * array object is discarded, but a new index, pointing to the array object
-	 * in memory, is added to the indices array. Otherwise, a <i>copy</i> of the
-	 * specified array object is added to this memory instance. You are free to
-	 * re-use and change the submitted array object afterwards.
+	 * in memory, is added to the indices array. Otherwise, the array object is
+	 * burnt directly to the {@code FloatBuffer} functioning as the
+	 * GL_ARRAY_BUFFER. You are free to re-use and change the submitted array
+	 * object afterwards, because the internally maintained {@link java.util.Map
+	 * Map} used to check the uniqueness of the provided array object will store
+	 * a copy of the array object rather than the array object itself.
 	 * 
 	 * @param obj
 	 */
@@ -118,34 +118,41 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			ARRAY_OBJECT copy = newArrayObject();
+			objBuf.put(obj.components);
+			ARRAY_OBJECT copy = create();
 			obj.copyTo(copy);
 			indexer.add(copy);
 		}
 	}
 
 	/**
-	 * Submits the specified array object to this memory instance. Contrary to
-	 * {@link IndexedMemoryDirect} this method works exactly like the
-	 * {@link #add(ArrayObject) add} method in that it is always a copy of the
-	 * array object that is added to memory, never the array object itself.
-	 * Therefore, whether you use {@link #absorb(ArrayObject) absorb} or
-	 * {@link #add(ArrayObject) add}, in both cases you are are free to re-use
-	 * and change the submitted array object afterwards.
+	 * Submits the specified array object to this memory instance. If an
+	 * equivalent array object is already present in this memory instance, the
+	 * array object is discarded, but a new index, pointing to the array object
+	 * in memory, is added to the indices array. Otherwise, the array object is
+	 * burnt directly to the {@code FloatBuffer} functioning as the
+	 * GL_ARRAY_BUFFER. You SHOULD NOT change the submitted array object
+	 * afterwards, because the internal {@link java.util.Map Map} used to check
+	 * the uniqueness of the provided array object will store the array object
+	 * itself rather than a copy of it. Thus, changing the the array object
+	 * afterwards interferes with the uniqueness checks done by this memory
+	 * instance.
 	 * 
 	 * @param obj
 	 */
 	public void absorb(ARRAY_OBJECT obj)
 	{
-		add(obj);
+		pending = null;
+		if (!indexer.index(obj)) {
+			objBuf.put(obj.components);
+			indexer.add(obj);
+		}
 	}
 
-	public void addUnchecked(ARRAY_OBJECT object)
+	public void addUnchecked(ARRAY_OBJECT obj)
 	{
 		pending = null;
-		ARRAY_OBJECT copy = newArrayObject();
-		object.copyTo(copy);
-		indexer.add(copy);
+		objBuf.put(obj.components);
 	}
 
 	/**
@@ -186,14 +193,14 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 		if (which.length == 0) {
 			for (ARRAY_OBJECT t : tmp) {
 				if (t != null) {
-					add(t);
+					absorb(t);
 				}
 			}
 		}
 		else {
 			for (int i : which) {
 				if (tmp[i] != null) {
-					add(tmp[i]);
+					absorb(tmp[i]);
 				}
 			}
 		}
@@ -209,8 +216,6 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 		pending = null;
 		if (indexer.numObjs() == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		objBuf.clear();
-		objBuf.put(raw, 0, indexer.numObjs() * objSize);
 		objBuf.flip();
 		return new ShaderInput(objBuf, indexer.burnIndices());
 	}
@@ -229,9 +234,9 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 
 	abstract IConstructor<ARRAY_OBJECT> getConstructor();
 
-	private ARRAY_OBJECT newArrayObject()
+	private ARRAY_OBJECT create()
 	{
-		return constructor.make(raw, indexer.numObjs() * objSize);
+		return constructor.make(new float[objSize], 0);
 	}
 
 }

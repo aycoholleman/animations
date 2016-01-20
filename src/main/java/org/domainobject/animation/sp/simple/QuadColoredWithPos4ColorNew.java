@@ -70,7 +70,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 	private int vboiId = 0;
 
 	private Program program;
-	IndexedMemoryFast<Pos4Color4> vertices;
+	IndexedMemoryFast<Pos4Color4> memory;
 
 	public QuadColoredWithPos4ColorNew()
 	{
@@ -93,14 +93,14 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 		program.activate();
 
-		vertices.add(new Pos4Color4().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f));
-		vertices.add(new Pos4Color4().xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f));
-		vertices.add(new Pos4Color4().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f));
-		vertices.add(new Pos4Color4().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f));
-		vertices.add(new Pos4Color4().xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f));
-		vertices.add(new Pos4Color4().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f));
+		memory.add(new Pos4Color4().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f));
+		memory.add(new Pos4Color4().xyzw(-0.5f, -0.5f, 0f, 1f).rgba(0f, 1f, 0f, 1f));
+		memory.add(new Pos4Color4().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f));
+		memory.add(new Pos4Color4().xyzw(0.5f, -0.5f, 0f, 1f).rgba(0f, 0f, 1f, 1f));
+		memory.add(new Pos4Color4().xyzw(0.5f, 0.5f, 0f, 1f).rgba(1f, 1f, 1f, 1f));
+		memory.add(new Pos4Color4().xyzw(-0.5f, 0.5f, 0f, 1f).rgba(1f, 0f, 0f, 1f));
 		
-		ShaderInput shaderInput = vertices.burn();
+		ShaderInput shaderInput = memory.burn();
 
 		// Bind to the VAO that has all the information about the vertices
 		glBindVertexArray(vaoId);
@@ -122,7 +122,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 		// Draw the vertices
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_BYTE, 0);
 		//glDrawElements(GL_TRIANGLES, vertices.countIndices(), GL_UNSIGNED_SHORT, 0);
-		glDrawElements(GL_TRIANGLES, vertices.numIndices(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, memory.numIndices(), GL_UNSIGNED_INT, 0);
 	
 		// Put everything back to default (deselect)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -130,7 +130,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 		glDisableVertexAttribArray(1);
 		glBindVertexArray(0);
 		
-		vertices.clear();
+		memory.clear();
 
 	}
 
@@ -145,7 +145,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 	private void setupQuad()
 	{		
-		vertices = Pos4Color4.reserveFast(30, false);		
+		memory = Pos4Color4.reserveFast(30, false);		
 		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
