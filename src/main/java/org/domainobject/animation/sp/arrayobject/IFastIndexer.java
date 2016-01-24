@@ -20,6 +20,8 @@ interface IFastIndexer<ARRAY_OBJECT extends ArrayObject> {
 	 * @return
 	 */
 	Class<?> getIndexType();
+	
+	int getMaxNumIndices();
 
 	boolean contains(ARRAY_OBJECT object);
 

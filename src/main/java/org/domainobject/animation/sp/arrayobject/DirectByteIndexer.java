@@ -1,49 +1,42 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.lwjgl.BufferUtils.createShortBuffer;
+import static org.lwjgl.BufferUtils.createByteBuffer;
 
 import java.nio.Buffer;
-import java.nio.ShortBuffer;
+import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 
-class FastShortIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Short> {
+class DirectByteIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Byte> {
 
-	/*
-	 * The indices of the array objects. Will get burnt to the
-	 * GL_ELEMENT_ARRAY_BUFFER.
-	 */
-	private final short[] indices;
-	private final ShortBuffer idxBuf;
+	private final ByteBuffer idxBuf;
+	private byte numObjs;
 	
-	private short numObjs;
-	
-	FastShortIndexer(int maxNumObjs)
+	DirectByteIndexer(int maxNumObjs)
 	{
 		super(maxNumObjs);
-		indices = new short[maxNumObjs];
-		idxBuf = createShortBuffer(maxNumObjs);
+		idxBuf = createByteBuffer(maxNumObjs);
 	}
 
 	@Override
 	public Class<?> getIndexType()
 	{
-		return short.class;
+		return byte.class;
 	}
 
 	@Override
 	public boolean index(ARRAY_OBJECT object)
 	{
-		Short idx = objs.get(object);
+		Byte idx = objs.get(object);
 		if (idx == null)
 			return false;
-		indices[numIndices++] = idx;
+		idxBuf.put(idx);
 		return true;
 	}
 
 	@Override
 	public void add(ARRAY_OBJECT newObject)
 	{
-		indices[numIndices] = numObjs;
+		idxBuf.put(numObjs);
 		objs.put(newObject, numObjs);
 		numIndices++;
 		numObjs++;
@@ -58,8 +51,6 @@ class FastShortIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARR
 	@Override
 	public Buffer burnIndices()
 	{
-		idxBuf.clear();
-		idxBuf.put(indices, 0, numIndices);
 		idxBuf.flip();
 		return idxBuf;
 	}
@@ -69,6 +60,7 @@ class FastShortIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARR
 	{
 		numObjs = 0;
 		numIndices = 0;
+		idxBuf.clear();
 		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }

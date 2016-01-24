@@ -6,15 +6,20 @@ import java.util.LinkedHashMap;
 abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE>
 		implements IFastIndexer<ARRAY_OBJECT> {
 
-	final int maxNumObjs;
+	final int maxNumIndices;
 
 	LinkedHashMap<ARRAY_OBJECT, INDEX_TYPE> objs;
 	int numIndices;
 
 	FastIndexer(int maxNumObjs)
 	{
-		this.maxNumObjs = maxNumObjs;
+		this.maxNumIndices = maxNumObjs;
 		this.objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
+	}
+
+	public int getMaxNumIndices()
+	{
+		return maxNumIndices;
 	}
 
 	@Override

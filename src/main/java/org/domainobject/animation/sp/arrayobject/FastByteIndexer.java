@@ -68,6 +68,6 @@ class FastByteIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRA
 	{
 		numObjs = 0;
 		numIndices = 0;
-		objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
+		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }
