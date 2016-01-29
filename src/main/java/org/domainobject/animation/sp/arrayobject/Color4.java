@@ -1,7 +1,10 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2J.*;
-import static org.domainobject.animation.sp.util.Comparators.*;
+import static org.domainobject.animation.sp.util.C2J.SIZE_OF_FLOAT;
+import static org.domainobject.animation.sp.util.C2J.memcpy3;
+import static org.domainobject.animation.sp.util.C2J.memcpy4;
+import static org.domainobject.animation.sp.util.Comparators.hash4;
+import static org.domainobject.animation.sp.util.Comparators.same4;
 
 import org.domainobject.animation.sp.util.Array;
 
@@ -16,10 +19,12 @@ public class Color4 extends ArrayObject implements IColor4 {
 	public static final int COMPONENT_COUNT = 4;
 
 	private static final IConstructor<Color4> constructor = new IConstructor<Color4>() {
+
 		public Color4 make(float[] raw, int offset)
 		{
 			return new Color4(raw, offset);
 		}
+
 		public Color4[] array(int length)
 		{
 			return new Color4[length];
@@ -29,16 +34,18 @@ public class Color4 extends ArrayObject implements IColor4 {
 	public static Memory<Color4> reserve(int maxNumObjects)
 	{
 		return new Memory<Color4>(maxNumObjects, OBJ_SIZE) {
+
 			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
 			}
 		};
 	}
-	
+
 	public static IndexedMemoryLazy<Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
 		return new IndexedMemoryLazy<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+
 			@Override
 			IConstructor<Color4> getConstructor()
 			{
@@ -46,10 +53,18 @@ public class Color4 extends ArrayObject implements IColor4 {
 			}
 		};
 	}
-	
-	public static IndexedMemoryFast<Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
+
+	public static IndexedMemoryFast<Color4> reserveFast(int maxNumIndices, boolean useIntIndices)
 	{
-		return new IndexedMemoryFast<Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		IFastIndexer<Color4> indexer;
+		if (useIntIndices || maxNumIndices > Short.MAX_VALUE)
+			indexer = new FastIntIndexer<>(maxNumIndices);
+		else if (maxNumIndices > Byte.MAX_VALUE)
+			indexer = new FastShortIndexer<>(maxNumIndices);
+		else
+			indexer = new FastByteIndexer<>(maxNumIndices);
+		return new IndexedMemoryFast<Color4>(indexer, OBJ_SIZE) {
+
 			@Override
 			IConstructor<Color4> getConstructor()
 			{
@@ -65,6 +80,7 @@ public class Color4 extends ArrayObject implements IColor4 {
 	public static Memory<Color4> allocate(int maxNumObjects)
 	{
 		return new Memory<Color4>(maxNumObjects, COMPONENT_COUNT) {
+
 			IConstructor<Color4> getConstructor()
 			{
 				return constructor;
@@ -72,24 +88,20 @@ public class Color4 extends ArrayObject implements IColor4 {
 		};
 	}
 
-
 	public Color4()
 	{
 		super();
 	}
-
 
 	Color4(float[] components, int offset)
 	{
 		super(components, offset);
 	}
 
-
 	Color4(ArrayObject embedder, int offset)
 	{
 		super(embedder, offset);
 	}
-
 
 	@Override
 	int objSize()
@@ -97,13 +109,11 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return COMPONENT_COUNT;
 	}
 
-
 	public Color4 rgba(float red, float green, float blue, float alpha)
 	{
 		Array.set4(components, offset, red, green, blue, alpha);
 		return this;
 	}
-
 
 	public Color4 rgba(float[] rgba)
 	{
@@ -111,13 +121,11 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return this;
 	}
 
-
 	public Color4 rgba(IColor4 other)
 	{
 		memcpy4(components, offset, other.color().components, other.color().offset);
 		return this;
 	}
-
 
 	public Color4 rgb(float r, float g, float b)
 	{
@@ -125,13 +133,11 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return this;
 	}
 
-
 	public Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
 		return a(Vertex.globalAlpha);
 	}
-
 
 	/**
 	 * Set red channel.
@@ -144,7 +150,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return this;
 	}
 
-
 	/**
 	 * Set green channel.
 	 * 
@@ -155,7 +160,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		components[offset + 1] = g;
 		return this;
 	}
-
 
 	/**
 	 * Set blue channel.
@@ -168,7 +172,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return this;
 	}
 
-
 	/**
 	 * Set alpha channel.
 	 * 
@@ -180,7 +183,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return this;
 	}
 
-
 	/**
 	 * Get red, green, blue and alpha channel
 	 */
@@ -191,7 +193,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return result;
 	}
 
-
 	/**
 	 * Get red channel.
 	 */
@@ -199,7 +200,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 	{
 		return components[offset + 0];
 	}
-
 
 	/**
 	 * Get green channel.
@@ -209,7 +209,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return components[offset + 1];
 	}
 
-
 	/**
 	 * Get blue channel.
 	 */
@@ -217,7 +216,6 @@ public class Color4 extends ArrayObject implements IColor4 {
 	{
 		return components[offset + 2];
 	}
-
 
 	/**
 	 * Get alpha channel.
@@ -227,13 +225,11 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return components[offset + 3];
 	}
 
-
 	@Override
 	public Color4 color()
 	{
 		return this;
 	}
-
 
 	@Override
 	public boolean equals(Object obj)
@@ -247,20 +243,17 @@ public class Color4 extends ArrayObject implements IColor4 {
 		return false;
 	}
 
-
 	@Override
 	public int hashCode()
 	{
 		return hash4(components, offset);
 	}
 
-
 	@Override
 	public void copyTo(float[] target, int offset)
 	{
 		memcpy4(target, offset, components, this.offset);
 	}
-
 
 	@Override
 	void copyTo(ArrayObject other)

@@ -1,22 +1,27 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.util.C2J.*;
-import static org.domainobject.animation.sp.util.Comparators.*;
+import static org.domainobject.animation.sp.util.C2J.SIZE_OF_FLOAT;
+import static org.domainobject.animation.sp.util.C2J.memcpy8;
+import static org.domainobject.animation.sp.util.C2J.sizeof;
+import static org.domainobject.animation.sp.util.Comparators.hash8;
+import static org.domainobject.animation.sp.util.Comparators.same4;
 
 /**
  * An 8-component vertex class suitable for specifying a position (first four
  * slots) and a color (last four slots).
  * 
  * @author Ayco Holleman
-  *
+ *
  */
 public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
-	
+
 	private static final IConstructor<Pos4Color4> constructor = new IConstructor<Pos4Color4>() {
+
 		public Pos4Color4 make(float[] raw, int offset)
 		{
 			return new Pos4Color4(raw, offset);
 		}
+
 		public Pos4Color4[] array(int length)
 		{
 			return new Pos4Color4[length];
@@ -26,16 +31,18 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 	public static Memory<Pos4Color4> reserve(int maxNumObjects)
 	{
 		return new Memory<Pos4Color4>(maxNumObjects, OBJ_SIZE) {
+
 			IConstructor<Pos4Color4> getConstructor()
 			{
 				return constructor;
 			}
 		};
 	}
-	
+
 	public static IndexedMemoryLazy<Pos4Color4> reserveLazy(int maxNumObjs, boolean useIntIndices)
 	{
 		return new IndexedMemoryLazy<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+
 			@Override
 			IConstructor<Pos4Color4> getConstructor()
 			{
@@ -43,10 +50,19 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 			}
 		};
 	}
-	
-	public static IndexedMemoryFast<Pos4Color4> reserveFast(int maxNumObjs, boolean useIntIndices)
+
+	public static IndexedMemoryFast<Pos4Color4> reserveFast(int maxNumIndices,
+			boolean useIntIndices)
 	{
-		return new IndexedMemoryFast<Pos4Color4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		IFastIndexer<Pos4Color4> indexer;
+		if (useIntIndices || maxNumIndices > Short.MAX_VALUE)
+			indexer = new FastIntIndexer<>(maxNumIndices);
+		else if (maxNumIndices > Byte.MAX_VALUE)
+			indexer = new FastShortIndexer<>(maxNumIndices);
+		else
+			indexer = new FastByteIndexer<>(maxNumIndices);
+		return new IndexedMemoryFast<Pos4Color4>(indexer, OBJ_SIZE) {
+
 			@Override
 			IConstructor<Pos4Color4> getConstructor()
 			{
@@ -75,7 +91,6 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 		pos = new Pos4(this, 0);
 		color = new Color4(this, 4);
 	}
-
 
 	@Override
 	int objSize()

@@ -45,9 +45,16 @@ public final class Pos4NormalTexture extends ArrayObject implements IPos4, INorm
 		};
 	}
 	
-	public static IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Pos4NormalTexture> indexFast(int maxNumIndices, boolean useIntIndices)
 	{
-		return new IndexedMemoryFast<Pos4NormalTexture>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		IFastIndexer<Pos4NormalTexture> indexer;
+		if (useIntIndices || maxNumIndices > Short.MAX_VALUE)
+			indexer = new FastIntIndexer<>(maxNumIndices);
+		else if (maxNumIndices > Byte.MAX_VALUE)
+			indexer = new FastShortIndexer<>(maxNumIndices);
+		else
+			indexer = new FastByteIndexer<>(maxNumIndices);
+		return new IndexedMemoryFast<Pos4NormalTexture>(indexer, OBJ_SIZE) {
 			@Override
 			IConstructor<Pos4NormalTexture> getConstructor()
 			{

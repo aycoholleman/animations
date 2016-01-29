@@ -59,21 +59,13 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
 	// Contains the uncommitted array objects created through make().
 	private ARRAY_OBJECT[] pending;
 
-	IndexedMemoryFast(int maxNumObjs, int objSize, boolean useIntIndices)
+	IndexedMemoryFast(IFastIndexer<ARRAY_OBJECT> indexer, int objSize)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
-		this.raw = new float[maxNumObjs * objSize];
+		this.raw = new float[indexer.getMaxNumIndices() * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
-		indexer = new FastIntIndexer<>(maxNumObjs);
-		//indexer = new FastShortIndexer<>(maxNumObjs);
-		//indexer = new FastByteIndexer<>(maxNumObjs);
-		//		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
-		//			indexer = new FastIntIndexer<>(maxNumObjs);
-		//		else if (maxNumObjs > Byte.MAX_VALUE)
-		//			indexer = new FastShortIndexer<>(maxNumObjs);
-		//		else
-		//			indexer = new FastByteIndexer<>(maxNumObjs);
+		this.indexer = indexer;
 	}
 
 	public Class<?> getIndexType()

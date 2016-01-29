@@ -50,9 +50,16 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 		};
 	}
 
-	public static IndexedMemoryFast<Pos4> reserveFast(int maxNumObjs, boolean useIntIndices)
+	public static IndexedMemoryFast<Pos4> reserveFast(int maxNumIndices, boolean useIntIndices)
 	{
-		return new IndexedMemoryFast<Pos4>(maxNumObjs, OBJ_SIZE, useIntIndices) {
+		IFastIndexer<Pos4> indexer;
+		if (useIntIndices || maxNumIndices > Short.MAX_VALUE)
+			indexer = new FastIntIndexer<>(maxNumIndices);
+		else if (maxNumIndices > Byte.MAX_VALUE)
+			indexer = new FastShortIndexer<>(maxNumIndices);
+		else
+			indexer = new FastByteIndexer<>(maxNumIndices);
+		return new IndexedMemoryFast<Pos4>(indexer, OBJ_SIZE) {
 
 			@Override
 			IConstructor<Pos4> getConstructor()
@@ -120,7 +127,7 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 		Array.set4(components, offset, x, y, z, Vertex.globalW);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the coordinates of this instance.
 	 * 
@@ -147,7 +154,6 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 		memcpy4(components, offset, other.position().components, other.position().offset);
 		return this;
 	}
-
 
 	/**
 	 * Set the x, y, and z coordinates as specified by the array argument while

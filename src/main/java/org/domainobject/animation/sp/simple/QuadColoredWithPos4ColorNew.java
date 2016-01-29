@@ -145,7 +145,7 @@ public class QuadColoredWithPos4ColorNew extends Animation {
 
 	private void setupQuad()
 	{		
-		memory = Pos4Color4.reserveFast(30, false);		
+		memory = Pos4Color4.reserveFast(30, true);		
 		// Create a new Array Array Object in memory and select it (bind)
 		vaoId = glCreateVertexArrays();
 		glBindVertexArray(vaoId);
