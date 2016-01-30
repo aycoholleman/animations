@@ -57,20 +57,12 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends ArrayObject> {
 	// Contains the uncommitted array objects created through make().
 	private ARRAY_OBJECT[] pending;
 
-	IndexedMemoryDirect(int maxNumObjs, int objSize, boolean useIntIndices)
+	IndexedMemoryDirect(IFastIndexer<ARRAY_OBJECT> indexer, int objSize)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
-		this.objBuf = createFloatBuffer(maxNumObjs * objSize);
-		indexer = new FastIntIndexer<>(maxNumObjs);
-		//indexer = new FastShortIndexer<>(maxNumObjs);
-		//indexer = new FastByteIndexer<>(maxNumObjs);
-		//		if (useIntIndices || maxNumObjs > Short.MAX_VALUE)
-		//			indexer = new FastIntIndexer<>(maxNumObjs);
-		//		else if (maxNumObjs > Byte.MAX_VALUE)
-		//			indexer = new FastShortIndexer<>(maxNumObjs);
-		//		else
-		//			indexer = new FastByteIndexer<>(maxNumObjs);
+		this.objBuf = createFloatBuffer(indexer.getMaxNumIndices() * objSize);
+		this.indexer = indexer;
 	}
 
 	public Class<?> getIndexType()
@@ -118,7 +110,7 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends ArrayObject> {
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			objBuf.put(obj.components);
+			objBuf.put(obj.components, obj.offset, objSize);
 			ARRAY_OBJECT copy = create();
 			obj.copyTo(copy);
 			indexer.add(copy);

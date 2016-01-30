@@ -25,20 +25,21 @@ class DirectIntIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARR
 	}
 
 	@Override
-	public boolean index(ARRAY_OBJECT object)
+	public boolean index(ARRAY_OBJECT obj)
 	{
-		Integer idx = objs.get(object);
+		Integer idx = objs.get(obj);
 		if (idx == null)
 			return false;
+		numIndices++;
 		idxBuf.put(idx);
 		return true;
 	}
 
 	@Override
-	public void add(ARRAY_OBJECT newObject)
+	public void add(ARRAY_OBJECT obj)
 	{
 		idxBuf.put(numObjs);
-		objs.put(newObject, numObjs);
+		objs.put(obj, numObjs);
 		numIndices++;
 		numObjs++;
 	}

@@ -71,6 +71,25 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 		};
 	}
 
+	public static IndexedMemoryFast<Pos4Color4> getDirectMemory(int maxNumIndices,
+			boolean useIntIndices)
+	{
+		IFastIndexer<Pos4Color4> indexer;
+		if (useIntIndices || maxNumIndices > Short.MAX_VALUE)
+			indexer = new DirectIntIndexer<>(maxNumIndices);
+		else if (maxNumIndices > Byte.MAX_VALUE)
+			indexer = new DirectShortIndexer<>(maxNumIndices);
+		else
+			indexer = new DirectByteIndexer<>(maxNumIndices);
+		return new IndexedMemoryFast<Pos4Color4>(indexer, OBJ_SIZE) {
+			@Override
+			IConstructor<Pos4Color4> getConstructor()
+			{
+				return constructor;
+			}
+		};
+	}
+
 	public static final int OBJ_SIZE = 8;
 	public static final int BYTE_SIZE = OBJ_SIZE * SIZE_OF_FLOAT;
 	public static final int[] strides = new int[] { 0, sizeof(4) };
