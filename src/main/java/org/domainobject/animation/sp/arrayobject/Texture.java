@@ -9,7 +9,7 @@ import org.domainobject.animation.sp.util.Array;
  * @author Ayco Holleman
  *
  */
-public final class Texture extends ArrayObject implements ITexture {
+public final class Texture extends Vertex implements ITexture {
 
 	public static final int COMPONENT_COUNT = 2;
 
@@ -23,7 +23,7 @@ public final class Texture extends ArrayObject implements ITexture {
 		super(components, offset);
 	}
 
-	Texture(ArrayObject embedder, int offset)
+	Texture(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -86,7 +86,7 @@ public final class Texture extends ArrayObject implements ITexture {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy2(other.components, other.offset, components, offset);
 	}

@@ -20,11 +20,11 @@ import java.util.Iterator;
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> implements IIndexedMemory<ARRAY_OBJECT> {
+public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements IIndexedMemory<ARRAY_OBJECT> {
 
 	private class Committable implements ICommittable {
 
-		public void commit(ArrayObject caller)
+		public void commit(Vertex caller)
 		{
 			ARRAY_OBJECT[] p;
 			if ((p = pending) == null)
@@ -85,7 +85,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> implem
 
 	/**
 	 * Returns the number of array objects submitted to memory. Every submission
-	 * using {@link #add(ArrayObject) add} or {@link #commit(int...) commit}
+	 * using {@link #add(Vertex) add} or {@link #commit(int...) commit}
 	 * results in a new index added to the element array buffer, but only
 	 * <i>unique</i> array objects are actually stored in memory.
 	 * 
@@ -119,10 +119,10 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> implem
 	/**
 	 * Submits the specified array object to this memory instance. Contrary to
 	 * {@link IndexedMemoryDirect} this method works exactly like the
-	 * {@link #add(ArrayObject) add} method in that it is always a copy of the
+	 * {@link #add(Vertex) add} method in that it is always a copy of the
 	 * array object that is added to memory, never the array object itself.
-	 * Therefore, whether you use {@link #absorb(ArrayObject) absorb} or
-	 * {@link #add(ArrayObject) add}, in both cases you are are free to re-use
+	 * Therefore, whether you use {@link #absorb(Vertex) absorb} or
+	 * {@link #add(Vertex) add}, in both cases you are are free to re-use
 	 * and change the submitted array object afterwards.
 	 * 
 	 * @param obj
@@ -143,7 +143,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> implem
 	/**
 	 * Creates a new array object of the type stored by this memory instance,
 	 * but does not yet add or commit it to this memory instance. Calling
-	 * {@link ArrayObject#commit() commit} on the array object will, however,
+	 * {@link Vertex#commit() commit} on the array object will, however,
 	 * commit it to <i>this</i> memory instance.
 	 * 
 	 * @return

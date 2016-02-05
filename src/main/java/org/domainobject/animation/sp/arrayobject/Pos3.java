@@ -12,7 +12,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Pos3 extends ArrayObject implements IPos3 {
+public class Pos3 extends Vertex implements IPos3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -26,7 +26,7 @@ public class Pos3 extends ArrayObject implements IPos3 {
 		super(components, offset);
 	}	
 
-	Pos3(ArrayObject embedder, int offset)
+	Pos3(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -186,7 +186,7 @@ public class Pos3 extends ArrayObject implements IPos3 {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
 	}

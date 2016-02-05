@@ -20,11 +20,11 @@ import java.util.Iterator;
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends ArrayObject> implements IIndexedMemory<ARRAY_OBJECT> {
+public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implements IIndexedMemory<ARRAY_OBJECT> {
 
 	private class Committable implements ICommittable {
 
-		public void commit(ArrayObject caller)
+		public void commit(Vertex caller)
 		{
 			ARRAY_OBJECT[] p;
 			if ((p = pending) == null)

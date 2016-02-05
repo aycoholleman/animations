@@ -3,7 +3,7 @@ package org.domainobject.animation.sp.arrayobject.old;
 import java.nio.FloatBuffer;
 
 import org.domainobject.animation.sp.arrayobject.MemoryException;
-import org.domainobject.animation.sp.arrayobject.Vertex;
+import org.domainobject.animation.sp.arrayobject.VertexDefaults;
 import org.lwjgl.BufferUtils;
 
 public class RawMemory {
@@ -81,7 +81,7 @@ public class RawMemory {
 
 	/**
 	 * Adds the specified coordinates to this {@code VertexArray} <i>plus</i>
-	 * the value of {@link Vertex#globalW}. In other words, this method
+	 * the value of {@link VertexDefaults#globalW}. In other words, this method
 	 * adds <i>four</i> components to this {@code VertexArray}.
 	 * 
 	 * @param x
@@ -92,7 +92,7 @@ public class RawMemory {
 	 */
 	public RawMemory xyzw(float x, float y, float z)
 	{
-		add(x, y, z, Vertex.globalW);
+		add(x, y, z, VertexDefaults.globalW);
 		return this;
 	}
 
@@ -132,7 +132,7 @@ public class RawMemory {
 
 	/**
 	 * Adds the specified color to this {@code VertexArray} <i>plus</i> the
-	 * value of {@link Vertex#globalAlpha}. In other words, this method
+	 * value of {@link VertexDefaults#globalAlpha}. In other words, this method
 	 * adds <i>four</i> components to this {@code VertexArray}.
 	 * 
 	 * @param red
@@ -143,7 +143,7 @@ public class RawMemory {
 	 */
 	public RawMemory rgba(float red, float green, float blue)
 	{
-		add(red, green, blue, Vertex.globalAlpha);
+		add(red, green, blue, VertexDefaults.globalAlpha);
 		return this;
 	}
 

@@ -1,13 +1,13 @@
 package org.domainobject.animation.sp.arrayobject;
 
-import static org.domainobject.animation.sp.arrayobject.Vertex.*;
+import static org.domainobject.animation.sp.arrayobject.VertexDefaults.*;
 import static org.domainobject.animation.sp.util.C2J.*;
 import static org.domainobject.animation.sp.util.Comparators.*;
 
 import org.domainobject.animation.sp.util.Array;
 import org.domainobject.animation.sp.util.Math3D;
 
-public final class Normal extends ArrayObject implements INormal {
+public final class Normal extends Vertex implements INormal {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -22,7 +22,7 @@ public final class Normal extends ArrayObject implements INormal {
 		super(components, offset);
 	}
 
-	Normal(ArrayObject embedder, int offset)
+	Normal(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -168,7 +168,7 @@ public final class Normal extends ArrayObject implements INormal {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
 	}

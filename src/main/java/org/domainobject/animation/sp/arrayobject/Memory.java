@@ -8,7 +8,7 @@ import java.nio.FloatBuffer;
  * @author Ayco Holleman
  *
  */
-public abstract class Memory<T extends ArrayObject> {
+public abstract class Memory<T extends Vertex> {
 
 	private final T[] objs;
 	private final float[] raw;

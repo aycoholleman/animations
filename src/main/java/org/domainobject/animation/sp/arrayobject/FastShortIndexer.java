@@ -6,7 +6,7 @@ import java.nio.Buffer;
 import java.nio.ShortBuffer;
 import java.util.LinkedHashMap;
 
-class FastShortIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Short> {
+class FastShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Short> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the

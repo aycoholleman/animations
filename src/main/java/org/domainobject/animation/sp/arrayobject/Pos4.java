@@ -10,7 +10,7 @@ import org.domainobject.animation.sp.util.Array;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4 extends ArrayObject implements IPos4 {
+public final class Pos4 extends Vertex implements IPos4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
@@ -94,7 +94,7 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 		super(components, offset);
 	}
 
-	Pos4(ArrayObject embedder, int offset)
+	Pos4(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -118,13 +118,13 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 
 	/**
 	 * Set the x, y, and z coordinates to the specified values while the w
-	 * coordinate is set to the {@link Vertex#globalW global w coordinate}.
+	 * coordinate is set to the {@link VertexDefaults#globalW global w coordinate}.
 	 * 
 	 * @return This instance
 	 */
 	public Pos4 xyzw(float x, float y, float z)
 	{
-		Array.set4(components, offset, x, y, z, Vertex.globalW);
+		Array.set4(components, offset, x, y, z, VertexDefaults.globalW);
 		return this;
 	}
 
@@ -157,7 +157,7 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 
 	/**
 	 * Set the x, y, and z coordinates as specified by the array argument while
-	 * the w coordinate is set to {@link Vertex#globalW globalW}.
+	 * the w coordinate is set to {@link VertexDefaults#globalW globalW}.
 	 * 
 	 * @param coordinates
 	 *            A {@code float} array containing at least 3 elements
@@ -170,7 +170,7 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 	public Pos4 xyz(float[] coordinates)
 	{
 		memcpy3(components, offset, coordinates, 0);
-		return w(Vertex.globalW);
+		return w(VertexDefaults.globalW);
 	}
 
 	/**
@@ -297,7 +297,7 @@ public final class Pos4 extends ArrayObject implements IPos4 {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy4(other.components, other.offset, components, offset);
 	}

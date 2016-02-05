@@ -6,7 +6,7 @@ import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.util.LinkedHashMap;
 
-class DirectIntIndexer<ARRAY_OBJECT extends ArrayObject> extends FastIndexer<ARRAY_OBJECT, Integer> {
+class DirectIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Integer> {
 
 	private final IntBuffer idxBuf;
 	

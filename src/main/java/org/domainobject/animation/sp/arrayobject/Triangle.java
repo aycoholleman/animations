@@ -1,6 +1,6 @@
 package org.domainobject.animation.sp.arrayobject;
 
-public class Triangle<T extends IPos4> extends ArrayObject {
+public class Triangle<T extends IPos4> extends Vertex {
 
 	public Triangle()
 	{
@@ -11,7 +11,7 @@ public class Triangle<T extends IPos4> extends ArrayObject {
 		super(components, offset);
 	}
 
-	Triangle(ArrayObject embedder, int offset)
+	Triangle(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -28,7 +28,7 @@ public class Triangle<T extends IPos4> extends ArrayObject {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 	}
 

@@ -13,7 +13,7 @@ import org.domainobject.animation.sp.util.Array;
  * @created Jul 20, 2015
  *
  */
-public class Color3 extends ArrayObject implements IColor3 {
+public class Color3 extends Vertex implements IColor3 {
 
 	public static final int COMPONENT_COUNT = 3;
 
@@ -27,7 +27,7 @@ public class Color3 extends ArrayObject implements IColor3 {
 		super(components, offset);
 	}
 
-	Color3(ArrayObject embedder, int offset)
+	Color3(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -159,7 +159,7 @@ public class Color3 extends ArrayObject implements IColor3 {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy3(other.components, other.offset, components, offset);
 	}

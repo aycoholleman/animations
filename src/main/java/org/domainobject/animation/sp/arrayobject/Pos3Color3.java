@@ -11,7 +11,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * @created Jul 26, 2015
  *
  */
-public class Pos3Color3 extends ArrayObject implements IPos3, IColor3 {
+public class Pos3Color3 extends Vertex implements IPos3, IColor3 {
 
 	public static final int COMPONENT_COUNT = 6;
 
@@ -78,7 +78,7 @@ public class Pos3Color3 extends ArrayObject implements IPos3, IColor3 {
 
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy6(other.components, other.offset, components, offset);
 	}

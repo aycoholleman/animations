@@ -14,7 +14,7 @@ import org.domainobject.animation.sp.util.Array;
  * @author Ayco Holleman
  * @created Jul 20, 2015
  */
-public class Color4 extends ArrayObject implements IColor4 {
+public class Color4 extends Vertex implements IColor4 {
 
 	public static final int COMPONENT_COUNT = 4;
 
@@ -98,7 +98,7 @@ public class Color4 extends ArrayObject implements IColor4 {
 		super(components, offset);
 	}
 
-	Color4(ArrayObject embedder, int offset)
+	Color4(Vertex embedder, int offset)
 	{
 		super(embedder, offset);
 	}
@@ -129,14 +129,14 @@ public class Color4 extends ArrayObject implements IColor4 {
 
 	public Color4 rgb(float r, float g, float b)
 	{
-		Array.set4(components, offset, r, g, b, Vertex.globalAlpha);
+		Array.set4(components, offset, r, g, b, VertexDefaults.globalAlpha);
 		return this;
 	}
 
 	public Color4 rgb(float[] rgb)
 	{
 		memcpy3(components, offset, rgb, 0);
-		return a(Vertex.globalAlpha);
+		return a(VertexDefaults.globalAlpha);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class Color4 extends ArrayObject implements IColor4 {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy4(other.components, other.offset, components, offset);
 	}

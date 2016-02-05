@@ -11,7 +11,7 @@ import org.domainobject.animation.sp.util.Comparators;
  *
  * @param <ARRAY_OBJECT>
  */
-interface IFastIndexer<ARRAY_OBJECT extends ArrayObject> {
+interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
 
 	/**
 	 * Returns the type of the indices in the element array buffer. Either {code
@@ -38,7 +38,7 @@ interface IFastIndexer<ARRAY_OBJECT extends ArrayObject> {
 	 * 
 	 * @return
 	 * 
-	 * @see IndexedMemoryFast#add(ArrayObject)
+	 * @see IndexedMemoryFast#add(Vertex)
 	 * @see IndexedMemoryFast#commit(int...)
 	 * @see Comparators#same3(float[], int, float[], int, float)
 	 * @see Comparators#same4(float[], int, float[], int, float) etc.
@@ -47,7 +47,7 @@ interface IFastIndexer<ARRAY_OBJECT extends ArrayObject> {
 
 	/**
 	 * Returns the number of objects that were
-	 * {@link IndexedMemoryFast#add(ArrayObject) added} or
+	 * {@link IndexedMemoryFast#add(Vertex) added} or
 	 * {@link IndexedMemoryFast#commit(int...) committed} to the memory object
 	 * used by this indexer.
 	 * 

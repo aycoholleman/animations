@@ -13,7 +13,7 @@ import static org.domainobject.animation.sp.util.Comparators.same4;
  * @author Ayco Holleman
  *
  */
-public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
+public final class Pos4Color4 extends Vertex implements IPos4, IColor4 {
 
 	private static final IConstructor<Pos4Color4> constructor = new IConstructor<Pos4Color4>() {
 
@@ -120,8 +120,8 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#globalW} and the alpha channel is set to
-	 * {@link Vertex#globalAlpha}. Note that until you call this method or one
+	 * {@link VertexDefaults#globalW} and the alpha channel is set to
+	 * {@link VertexDefaults#globalAlpha}. Note that until you call this method or one
 	 * of the other setters, the internal state of a new instance is undefined.
 	 */
 	public void init()
@@ -129,11 +129,11 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = Vertex.globalW;
+		components[offset + 3] = VertexDefaults.globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
-		components[offset + 7] = Vertex.globalAlpha;
+		components[offset + 7] = VertexDefaults.globalAlpha;
 	}
 
 	public Pos4Color4 xyzw(float x, float y, float z, float w)
@@ -183,7 +183,7 @@ public final class Pos4Color4 extends ArrayObject implements IPos4, IColor4 {
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy8(other.components, other.offset, components, offset);
 	}

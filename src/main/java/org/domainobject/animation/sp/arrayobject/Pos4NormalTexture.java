@@ -11,7 +11,7 @@ import static org.domainobject.animation.sp.util.Comparators.*;
  * 
  * @author Ayco Holleman
  */
-public final class Pos4NormalTexture extends ArrayObject implements IPos4, INormal, ITexture {
+public final class Pos4NormalTexture extends Vertex implements IPos4, INormal, ITexture {
 
 	private static final IConstructor<Pos4NormalTexture> constructor = new IConstructor<Pos4NormalTexture>() {
 		public Pos4NormalTexture make(float[] raw, int offset)
@@ -108,8 +108,8 @@ public final class Pos4NormalTexture extends ArrayObject implements IPos4, INorm
 	/**
 	 * Initialize this instance. The x, y and z coordinates are set to 0, as are
 	 * the red, green and blue channels. The w coordinate is set to
-	 * {@link Vertex#globalW} and the alpha channel is set to
-	 * {@link Vertex#globalAlpha}. Note that until you call this method or one of
+	 * {@link VertexDefaults#globalW} and the alpha channel is set to
+	 * {@link VertexDefaults#globalAlpha}. Note that until you call this method or one of
 	 * the other setters, the internal state of a new instance is undefined, both
 	 * in theory and in practice!
 	 */
@@ -118,7 +118,7 @@ public final class Pos4NormalTexture extends ArrayObject implements IPos4, INorm
 		components[offset + 0] = 0;
 		components[offset + 1] = 0;
 		components[offset + 2] = 0;
-		components[offset + 3] = Vertex.globalW;
+		components[offset + 3] = VertexDefaults.globalW;
 		components[offset + 4] = 0;
 		components[offset + 5] = 0;
 		components[offset + 6] = 0;
@@ -168,7 +168,7 @@ public final class Pos4NormalTexture extends ArrayObject implements IPos4, INorm
 	}
 
 	@Override
-	void copyTo(ArrayObject other)
+	void copyTo(Vertex other)
 	{
 		memcpy9(other.components, other.offset, components, offset);
 	}

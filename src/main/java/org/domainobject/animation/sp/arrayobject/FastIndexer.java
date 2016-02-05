@@ -3,7 +3,7 @@ package org.domainobject.animation.sp.arrayobject;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-abstract class FastIndexer<ARRAY_OBJECT extends ArrayObject, INDEX_TYPE>
+abstract class FastIndexer<ARRAY_OBJECT extends Vertex, INDEX_TYPE>
 		implements IFastIndexer<ARRAY_OBJECT> {
 
 	final int maxNumIndices;

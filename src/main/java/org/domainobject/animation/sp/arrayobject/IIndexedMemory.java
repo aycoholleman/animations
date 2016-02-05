@@ -2,7 +2,7 @@ package org.domainobject.animation.sp.arrayobject;
 
 import java.util.Iterator;
 
-public interface IIndexedMemory<ARRAY_OBJECT extends ArrayObject> {
+public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
 
 	/**
 	 * Returns the number of <i>unique</i> array objects in memory.
@@ -13,7 +13,7 @@ public interface IIndexedMemory<ARRAY_OBJECT extends ArrayObject> {
 
 	/**
 	 * Returns the number of array objects submitted to memory. Every submission
-	 * using {@link #add(ArrayObject) add} or {@link #commit(int...) commit}
+	 * using {@link #add(Vertex) add} or {@link #commit(int...) commit}
 	 * results in a new index added to the element array buffer, but only
 	 * <i>unique</i> array objects are actually stored in memory.
 	 * 
@@ -56,7 +56,7 @@ public interface IIndexedMemory<ARRAY_OBJECT extends ArrayObject> {
 	/**
 	 * Creates a new array object of the type stored by this memory instance,
 	 * but does not yet add or commit it to this memory instance. Calling
-	 * {@link ArrayObject#commit() commit} on the array object will, however,
+	 * {@link Vertex#commit() commit} on the array object will, however,
 	 * commit it to <i>this</i> memory instance.
 	 * 
 	 * @return

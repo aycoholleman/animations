@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 
 import org.domainobject.animation.sp.Global;
 
-public abstract class IndexedMemoryLazy<ARRAY_OBJECT extends ArrayObject> {
+public abstract class IndexedMemoryLazy<ARRAY_OBJECT extends Vertex> {
 
 	public static enum BurnMethod
 	{
