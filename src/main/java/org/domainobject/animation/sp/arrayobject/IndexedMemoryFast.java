@@ -20,7 +20,7 @@ import java.util.Iterator;
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> {
+public abstract class IndexedMemoryFast<ARRAY_OBJECT extends ArrayObject> implements IIndexedMemory<ARRAY_OBJECT> {
 
 	private class Committable implements ICommittable {
 
