@@ -63,12 +63,13 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
-		this.raw = new float[indexer.getMaxNumIndices() * objSize];
+		this.raw = new float[indexer.getMaxNumVertices() * objSize];
 		this.objBuf = createFloatBuffer(raw.length);
 		this.indexer = indexer;
 	}
 
-	public Class<?> getIndexType()
+	@Override
+	public IndexType getIndexType()
 	{
 		return indexer.getIndexType();
 	}
@@ -85,9 +86,9 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 
 	/**
 	 * Returns the number of array objects submitted to memory. Every submission
-	 * using {@link #add(Vertex) add} or {@link #commit(int...) commit}
-	 * results in a new index added to the element array buffer, but only
-	 * <i>unique</i> array objects are actually stored in memory.
+	 * using {@link #add(Vertex) add} or {@link #commit(int...) commit} results
+	 * in a new index added to the element array buffer, but only <i>unique</i>
+	 * array objects are actually stored in memory.
 	 * 
 	 * @return
 	 */
@@ -119,11 +120,11 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	/**
 	 * Submits the specified array object to this memory instance. Contrary to
 	 * {@link IndexedMemoryDirect} this method works exactly like the
-	 * {@link #add(Vertex) add} method in that it is always a copy of the
-	 * array object that is added to memory, never the array object itself.
-	 * Therefore, whether you use {@link #absorb(Vertex) absorb} or
-	 * {@link #add(Vertex) add}, in both cases you are are free to re-use
-	 * and change the submitted array object afterwards.
+	 * {@link #add(Vertex) add} method in that it is always a copy of the array
+	 * object that is added to memory, never the array object itself. Therefore,
+	 * whether you use {@link #absorb(Vertex) absorb} or {@link #add(Vertex)
+	 * add}, in both cases you are are free to re-use and change the submitted
+	 * array object afterwards.
 	 * 
 	 * @param obj
 	 */
@@ -143,8 +144,8 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	/**
 	 * Creates a new array object of the type stored by this memory instance,
 	 * but does not yet add or commit it to this memory instance. Calling
-	 * {@link Vertex#commit() commit} on the array object will, however,
-	 * commit it to <i>this</i> memory instance.
+	 * {@link Vertex#commit() commit} on the array object will, however, commit
+	 * it to <i>this</i> memory instance.
 	 * 
 	 * @return
 	 */

@@ -16,7 +16,7 @@ abstract class DirectIndexer<ARRAY_OBJECT extends Vertex, INDEX_TYPE>
 		this.objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
 	}
 
-	public int getMaxNumIndices()
+	public int getMaxNumVertices()
 	{
 		return maxNumIndices;
 	}

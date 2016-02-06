@@ -9,9 +9,9 @@ import java.util.LinkedHashMap;
 class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Short> {
 
 	private final ShortBuffer idxBuf;
-	
+
 	private short numObjs;
-	
+
 	DirectShortIndexer(int maxNumObjs)
 	{
 		super(maxNumObjs);
@@ -19,9 +19,9 @@ class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_
 	}
 
 	@Override
-	public Class<?> getIndexType()
+	public IndexType getIndexType()
 	{
-		return short.class;
+		return IndexType.SHORT;
 	}
 
 	@Override
@@ -62,6 +62,6 @@ class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_
 		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
-		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 }

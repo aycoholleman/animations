@@ -9,25 +9,19 @@ import org.domainobject.animation.sp.util.Comparators;
  * 
  * @author Ayco Holleman
  *
- * @param <ARRAY_OBJECT>
+ * @param <VERTEX>
  */
-interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
+interface IFastIndexer<VERTEX extends Vertex> {
 
-	/**
-	 * Returns the type of the indices in the element array buffer. Either {code
-	 * int.class} or {code short.class} or {@code byte.class}.
-	 * 
-	 * @return
-	 */
-	Class<?> getIndexType();
+	IndexType getIndexType();
 
-	int getMaxNumIndices();
+	int getMaxNumVertices();
 
-	boolean contains(ARRAY_OBJECT object);
+	boolean contains(VERTEX object);
 
-	boolean index(ARRAY_OBJECT object);
+	boolean index(VERTEX object);
 
-	void add(ARRAY_OBJECT object);
+	void add(VERTEX object);
 
 	/**
 	 * Returns the number of <b>distinct</b> vertices in memory. If a non-unique
@@ -58,6 +52,6 @@ interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
 
 	void clear();
 
-	Iterator<ARRAY_OBJECT> iterator();
+	Iterator<VERTEX> iterator();
 
 }

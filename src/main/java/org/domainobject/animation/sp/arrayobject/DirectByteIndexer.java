@@ -18,9 +18,9 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 	}
 
 	@Override
-	public Class<?> getIndexType()
+	public IndexType getIndexType()
 	{
-		return byte.class;
+		return IndexType.BYTE;
 	}
 
 	@Override
@@ -61,6 +61,6 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
-		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 }

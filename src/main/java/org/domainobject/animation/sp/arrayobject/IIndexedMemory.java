@@ -2,7 +2,9 @@ package org.domainobject.animation.sp.arrayobject;
 
 import java.util.Iterator;
 
-public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
+public interface IIndexedMemory<VERTEX extends Vertex> {
+	
+	IndexType getIndexType();
 
 	/**
 	 * Returns the number of <i>unique</i> array objects in memory.
@@ -34,7 +36,7 @@ public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
 	 * 
 	 * @param obj
 	 */
-	void add(ARRAY_OBJECT obj);
+	void add(VERTEX obj);
 
 	/**
 	 * Submits the specified array object to this memory instance. If an
@@ -51,7 +53,7 @@ public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
 	 * 
 	 * @param obj
 	 */
-	void absorb(ARRAY_OBJECT obj);
+	void absorb(VERTEX obj);
 
 	/**
 	 * Creates a new array object of the type stored by this memory instance,
@@ -61,7 +63,7 @@ public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
 	 * 
 	 * @return
 	 */
-	ARRAY_OBJECT alloc();
+	VERTEX alloc();
 
 	/**
 	 * Creates the specified amount of array objects but does not yet add or
@@ -70,16 +72,16 @@ public interface IIndexedMemory<ARRAY_OBJECT extends Vertex> {
 	 * @param howmany
 	 * @return
 	 */
-	ARRAY_OBJECT[] alloc(int howmany);
+	VERTEX[] alloc(int howmany);
 
 	void commit(int... which);
 
-	boolean contains(ARRAY_OBJECT arrayObject);
+	boolean contains(VERTEX arrayObject);
 
 	ShaderInput burn();
 
 	void clear();
 
-	Iterator<ARRAY_OBJECT> iterator();
+	Iterator<VERTEX> iterator();
 
 }

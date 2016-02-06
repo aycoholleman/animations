@@ -13,21 +13,21 @@ import java.util.LinkedHashMap;
  */
 abstract class FastIndexer<VERTEX extends Vertex, INDEX_TYPE> implements IFastIndexer<VERTEX> {
 
-	final int maxNumIndices;
+	final int maxNumVertices;
 
 	LinkedHashMap<VERTEX, INDEX_TYPE> vertices;
 	int numIndices;
 
 	FastIndexer(int maxNumVertices)
 	{
-		this.maxNumIndices = maxNumVertices;
+		this.maxNumVertices = maxNumVertices;
 		this.vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 
 	@Override
-	public int getMaxNumIndices()
+	public int getMaxNumVertices()
 	{
-		return maxNumIndices;
+		return maxNumVertices;
 	}
 
 	@Override

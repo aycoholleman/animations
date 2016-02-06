@@ -15,18 +15,18 @@ import java.util.Iterator;
  * 
  * @author Ayco Holleman
  *
- * @param <ARRAY_OBJECT>
+ * @param <VERTEX>
  *            The type of array object hosted by this memory object.
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implements IIndexedMemory<ARRAY_OBJECT> {
+public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IIndexedMemory<VERTEX> {
 
 	private class Committable implements ICommittable {
 
 		public void commit(Vertex caller)
 		{
-			ARRAY_OBJECT[] p;
+			VERTEX[] p;
 			if ((p = pending) == null)
 				MemoryException.commitWindowClosed();
 			for (int i = 0; i < p.length; i++) {
@@ -46,68 +46,58 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	/* Number of elements per array object */
 	private final int objSize;
 	/* Reflectionless constructor of various types of array objects */
-	private final IConstructor<ARRAY_OBJECT> constructor;
+	private final IConstructor<VERTEX> constructor;
 	/*
 	 * Passed on to array objects, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
-	private final IFastIndexer<ARRAY_OBJECT> indexer;
+	private final IFastIndexer<VERTEX> indexer;
 
 	// Contains the uncommitted array objects created through make().
-	private ARRAY_OBJECT[] pending;
+	private VERTEX[] pending;
 
-	IndexedMemoryDirect(IFastIndexer<ARRAY_OBJECT> indexer, int objSize)
+	IndexedMemoryDirect(IFastIndexer<VERTEX> indexer, int objSize)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
-		this.objBuf = createFloatBuffer(indexer.getMaxNumIndices() * objSize);
+		this.objBuf = createFloatBuffer(indexer.getMaxNumVertices() * objSize);
 		this.indexer = indexer;
 	}
 
-	public Class<?> getIndexType()
+
+	@Override
+	public IndexType getIndexType()
 	{
 		return indexer.getIndexType();
 	}
-
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#numObjs()
-	 */
+	
 	@Override
 	public int numObjs()
 	{
 		return indexer.numVertices();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#numIndices()
-	 */
 	@Override
 	public int numIndices()
 	{
 		return indexer.numIndices();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#add(ARRAY_OBJECT)
-	 */
 	@Override
-	public void add(ARRAY_OBJECT obj)
+	public void add(VERTEX obj)
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
 			objBuf.put(obj.components, obj.offset, objSize);
-			ARRAY_OBJECT copy = create();
+			VERTEX copy = create();
 			obj.copyTo(copy);
 			indexer.add(copy);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#absorb(ARRAY_OBJECT)
-	 */
 	@Override
-	public void absorb(ARRAY_OBJECT obj)
+	public void absorb(VERTEX obj)
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
@@ -116,26 +106,20 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 		}
 	}
 
-	public void addUnchecked(ARRAY_OBJECT obj)
+	public void addUnchecked(VERTEX obj)
 	{
 		pending = null;
 		objBuf.put(obj.components);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#alloc()
-	 */
 	@Override
-	public ARRAY_OBJECT alloc()
+	public VERTEX alloc()
 	{
 		return alloc(1)[0];
 	}
 
-	/* (non-Javadoc)
-	 * @see org.domainobject.animation.sp.arrayobject.IIndexedMemory#alloc(int)
-	 */
 	@Override
-	public ARRAY_OBJECT[] alloc(int howmany)
+	public VERTEX[] alloc(int howmany)
 	{
 		float[] tmp = new float[howmany * objSize];
 		pending = constructor.array(howmany);
@@ -152,10 +136,10 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	@Override
 	public void commit(int... which)
 	{
-		ARRAY_OBJECT[] tmp = pending;
+		VERTEX[] tmp = pending;
 		pending = null;
 		if (which.length == 0) {
-			for (ARRAY_OBJECT t : tmp) {
+			for (VERTEX t : tmp) {
 				if (t != null) {
 					absorb(t);
 				}
@@ -171,7 +155,7 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	}
 
 	@Override
-	public boolean contains(ARRAY_OBJECT arrayObject)
+	public boolean contains(VERTEX arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
@@ -195,14 +179,14 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	}
 
 	@Override
-	public Iterator<ARRAY_OBJECT> iterator()
+	public Iterator<VERTEX> iterator()
 	{
 		return indexer.iterator();
 	}
 
-	abstract IConstructor<ARRAY_OBJECT> getConstructor();
+	abstract IConstructor<VERTEX> getConstructor();
 
-	private ARRAY_OBJECT create()
+	private VERTEX create()
 	{
 		return constructor.make(new float[objSize], 0);
 	}

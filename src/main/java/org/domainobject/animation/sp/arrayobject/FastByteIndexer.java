@@ -24,9 +24,9 @@ class FastByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJ
 	}
 
 	@Override
-	public Class<?> getIndexType()
+	public IndexType getIndexType()
 	{
-		return byte.class;
+		return IndexType.BYTE;
 	}
 
 	@Override
@@ -68,6 +68,6 @@ class FastByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJ
 	{
 		numObjs = 0;
 		numIndices = 0;
-		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 }

@@ -17,9 +17,9 @@ class DirectIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Intege
 	}
 
 	@Override
-	public Class<?> getIndexType()
+	public IndexType getIndexType()
 	{
-		return int.class;
+		return IndexType.INT;
 	}
 
 	@Override
@@ -60,6 +60,6 @@ class DirectIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Intege
 	{
 		numIndices = 0;
 		idxBuf.clear();
-		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 }
