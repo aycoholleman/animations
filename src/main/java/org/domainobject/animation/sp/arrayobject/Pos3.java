@@ -32,7 +32,7 @@ public class Pos3 extends Vertex implements IPos3 {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

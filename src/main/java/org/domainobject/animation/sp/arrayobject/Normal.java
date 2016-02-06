@@ -44,7 +44,7 @@ public final class Normal extends Vertex implements INormal {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

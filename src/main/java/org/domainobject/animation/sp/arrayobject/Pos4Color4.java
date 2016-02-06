@@ -112,7 +112,7 @@ public final class Pos4Color4 extends Vertex implements IPos4, IColor4 {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return OBJ_SIZE;
 	}

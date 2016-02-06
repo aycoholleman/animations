@@ -22,7 +22,7 @@ public class Triangle<T extends IPos4> extends Vertex {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return 0;
 	}

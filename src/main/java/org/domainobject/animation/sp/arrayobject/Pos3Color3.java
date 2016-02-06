@@ -34,7 +34,7 @@ public class Pos3Color3 extends Vertex implements IPos3, IColor3 {
 
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

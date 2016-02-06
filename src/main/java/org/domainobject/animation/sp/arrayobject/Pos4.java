@@ -100,7 +100,7 @@ public final class Pos4 extends Vertex implements IPos4 {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

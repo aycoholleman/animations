@@ -99,7 +99,7 @@ public final class Pos4NormalTexture extends Vertex implements IPos4, INormal, I
 
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return OBJ_SIZE;
 	}

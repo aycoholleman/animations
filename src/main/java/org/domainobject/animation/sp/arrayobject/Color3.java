@@ -33,7 +33,7 @@ public class Color3 extends Vertex implements IColor3 {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

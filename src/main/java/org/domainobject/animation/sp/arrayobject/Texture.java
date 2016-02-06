@@ -29,7 +29,7 @@ public final class Texture extends Vertex implements ITexture {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}

@@ -16,7 +16,7 @@ public abstract class Vertex {
 
 	Vertex()
 	{
-		this.components = new float[objSize()];
+		this.components = new float[size()];
 		this.offset = 0;
 	}
 
@@ -45,12 +45,12 @@ public abstract class Vertex {
 	 * Copies the components of this array object to the specified array.
 	 * 
 	 * @param target
-	 * The arget array
+	 *            The arget array
 	 * @param offset
-	 * The offset within the target array
+	 *            The offset within the target array
 	 * 
 	 * @throw {@link ArrayIndexOutOfBoundsException} If there are not enough
-	 * elements in the target array (after {@code offset})
+	 *        elements in the target array (after {@code offset})
 	 */
 	public abstract void copyTo(float[] target, int offset);
 
@@ -71,11 +71,11 @@ public abstract class Vertex {
 	}
 
 	/**
-	 * Get the number of components in this array object.
+	 * Get the number of elements defining the vertex.
 	 * 
-	 * @return The size of the array wrapped by this instance
+	 * @return The number of elements defining the vertex
 	 */
-	abstract int objSize();
+	abstract int size();
 
 	/*
 	 * NB In spite of the ArrayObject argument, this method really expects this
@@ -83,6 +83,5 @@ public abstract class Vertex {
 	 * same subclass of ArrayObject.
 	 */
 	abstract void copyTo(Vertex other);
-
 
 }

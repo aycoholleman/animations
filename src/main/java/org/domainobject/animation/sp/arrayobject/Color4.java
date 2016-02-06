@@ -104,7 +104,7 @@ public class Color4 extends Vertex implements IColor4 {
 	}
 
 	@Override
-	int objSize()
+	int size()
 	{
 		return COMPONENT_COUNT;
 	}
