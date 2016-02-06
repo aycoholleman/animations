@@ -6,11 +6,9 @@ import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.util.LinkedHashMap;
 
-class DirectIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Integer> {
+class DirectIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Integer> {
 
 	private final IntBuffer idxBuf;
-	
-	private int numObjs;
 	
 	DirectIntIndexer(int maxNumObjs)
 	{
@@ -25,9 +23,9 @@ class DirectIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	}
 
 	@Override
-	public boolean index(ARRAY_OBJECT obj)
+	public boolean index(VERTEX v)
 	{
-		Integer idx = objs.get(obj);
+		Integer idx = vertices.get(v);
 		if (idx == null)
 			return false;
 		numIndices++;
@@ -36,18 +34,18 @@ class DirectIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	}
 
 	@Override
-	public void add(ARRAY_OBJECT obj)
+	public void add(VERTEX obj)
 	{
-		idxBuf.put(numObjs);
-		objs.put(obj, numObjs);
+		idxBuf.put(vertices.size());
+		vertices.put(obj, vertices.size());
 		numIndices++;
-		numObjs++;
 	}
 
+
 	@Override
-	public int numObjs()
+	public int numIndices()
 	{
-		return numObjs;
+		return numIndices;
 	}
 
 	@Override
@@ -60,9 +58,8 @@ class DirectIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	@Override
 	public void clear()
 	{
-		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
-		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }

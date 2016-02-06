@@ -20,7 +20,7 @@ interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
 	 * @return
 	 */
 	Class<?> getIndexType();
-	
+
 	int getMaxNumIndices();
 
 	boolean contains(ARRAY_OBJECT object);
@@ -30,11 +30,10 @@ interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
 	void add(ARRAY_OBJECT object);
 
 	/**
-	 * Returns the number of <b>distinct</b> array objects in memory. If a
-	 * non-unique array object is submitted (that it, it {@code equals} one of
-	 * the array objects already in memory), it is in fact only indexed. The
-	 * array object itself is discarded and a new index is added pointing to the
-	 * existing array object.
+	 * Returns the number of <b>distinct</b> vertices in memory. If a non-unique
+	 * vertex is submitted (that it, it {@code equals} one of the vertices
+	 * already in memory), it is in fact only indexed. The vertex itself is
+	 * discarded and a new index is added pointing to the existing vertex.
 	 * 
 	 * @return
 	 * 
@@ -43,7 +42,7 @@ interface IFastIndexer<ARRAY_OBJECT extends Vertex> {
 	 * @see Comparators#same3(float[], int, float[], int, float)
 	 * @see Comparators#same4(float[], int, float[], int, float) etc.
 	 */
-	int numObjs();
+	int numVertices();
 
 	/**
 	 * Returns the number of objects that were

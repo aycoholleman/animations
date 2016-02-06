@@ -27,7 +27,7 @@ class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_
 	@Override
 	public boolean index(ARRAY_OBJECT object)
 	{
-		Short idx = objs.get(object);
+		Short idx = vertices.get(object);
 		if (idx == null)
 			return false;
 		idxBuf.put(idx);
@@ -38,13 +38,13 @@ class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_
 	public void add(ARRAY_OBJECT newObject)
 	{
 		idxBuf.put(numObjs);
-		objs.put(newObject, numObjs);
+		vertices.put(newObject, numObjs);
 		numIndices++;
 		numObjs++;
 	}
 
 	@Override
-	public int numObjs()
+	public int numVertices()
 	{
 		return numObjs;
 	}
@@ -62,6 +62,6 @@ class DirectShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_
 		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
-		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }

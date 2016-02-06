@@ -15,18 +15,18 @@ import java.util.Iterator;
  * 
  * @author Ayco Holleman
  *
- * @param <ARRAY_OBJECT>
+ * @param <VERTEX>
  *            The type of array object hosted by this memory object.
  * 
  * @see IndexedMemoryLazy
  */
-public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements IIndexedMemory<ARRAY_OBJECT> {
+public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndexedMemory<VERTEX> {
 
 	private class Committable implements ICommittable {
 
 		public void commit(Vertex caller)
 		{
-			ARRAY_OBJECT[] p;
+			VERTEX[] p;
 			if ((p = pending) == null)
 				MemoryException.commitWindowClosed();
 			for (int i = 0; i < p.length; i++) {
@@ -48,18 +48,18 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	/* Number of elements per array object */
 	private final int objSize;
 	/* Reflectionless constructor of various types of array objects */
-	private final IConstructor<ARRAY_OBJECT> constructor;
+	private final IConstructor<VERTEX> constructor;
 	/*
 	 * Passed on to array objects, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
-	private final IFastIndexer<ARRAY_OBJECT> indexer;
+	private final IFastIndexer<VERTEX> indexer;
 
 	// Contains the uncommitted array objects created through make().
-	private ARRAY_OBJECT[] pending;
+	private VERTEX[] pending;
 
-	IndexedMemoryFast(IFastIndexer<ARRAY_OBJECT> indexer, int objSize)
+	IndexedMemoryFast(IFastIndexer<VERTEX> indexer, int objSize)
 	{
 		this.objSize = objSize;
 		this.constructor = getConstructor();
@@ -80,7 +80,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	 */
 	public int numObjs()
 	{
-		return indexer.numObjs();
+		return indexer.numVertices();
 	}
 
 	/**
@@ -106,11 +106,11 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	 * 
 	 * @param obj
 	 */
-	public void add(ARRAY_OBJECT obj)
+	public void add(VERTEX obj)
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			ARRAY_OBJECT copy = newArrayObject();
+			VERTEX copy = newArrayObject();
 			obj.copyTo(copy);
 			indexer.add(copy);
 		}
@@ -127,15 +127,15 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	 * 
 	 * @param obj
 	 */
-	public void absorb(ARRAY_OBJECT obj)
+	public void absorb(VERTEX obj)
 	{
 		add(obj);
 	}
 
-	public void addUnchecked(ARRAY_OBJECT object)
+	public void addUnchecked(VERTEX object)
 	{
 		pending = null;
-		ARRAY_OBJECT copy = newArrayObject();
+		VERTEX copy = newArrayObject();
 		object.copyTo(copy);
 		indexer.add(copy);
 	}
@@ -148,7 +148,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	 * 
 	 * @return
 	 */
-	public ARRAY_OBJECT alloc()
+	public VERTEX alloc()
 	{
 		return alloc(1)[0];
 	}
@@ -160,7 +160,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	 * @param howmany
 	 * @return
 	 */
-	public ARRAY_OBJECT[] alloc(int howmany)
+	public VERTEX[] alloc(int howmany)
 	{
 		float[] tmp = new float[howmany * objSize];
 		pending = constructor.array(howmany);
@@ -173,10 +173,10 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 
 	public void commit(int... which)
 	{
-		ARRAY_OBJECT[] tmp = pending;
+		VERTEX[] tmp = pending;
 		pending = null;
 		if (which.length == 0) {
-			for (ARRAY_OBJECT t : tmp) {
+			for (VERTEX t : tmp) {
 				if (t != null) {
 					add(t);
 				}
@@ -191,7 +191,7 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 		}
 	}
 
-	public boolean contains(ARRAY_OBJECT arrayObject)
+	public boolean contains(VERTEX arrayObject)
 	{
 		return indexer.contains(arrayObject);
 	}
@@ -199,10 +199,10 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 	public ShaderInput burn()
 	{
 		pending = null;
-		if (indexer.numObjs() == 0)
+		if (indexer.numVertices() == 0)
 			MemoryException.cannotBurnWhenEmpty();
 		objBuf.clear();
-		objBuf.put(raw, 0, indexer.numObjs() * objSize);
+		objBuf.put(raw, 0, indexer.numVertices() * objSize);
 		objBuf.flip();
 		return new ShaderInput(objBuf, indexer.burnIndices());
 	}
@@ -214,16 +214,16 @@ public abstract class IndexedMemoryFast<ARRAY_OBJECT extends Vertex> implements 
 		indexer.clear();
 	}
 
-	public Iterator<ARRAY_OBJECT> iterator()
+	public Iterator<VERTEX> iterator()
 	{
 		return indexer.iterator();
 	}
 
-	abstract IConstructor<ARRAY_OBJECT> getConstructor();
+	abstract IConstructor<VERTEX> getConstructor();
 
-	private ARRAY_OBJECT newArrayObject()
+	private VERTEX newArrayObject()
 	{
-		return constructor.make(raw, indexer.numObjs() * objSize);
+		return constructor.make(raw, indexer.numVertices() * objSize);
 	}
 
 }

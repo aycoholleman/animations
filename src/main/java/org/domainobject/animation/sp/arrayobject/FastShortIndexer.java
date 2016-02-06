@@ -33,7 +33,7 @@ class FastShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	@Override
 	public boolean index(ARRAY_OBJECT object)
 	{
-		Short idx = objs.get(object);
+		Short idx = vertices.get(object);
 		if (idx == null)
 			return false;
 		indices[numIndices++] = idx;
@@ -44,13 +44,13 @@ class FastShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	public void add(ARRAY_OBJECT newObject)
 	{
 		indices[numIndices] = numObjs;
-		objs.put(newObject, numObjs);
+		vertices.put(newObject, numObjs);
 		numIndices++;
 		numObjs++;
 	}
 
 	@Override
-	public int numObjs()
+	public int numVertices()
 	{
 		return numObjs;
 	}
@@ -69,6 +69,6 @@ class FastShortIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OB
 	{
 		numObjs = 0;
 		numIndices = 0;
-		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }

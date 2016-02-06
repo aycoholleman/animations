@@ -26,7 +26,7 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 	@Override
 	public boolean index(ARRAY_OBJECT object)
 	{
-		Byte idx = objs.get(object);
+		Byte idx = vertices.get(object);
 		if (idx == null)
 			return false;
 		idxBuf.put(idx);
@@ -37,13 +37,13 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 	public void add(ARRAY_OBJECT newObject)
 	{
 		idxBuf.put(numObjs);
-		objs.put(newObject, numObjs);
+		vertices.put(newObject, numObjs);
 		numIndices++;
 		numObjs++;
 	}
 
 	@Override
-	public int numObjs()
+	public int numVertices()
 	{
 		return numObjs;
 	}
@@ -61,6 +61,6 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
-		objs = new LinkedHashMap<>(maxNumIndices, 1.0f);
+		vertices = new LinkedHashMap<>(maxNumIndices, 1.0f);
 	}
 }

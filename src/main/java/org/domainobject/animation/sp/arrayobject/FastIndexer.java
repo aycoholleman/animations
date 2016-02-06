@@ -3,20 +3,28 @@ package org.domainobject.animation.sp.arrayobject;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-abstract class FastIndexer<ARRAY_OBJECT extends Vertex, INDEX_TYPE>
-		implements IFastIndexer<ARRAY_OBJECT> {
+/**
+ * Abstract base class for <i>both</i> fast indexers <i>and</i> direct indexers.
+ * 
+ * @author Ayco
+ *
+ * @param <VERTEX>
+ * @param <INDEX_TYPE>
+ */
+abstract class FastIndexer<VERTEX extends Vertex, INDEX_TYPE> implements IFastIndexer<VERTEX> {
 
 	final int maxNumIndices;
 
-	LinkedHashMap<ARRAY_OBJECT, INDEX_TYPE> objs;
+	LinkedHashMap<VERTEX, INDEX_TYPE> vertices;
 	int numIndices;
 
-	FastIndexer(int maxNumObjs)
+	FastIndexer(int maxNumVertices)
 	{
-		this.maxNumIndices = maxNumObjs;
-		this.objs = new LinkedHashMap<>(maxNumObjs, 1.0f);
+		this.maxNumIndices = maxNumVertices;
+		this.vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);
 	}
 
+	@Override
 	public int getMaxNumIndices()
 	{
 		return maxNumIndices;
@@ -29,15 +37,21 @@ abstract class FastIndexer<ARRAY_OBJECT extends Vertex, INDEX_TYPE>
 	}
 
 	@Override
-	public Iterator<ARRAY_OBJECT> iterator()
+	public int numVertices()
 	{
-		return objs.keySet().iterator();
+		return vertices.size();
 	}
 
 	@Override
-	public boolean contains(ARRAY_OBJECT object)
+	public Iterator<VERTEX> iterator()
 	{
-		return objs.containsKey(object);
+		return vertices.keySet().iterator();
+	}
+
+	@Override
+	public boolean contains(VERTEX object)
+	{
+		return vertices.containsKey(object);
 	}
 
 }

@@ -76,7 +76,7 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	@Override
 	public int numObjs()
 	{
-		return indexer.numObjs();
+		return indexer.numVertices();
 	}
 
 	/* (non-Javadoc)
@@ -180,7 +180,7 @@ public abstract class IndexedMemoryDirect<ARRAY_OBJECT extends Vertex> implement
 	public ShaderInput burn()
 	{
 		pending = null;
-		if (indexer.numObjs() == 0)
+		if (indexer.numVertices() == 0)
 			MemoryException.cannotBurnWhenEmpty();
 		objBuf.flip();
 		return new ShaderInput(objBuf, indexer.burnIndices());
