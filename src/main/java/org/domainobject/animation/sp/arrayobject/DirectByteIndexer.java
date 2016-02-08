@@ -6,15 +6,14 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 
-class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Byte> {
+class DirectByteIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Byte> {
 
 	private final ByteBuffer idxBuf;
-	private byte numObjs;
 	
-	DirectByteIndexer(int maxNumObjs)
+	DirectByteIndexer(int maxNumVertices)
 	{
-		super(maxNumObjs);
-		idxBuf = createByteBuffer(maxNumObjs);
+		super(maxNumVertices);
+		idxBuf = createByteBuffer(maxNumVertices);
 	}
 
 	@Override
@@ -24,28 +23,22 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 	}
 
 	@Override
-	public boolean index(ARRAY_OBJECT object)
+	public boolean index(VERTEX vertex)
 	{
-		Byte idx = vertices.get(object);
-		if (idx == null)
+		Byte index = vertices.get(vertex);
+		if (index == null)
 			return false;
-		idxBuf.put(idx);
+		idxBuf.put(index);
 		return true;
 	}
 
 	@Override
-	public void add(ARRAY_OBJECT newObject)
+	public void add(VERTEX vertex)
 	{
-		idxBuf.put(numObjs);
-		vertices.put(newObject, numObjs);
+		byte index = (byte)vertices.size();
+		idxBuf.put(index);
+		vertices.put(vertex, index);
 		numIndices++;
-		numObjs++;
-	}
-
-	@Override
-	public int numVertices()
-	{
-		return numObjs;
 	}
 
 	@Override
@@ -58,7 +51,6 @@ class DirectByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_O
 	@Override
 	public void clear()
 	{
-		numObjs = 0;
 		numIndices = 0;
 		idxBuf.clear();
 		vertices = new LinkedHashMap<>(maxNumVertices, 1.0f);

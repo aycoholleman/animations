@@ -10,10 +10,10 @@ class DirectIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Intege
 
 	private final IntBuffer idxBuf;
 	
-	DirectIntIndexer(int maxNumObjs)
+	DirectIntIndexer(int maxNumVertices)
 	{
-		super(maxNumObjs);
-		idxBuf = createIntBuffer(maxNumObjs);
+		super(maxNumVertices);
+		idxBuf = createIntBuffer(maxNumVertices);
 	}
 
 	@Override
@@ -23,29 +23,23 @@ class DirectIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Intege
 	}
 
 	@Override
-	public boolean index(VERTEX v)
+	public boolean index(VERTEX vertex)
 	{
-		Integer idx = vertices.get(v);
-		if (idx == null)
+		Integer index = vertices.get(vertex);
+		if (index == null)
 			return false;
 		numIndices++;
-		idxBuf.put(idx);
+		idxBuf.put(index);
 		return true;
 	}
 
 	@Override
-	public void add(VERTEX obj)
+	public void add(VERTEX vertex)
 	{
-		idxBuf.put(vertices.size());
-		vertices.put(obj, vertices.size());
+		int index = vertices.size();
+		idxBuf.put(index);
+		vertices.put(vertex, index);
 		numIndices++;
-	}
-
-
-	@Override
-	public int numIndices()
-	{
-		return numIndices;
 	}
 
 	@Override
