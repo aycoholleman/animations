@@ -6,17 +6,17 @@ import java.nio.FloatBuffer;
 import java.util.Iterator;
 
 /**
- * Fast indexed memory indexes an array object as soon as it is committed to
- * memory. In other words, as soon as the array object is committed, a check is
- * done whether an equivalent array object already exists in memory. If so, the
- * array object itself is discarded and the commit action will only result in
- * the addition of a new index pointing to the array object that is already in
+ * Fast indexed memory indexes an vertex as soon as it is committed to
+ * memory. In other words, as soon as the vertex is committed, a check is
+ * done whether an equivalent vertex already exists in memory. If so, the
+ * vertex itself is discarded and the commit action will only result in
+ * the addition of a new index pointing to the vertex that is already in
  * memory.
  * 
  * @author Ayco Holleman
  *
  * @param <VERTEX>
- *            The type of array object hosted by this memory object.
+ *            The type of vertex hosted by this memory object.
  * 
  * @see IndexedMemoryLazy
  */
@@ -42,27 +42,27 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	}
 
 	/* The GL_ARRAY_BUFFER */
-	private final FloatBuffer objBuf;
-	/* Number of elements per array object */
-	private final int objSize;
-	/* Reflectionless constructor of various types of array objects */
+	private final FloatBuffer vBuf;
+	/* Number of elements per vertex */
+	private final int vSize;
+	/* Reflectionless constructor of various types of vertices */
 	private final IConstructor<VERTEX> constructor;
 	/*
-	 * Passed on to array objects, so they can commit themselves to this memory
+	 * Passed on to vertices, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
 	private final IFastIndexer<VERTEX> indexer;
 
-	// Contains the uncommitted array objects created through make().
+	// Contains the uncommitted vertices created through make().
 	private VERTEX[] pending;
 
-	IndexedMemoryDirect(IFastIndexer<VERTEX> indexer, int objSize)
+	IndexedMemoryDirect(IFastIndexer<VERTEX> indexer, int vertexSize)
 	{
-		this.objSize = objSize;
-		this.constructor = getConstructor();
-		this.objBuf = createFloatBuffer(indexer.getMaxNumVertices() * objSize);
 		this.indexer = indexer;
+		this.vSize = vertexSize;
+		this.vBuf = createFloatBuffer(indexer.getMaxNumVertices() * vertexSize);
+		this.constructor = getConstructor();
 	}
 
 
@@ -73,7 +73,7 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	}
 	
 	@Override
-	public int numObjs()
+	public int numVertices()
 	{
 		return indexer.numVertices();
 	}
@@ -89,7 +89,7 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			objBuf.put(obj.components, obj.offset, objSize);
+			vBuf.put(obj.components, obj.offset, vSize);
 			VERTEX copy = create();
 			obj.copyTo(copy);
 			indexer.add(copy);
@@ -101,7 +101,7 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			objBuf.put(obj.components);
+			vBuf.put(obj.components);
 			indexer.add(obj);
 		}
 	}
@@ -109,7 +109,7 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	public void addUnchecked(VERTEX obj)
 	{
 		pending = null;
-		objBuf.put(obj.components);
+		vBuf.put(obj.components);
 	}
 
 	@Override
@@ -121,10 +121,10 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 	@Override
 	public VERTEX[] alloc(int howmany)
 	{
-		float[] tmp = new float[howmany * objSize];
+		float[] tmp = new float[howmany * vSize];
 		pending = constructor.array(howmany);
 		for (int i = 0; i < howmany; i++) {
-			pending[i] = constructor.make(tmp, i * objSize);
+			pending[i] = constructor.make(tmp, i * vSize);
 			pending[i].memory = committable;
 		}
 		return pending;
@@ -166,15 +166,15 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 		pending = null;
 		if (indexer.numVertices() == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		objBuf.flip();
-		return new ShaderInput(objBuf, indexer.burnIndices());
+		vBuf.flip();
+		return new ShaderInput(vBuf, indexer.burnIndices());
 	}
 
 	@Override
 	public void clear()
 	{
 		pending = null;
-		objBuf.clear();
+		vBuf.clear();
 		indexer.clear();
 	}
 
@@ -188,7 +188,7 @@ public abstract class IndexedMemoryDirect<VERTEX extends Vertex> implements IInd
 
 	private VERTEX create()
 	{
-		return constructor.make(new float[objSize], 0);
+		return constructor.make(new float[vSize], 0);
 	}
 
 }

@@ -6,7 +6,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 
-class FastByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Byte> {
+class FastByteIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Byte> {
 
 	/*
 	 * The indices of the array objects. Will get burnt to the
@@ -30,7 +30,7 @@ class FastByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJ
 	}
 
 	@Override
-	public boolean index(ARRAY_OBJECT object)
+	public boolean index(VERTEX object)
 	{
 		Byte idx = vertices.get(object);
 		if (idx == null)
@@ -40,7 +40,7 @@ class FastByteIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJ
 	}
 
 	@Override
-	public void add(ARRAY_OBJECT newObject)
+	public void add(VERTEX newObject)
 	{
 		indices[numIndices] = numObjs;
 		vertices.put(newObject, numObjs);

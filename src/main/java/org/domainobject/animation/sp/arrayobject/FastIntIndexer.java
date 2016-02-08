@@ -6,12 +6,8 @@ import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.util.LinkedHashMap;
 
-class FastIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJECT, Integer> {
+class FastIntIndexer<VERTEX extends Vertex> extends FastIndexer<VERTEX, Integer> {
 
-	/*
-	 * The indices of the array objects. Will get burnt to the
-	 * GL_ELEMENT_ARRAY_BUFFER.
-	 */
 	private final int[] indices;
 	private final IntBuffer idxBuf;
 	
@@ -31,9 +27,9 @@ class FastIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJE
 	}
 
 	@Override
-	public boolean index(ARRAY_OBJECT obj)
+	public boolean index(VERTEX v)
 	{
-		Integer idx = vertices.get(obj);
+		Integer idx = vertices.get(v);
 		if (idx == null)
 			return false;
 		indices[numIndices++] = idx;
@@ -41,7 +37,7 @@ class FastIntIndexer<ARRAY_OBJECT extends Vertex> extends FastIndexer<ARRAY_OBJE
 	}
 
 	@Override
-	public void add(ARRAY_OBJECT obj)
+	public void add(VERTEX obj)
 	{
 		indices[numIndices] = numObjs;
 		vertices.put(obj, numObjs);

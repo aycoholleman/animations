@@ -41,30 +41,30 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 		}
 	}
 
-	/* Backbone for the array objects managed by this memory object */
+	/* Backbone for the vertices managed by this memory object */
 	private final float[] raw;
 	/* The GL_ARRAY_BUFFER */
-	private final FloatBuffer objBuf;
+	private final FloatBuffer vBuf;
 	/* Number of elements per array object */
-	private final int objSize;
-	/* Reflectionless constructor of various types of array objects */
+	private final int vSize;
+	/* Reflectionless constructor of various types of vertices */
 	private final IConstructor<VERTEX> constructor;
 	/*
-	 * Passed on to array objects, so they can commit themselves to this memory
+	 * Passed on to vertices, so they can commit themselves to this memory
 	 * object
 	 */
 	private final Committable committable = new Committable();
 	private final IFastIndexer<VERTEX> indexer;
 
-	// Contains the uncommitted array objects created through make().
+	// Contains the uncommitted vertices created through make().
 	private VERTEX[] pending;
 
-	IndexedMemoryFast(IFastIndexer<VERTEX> indexer, int objSize)
+	IndexedMemoryFast(IFastIndexer<VERTEX> indexer, int vertexSize)
 	{
-		this.objSize = objSize;
+		this.vSize = vertexSize;
 		this.constructor = getConstructor();
-		this.raw = new float[indexer.getMaxNumVertices() * objSize];
-		this.objBuf = createFloatBuffer(raw.length);
+		this.raw = new float[indexer.getMaxNumVertices() * vertexSize];
+		this.vBuf = createFloatBuffer(raw.length);
 		this.indexer = indexer;
 	}
 
@@ -75,23 +75,25 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	}
 
 	/**
-	 * Returns the number of <i>unique</i> array objects in memory.
+	 * Returns the number of <i>unique</i> vertices in memory.
 	 * 
 	 * @return
 	 */
-	public int numObjs()
+	@Override
+	public int numVertices()
 	{
 		return indexer.numVertices();
 	}
 
 	/**
-	 * Returns the number of array objects submitted to memory. Every submission
+	 * Returns the number of vertices submitted to memory. Every submission
 	 * using {@link #add(Vertex) add} or {@link #commit(int...) commit} results
 	 * in a new index added to the element array buffer, but only <i>unique</i>
-	 * array objects are actually stored in memory.
+	 * vertices are actually stored in memory.
 	 * 
 	 * @return
 	 */
+	@Override
 	public int numIndices()
 	{
 		return indexer.numIndices();
@@ -107,11 +109,12 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	 * 
 	 * @param obj
 	 */
+	@Override
 	public void add(VERTEX obj)
 	{
 		pending = null;
 		if (!indexer.index(obj)) {
-			VERTEX copy = newArrayObject();
+			VERTEX copy = newVertex();
 			obj.copyTo(copy);
 			indexer.add(copy);
 		}
@@ -126,18 +129,19 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	 * add}, in both cases you are are free to re-use and change the submitted
 	 * array object afterwards.
 	 * 
-	 * @param obj
+	 * @param v
 	 */
-	public void absorb(VERTEX obj)
+	@Override
+	public void absorb(VERTEX v)
 	{
-		add(obj);
+		add(v);
 	}
 
-	public void addUnchecked(VERTEX object)
+	public void addUnchecked(VERTEX v)
 	{
 		pending = null;
-		VERTEX copy = newArrayObject();
-		object.copyTo(copy);
+		VERTEX copy = newVertex();
+		v.copyTo(copy);
 		indexer.add(copy);
 	}
 
@@ -149,29 +153,32 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 	 * 
 	 * @return
 	 */
+	@Override
 	public VERTEX alloc()
 	{
 		return alloc(1)[0];
 	}
 
 	/**
-	 * Creates the specified amount of array objects but does not yet add or
+	 * Creates the specified amount of vertices but does not yet add or
 	 * commit them to this memory instance. See {@link #alloc() alloc}.
 	 * 
 	 * @param howmany
 	 * @return
 	 */
+	@Override
 	public VERTEX[] alloc(int howmany)
 	{
-		float[] tmp = new float[howmany * objSize];
+		float[] tmp = new float[howmany * vSize];
 		pending = constructor.array(howmany);
 		for (int i = 0; i < howmany; i++) {
-			pending[i] = constructor.make(tmp, i * objSize);
+			pending[i] = constructor.make(tmp, i * vSize);
 			pending[i].memory = committable;
 		}
 		return pending;
 	}
 
+	@Override
 	public void commit(int... which)
 	{
 		VERTEX[] tmp = pending;
@@ -192,29 +199,33 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 		}
 	}
 
-	public boolean contains(VERTEX arrayObject)
+	@Override
+	public boolean contains(VERTEX v)
 	{
-		return indexer.contains(arrayObject);
+		return indexer.contains(v);
 	}
 
+	@Override
 	public ShaderInput burn()
 	{
 		pending = null;
 		if (indexer.numVertices() == 0)
 			MemoryException.cannotBurnWhenEmpty();
-		objBuf.clear();
-		objBuf.put(raw, 0, indexer.numVertices() * objSize);
-		objBuf.flip();
-		return new ShaderInput(objBuf, indexer.burnIndices());
+		vBuf.clear();
+		vBuf.put(raw, 0, indexer.numVertices() * vSize);
+		vBuf.flip();
+		return new ShaderInput(vBuf, indexer.burnIndices());
 	}
 
+	@Override
 	public void clear()
 	{
 		pending = null;
-		objBuf.clear();
+		vBuf.clear();
 		indexer.clear();
 	}
 
+	@Override
 	public Iterator<VERTEX> iterator()
 	{
 		return indexer.iterator();
@@ -222,9 +233,9 @@ public abstract class IndexedMemoryFast<VERTEX extends Vertex> implements IIndex
 
 	abstract IConstructor<VERTEX> getConstructor();
 
-	private VERTEX newArrayObject()
+	private VERTEX newVertex()
 	{
-		return constructor.make(raw, indexer.numVertices() * objSize);
+		return constructor.make(raw, indexer.numVertices() * vSize);
 	}
 
 }
